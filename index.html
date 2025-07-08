@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yogull - Community Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+        import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
+            authDomain: "gohealme-9bdf0.firebaseapp.com",
+            projectId: "gohealme-9bdf0",
+            storageBucket: "gohealme-9bdf0.firebasestorage.app",
+            messagingSenderId: "823297665017",
+            appId: "1:823297665017:web:3427ba4397e12447ccbf28"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                showDashboard(user);
+            }
+        });
+        
+        window.signInWithGoogle = async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                showDashboard(result.user);
+            } catch (error) {
+                console.error('Google sign in error:', error);
+                alert('Sign in failed. Please try again.');
+            }
+        };
+        
+        window.signInWithFacebook = async () => {
+            const provider = new FacebookAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                showDashboard(result.user);
+            } catch (error) {
+                console.error('Facebook sign in error:', error);
+                alert('Sign in failed. Please try again.');
+            }
+        };
+        
+        window.signInWithTwitter = async () => {
+            const provider = new TwitterAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                showDashboard(result.user);
+            } catch (error) {
+                console.error('Twitter sign in error:', error);
+                alert('Sign in failed. Please try again.');
+            }
+        };
+        
+        window.signInWithEmail = async () => {
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            
+            try {
+                const result = await signInWithEmailAndPassword(auth, email, password);
+                showDashboard(result.user);
+            } catch (error) {
+                console.error('Email sign in error:', error);
+                alert('Sign in failed: ' + error.message);
+            }
+        };
+        
+        function showDashboard(user) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'block';
+            document.getElementById('userEmail').textContent = user.email || 'User';
+        }
+        
+        window.logout = () => {
+            auth.signOut().then(() => {
+                document.getElementById('loginPage').style.display = 'block';
+                document.getElementById('dashboardPage').style.display = 'none';
+            });
+        };
+    </script>
+    
+    <style>
+        .login-container { min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .platform-container { background: linear-gradient(135deg, #f4faff 0%, #f0f2fe 100%); }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+        .feature-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .business-card { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .community-card { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+    </style>
+</head>
+<body>
+    <div id="loginPage" class="login-container flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center mb-6">Sign in to your Yogull account</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="emailInput" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="patientbrain.com@gmail.com">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="passwordInput" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="••••••••">
+                </div>
+                
+                <button onclick="signInWithEmail()" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Sign In
+                </button>
+                
+                <div class="text-center text-gray-500 my-4">OR CONTINUE WITH</div>
+                
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="signInWithGoogle()" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24">
+                            <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                    </button>
+                    
+                    <button onclick="signInWithFacebook()" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                        <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </button>
+                    
+                    <button onclick="signInWithTwitter()" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <p class="text-center text-sm text-gray-600 mt-4">
+                    Don't have an account? <a href="#" class="text-blue-600 hover:underline">Sign up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboardPage" style="display: none;" class="platform-container min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">Welcome to Yogull</h1>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-600">Hello, <span id="userEmail">User</span></span>
+                    <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Logout</button>
+                </div>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="feature-card p-6 rounded-lg shadow text-white">
+                    <h3 class="text-xl font-semibold mb-2">Community Discussions</h3>
+                    <p class="text-gray-100 mb-4">Join conversations and connect with others</p>
+                    <button class="bg-white text-purple-600 px-4 py-2 rounded-md hover:bg-gray-100">Explore</button>
+                </div>
+                
+                <div class="business-card p-6 rounded-lg shadow text-white">
+                    <h3 class="text-xl font-semibold mb-2">Business Directory</h3>
+                    <p class="text-gray-100 mb-4">Discover local businesses and services</p>
+                    <button class="bg-white text-pink-600 px-4 py-2 rounded-md hover:bg-gray-100">Browse</button>
+                </div>
+                
+                <div class="community-card p-6 rounded-lg shadow text-white">
+                    <h3 class="text-xl font-semibold mb-2">Profile & Chat</h3>
+                    <p class="text-gray-100 mb-4">Manage your profile and chat with friends</p>
+                    <button class="bg-white text-blue-600 px-4 py-2 rounded-md hover:bg-gray-100">View Profile</button>
+                </div>
+            </div>
+            
+            <div class="mt-8 bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Platform Features</h3>
+                <ul class="space-y-2 text-gray-600">
+                    <li>✅ Social Media Community Platform</li>
+                    <li>✅ Business Directory & Local Networking</li>
+                    <li>✅ Real-time Chat & Messaging</li>
+                    <li>✅ Profile Walls & Media Sharing</li>
+                    <li>✅ AI Assistant Integration</li>
+                    <li>✅ Revenue Generation System</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>

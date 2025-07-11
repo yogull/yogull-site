@@ -169,7 +169,24 @@
         // Navigate to different sections
         window.navigateTo = (section) => {
             console.log('Navigating to:', section);
-            alert(`Navigating to ${section} - Full platform features coming soon!`);
+            
+            // Show coming soon message but with better UX
+            const message = document.createElement('div');
+            message.className = 'fixed top-4 right-4 bg-blue-500 text-white p-4 rounded-lg shadow-lg z-50';
+            message.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>${section} section coming soon!</span>
+                </div>
+            `;
+            document.body.appendChild(message);
+            
+            // Remove message after 3 seconds
+            setTimeout(() => {
+                document.body.removeChild(message);
+            }, 3000);
         };
     </script>
 </head>

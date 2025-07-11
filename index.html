@@ -104,16 +104,46 @@
                 showDashboard(result.user);
             } catch (error) {
                 console.error('Email sign up error:', error);
-                alert('Sign up failed. Please try again.');
+                if (error.code === 'auth/weak-password') {
+                    alert('Password must be at least 6 characters long.');
+                } else if (error.code === 'auth/email-already-in-use') {
+                    alert('Email already in use. Try signing in instead.');
+                } else if (error.code === 'auth/invalid-email') {
+                    alert('Please enter a valid email address.');
+                } else {
+                    alert('Sign up failed: ' + error.message);
+                }
             }
         };
         
         // Show dashboard after successful login
-        function showDashboard(user) {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-            document.getElementById('userName').textContent = user.displayName || user.email;
-            document.getElementById('userEmail').textContent = user.email;
+        async function showDashboard(user) {
+            try {
+                // Sync user with backend database
+                await fetch(`/api/users/firebase/${user.uid}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: user.email,
+                        name: user.displayName || user.email?.split('@')[0] || 'New User',
+                        displayName: user.displayName
+                    })
+                });
+                
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('userName').textContent = user.displayName || user.email;
+                document.getElementById('userEmail').textContent = user.email;
+            } catch (error) {
+                console.error('User sync error:', error);
+                // Still show dashboard even if sync fails
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('userName').textContent = user.displayName || user.email;
+                document.getElementById('userEmail').textContent = user.email;
+            }
         }
         
         // Logout function

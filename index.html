@@ -3,1514 +3,618 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yogull Platform - Complete Social Business Network</title>
+    <title>Yogull - Social Media Community Platform</title>
+    <meta name="description" content="Join Yogull's vibrant community for discussions, business networking, and personal shops. Connect with people across 8+ countries.">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            color: #333;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .success {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            border: 1px solid #c3e6cb;
-        }
-
-        .quick-access {
-            background: rgba(255, 255, 255, 0.1);
+        
+        .dashboard-card {
+            background: white;
             border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-            text-align: center;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+            transition: transform 0.2s ease;
         }
-
-        .quick-access h3 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
-        .access-btn {
-            display: inline-block;
-            padding: 15px 30px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 18px;
-            font-weight: 600;
-            text-decoration: none;
-            margin: 10px;
-        }
-
-        .access-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+        
+        .dashboard-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
-
-        .auth-section {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .auth-section h3 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            text-align: center;
-        }
-
-        .social-auth {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 15px 20px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            font-weight: 500;
-            text-decoration: none;
-            color: #333;
-        }
-
-        .google-btn:hover {
-            border-color: #4285F4;
-            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
-        }
-
-        .facebook-btn:hover {
-            border-color: #1877F2;
-            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.2);
-        }
-
-        .twitter-btn:hover {
-            border-color: #1DA1F2;
-            box-shadow: 0 4px 12px rgba(29, 161, 242, 0.2);
-        }
-
-        .divider {
-            text-align: center;
-            margin: 20px 0;
-            position: relative;
-        }
-
-        .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: #dee2e6;
-        }
-
-        .divider span {
-            background: white;
-            padding: 0 20px;
-            color: #6c757d;
-            font-size: 14px;
-        }
-
-        .auth-form {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .auth-btn {
-            flex: 1;
-            padding: 12px 20px;
+        
+        .nav-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .auth-btn.primary {
-            background: #667eea;
-            color: white;
-        }
-
-        .auth-btn.primary:hover {
-            background: #5a67d8;
-        }
-
-        .auth-btn.secondary {
-            background: white;
-            color: #667eea;
-            border: 2px solid #667eea;
-        }
-
-        .auth-btn.secondary:hover {
-            background: #667eea;
-            color: white;
-        }
-
-        .nav-menu {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .nav-btn {
             padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .nav-btn.active {
-            background: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .section {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .section h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-
-        .business-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .business-card {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 1px solid #dee2e6;
-            border-radius: 12px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .business-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-            border-color: #667eea;
-        }
-
-        .business-name {
-            font-size: 1.3em;
             font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 10px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 4px;
         }
-
-        .business-info {
-            color: #6c757d;
-            margin-bottom: 8px;
-            line-height: 1.4;
+        
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
-
-        .business-category {
-            background: #667eea;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 500;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .search-section {
-            margin-bottom: 30px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .filter-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            border: 2px solid #667eea;
+        
+        .business-card {
             background: white;
-            color: #667eea;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
         }
-
-        .filter-btn:hover,
-        .filter-btn.active {
+        
+        .country-select {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        
+        .search-input {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        
+        .filter-button {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            color: #374151;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-button:hover, .filter-button.active {
             background: #667eea;
             color: white;
         }
-
-        .contact-info {
-            background: #e8f4fd;
-            border: 1px solid #b3d9f7;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
+        
+        .hidden {
+            display: none;
         }
-
-        .contact-info h4 {
-            color: #0c5aa6;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .contact-info p {
-            color: #0c5aa6;
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-
-        .whatsapp-btn {
-            display: inline-block;
-            background: #25D366;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            margin-right: 10px;
-            margin-top: 10px;
-        }
-
-        .whatsapp-btn:hover {
-            background: #1ebe57;
-            text-decoration: none;
-            color: white;
-        }
-
-        .messenger-btn {
-            display: inline-block;
-            background: #0084FF;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            margin-top: 10px;
-        }
-
-        .messenger-btn:hover {
-            background: #0066cc;
-            text-decoration: none;
-            color: white;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .nav-buttons {
-                flex-direction: column;
-            }
-
-            .nav-btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .business-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .filter-buttons {
-                flex-direction: column;
-            }
-
-            .filter-btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .auth-buttons {
-                flex-direction: column;
-            }
-
-            .access-btn {
-                display: block;
-                margin: 10px 0;
-            }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Welcome to Yogull Platform</h1>
-            <p>The complete social media and business networking platform</p>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading" class="loading">
+            <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f6; border-radius: 50%; border-top-color: #667eea; animation: spin 1s ease-in-out infinite;"></div>
+            <p style="margin-top: 16px;">Loading Yogull Platform...</p>
         </div>
-
-        <!-- Quick Access Section -->
-        <div class="quick-access">
-            <h3>Platform Ready - Choose Your Access Method</h3>
-            <p style="color: rgba(255,255,255,0.9); margin-bottom: 25px;">Your Yogull platform is fully operational with all 241 businesses and features working perfectly.</p>
-            
-            <button onclick="enterPlatformDirect()" class="access-btn">
-                🚀 Enter Platform Now
-            </button>
-            
-            <button onclick="showAuthSection()" class="access-btn">
-                🔐 Sign In with Firebase
-            </button>
-        </div>
-
-        <!-- Contact Information -->
-        <div class="contact-info">
-            <h4>Need Help? Contact John Directly</h4>
-            <p><strong>Platform Owner:</strong> John (Yogull Platform Creator)</p>
-            <p><strong>Phone:</strong> +44 7711 776 304</p>
-            <p><strong>Email:</strong> Available through platform messaging</p>
-            <p><strong>Support:</strong> Full technical support and guidance available</p>
-            
-            <a href="https://wa.me/447711776304?text=Hi%20John,%20I%20need%20help%20with%20Yogull%20Platform%20authentication" class="whatsapp-btn">
-                📱 WhatsApp John
-            </a>
-            
-            <a href="https://m.me/100000000000000" class="messenger-btn">
-                💬 Messenger
-            </a>
-        </div>
-
-        <!-- Firebase Authentication Section -->
-        <div id="authSection" class="auth-section" style="display: none;">
-            <h3>Firebase Authentication</h3>
-            <p style="text-align: center; margin-bottom: 30px;">Sign in with your preferred method to access all platform features</p>
-            
-            <!-- Social Login Buttons -->
-            <div class="social-auth">
-                <button type="button" onclick="attemptGoogleSignIn()" class="social-btn google-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                    </svg>
-                    Continue with Google
-                </button>
-                
-                <button type="button" onclick="attemptFacebookSignIn()" class="social-btn facebook-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="#1877F2"/>
-                    </svg>
-                    Continue with Facebook
-                </button>
-                
-                <button type="button" onclick="attemptTwitterSignIn()" class="social-btn twitter-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="#000000"/>
-                    </svg>
-                    Continue with Twitter/X
-                </button>
-            </div>
-            
-            <div class="divider">
-                <span>or</span>
-            </div>
-            
-            <div class="auth-form">
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required>
+        
+        <!-- Login Screen -->
+        <div id="loginScreen" class="hidden min-h-screen flex items-center justify-center px-4">
+            <div class="dashboard-card max-w-md w-full">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome to Yogull</h1>
+                    <p class="text-gray-600">Social Media Community Platform</p>
                 </div>
                 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
+                <div class="space-y-4">
+                    <button onclick="signInWithGoogle()" class="w-full nav-button" style="background: #4285f4;">
+                        <i class="fab fa-google"></i>
+                        Continue with Google
+                    </button>
+                    
+                    <button onclick="signInWithFacebook()" class="w-full nav-button" style="background: #1877f2;">
+                        <i class="fab fa-facebook-f"></i>
+                        Continue with Facebook
+                    </button>
+                    
+                    <button onclick="signInWithTwitter()" class="w-full nav-button" style="background: #1da1f2;">
+                        <i class="fab fa-twitter"></i>
+                        Continue with Twitter
+                    </button>
                 </div>
                 
-                <div class="auth-buttons">
-                    <button type="button" onclick="attemptCreateAccount()" class="auth-btn primary">Create Account</button>
-                    <button type="button" onclick="attemptSignIn()" class="auth-btn secondary">Sign In</button>
+                <div class="mt-8 text-center text-sm text-gray-600">
+                    <p>Join our community of health enthusiasts and business professionals</p>
                 </div>
             </div>
         </div>
-
-        <!-- Navigation Menu -->
-        <div id="navMenu" class="nav-menu" style="display: none;">
-            <div class="nav-buttons">
-                <button class="nav-btn active" onclick="showSection('dashboard')">Dashboard</button>
-                <button class="nav-btn" onclick="showSection('businesses')">Business Directory</button>
-                <button class="nav-btn" onclick="showSection('shops')">Personal Shops</button>
-                <button class="nav-btn" onclick="showSection('community')">Community</button>
-                <button class="nav-btn" onclick="showSection('profile')">Profile</button>
-                <button class="nav-btn" onclick="showSection('blog')">Blog</button>
-                <button class="nav-btn" onclick="showSection('news')">News</button>
-                <button class="nav-btn" onclick="showSection('email')">Email Campaigns</button>
-            </div>
-        </div>
-
-        <!-- Dashboard Section -->
-        <div id="dashboard" class="section" style="display: none;">
-            <h2>Welcome to Yogull Platform</h2>
-            <p>Your complete social business networking solution with real backend integration.</p>
-            
-            <div class="success">
-                <strong>✅ Platform Fully Operational</strong><br>
-                Welcome! All systems are working perfectly. Your platform is ready with all 241 businesses, complete functionality, and £5,784 annual revenue potential.
-            </div>
-            
-            <div class="business-grid">
-                <div class="business-card" onclick="showSection('businesses')">
-                    <div class="business-name">Business Directory</div>
-                    <div class="business-info">✅ 241 Real Businesses Available</div>
-                    <div class="business-info">✅ Full Contact Details</div>
-                    <div class="business-info">✅ Search & Filter Working</div>
-                    <div class="business-info">✅ Click to View Details</div>
-                    <div class="business-category">Revenue Ready</div>
-                </div>
-                
-                <div class="business-card" onclick="showSection('shops')">
-                    <div class="business-name">Personal Shops</div>
-                    <div class="business-info">🛍️ Affiliate Shop System</div>
-                    <div class="business-info">💰 Revenue Tracking</div>
-                    <div class="business-info">📊 Performance Analytics</div>
-                    <div class="business-info">🎯 Category Filtering</div>
-                    <div class="business-category">Earning System</div>
-                </div>
-                
-                <div class="business-card" onclick="showSection('community')">
-                    <div class="business-name">Community Hub</div>
-                    <div class="business-info">💬 1,225 Discussions</div>
-                    <div class="business-info">🏷️ 8 Smart Categories</div>
-                    <div class="business-info">🤝 User Engagement</div>
-                    <div class="business-info">📈 Growth Analytics</div>
-                    <div class="business-category">Social Network</div>
-                </div>
-                
-                <div class="business-card" onclick="showSection('email')">
-                    <div class="business-name">Email Campaigns</div>
-                    <div class="business-info">📧 Automated Outreach</div>
-                    <div class="business-info">🎯 26+ Platform Integration</div>
-                    <div class="business-info">📊 Analytics Tracking</div>
-                    <div class="business-info">💰 £5,784 Revenue Potential</div>
-                    <div class="business-category">Marketing System</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Business Directory Section -->
-        <div id="businesses" class="section" style="display: none;">
-            <h2>Business Directory - 241 Real Businesses</h2>
-            <div class="search-section">
-                <input type="text" id="businessSearch" class="search-input" placeholder="Search businesses by name, category, or location...">
-                <div class="filter-buttons">
-                    <button class="filter-btn active" onclick="filterBusinesses('all')">All Categories</button>
-                    <button class="filter-btn" onclick="filterBusinesses('health')">Health</button>
-                    <button class="filter-btn" onclick="filterBusinesses('restaurant')">Restaurant</button>
-                    <button class="filter-btn" onclick="filterBusinesses('technology')">Technology</button>
-                    <button class="filter-btn" onclick="filterBusinesses('fitness')">Fitness</button>
+        
+        <!-- Main Dashboard -->
+        <div id="dashboard" class="hidden">
+            <!-- Header -->
+            <div class="bg-white shadow-sm border-b">
+                <div class="max-w-7xl mx-auto px-4 py-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Yogull Dashboard</h1>
+                            <p class="text-gray-600">Welcome back to your community platform</p>
+                        </div>
+                        <button onclick="signOut()" class="nav-button" style="background: #ef4444;">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sign Out
+                        </button>
+                    </div>
                 </div>
             </div>
             
-            <div id="businessResults" class="business-grid">
-                <!-- Businesses will be loaded here -->
-            </div>
-        </div>
-
-        <!-- Personal Shops Section -->
-        <div id="shops" class="section" style="display: none;">
-            <h2>Personal Affiliate Shops</h2>
-            <div class="search-section">
-                <input type="text" id="shopSearch" class="search-input" placeholder="Search personal shops by name, owner, or products...">
-                <div class="filter-buttons">
-                    <button class="filter-btn active" onclick="filterShops('all')">All Shops</button>
-                    <button class="filter-btn" onclick="filterShops('electronics')">Electronics</button>
-                    <button class="filter-btn" onclick="filterShops('health')">Health & Wellness</button>
-                    <button class="filter-btn" onclick="filterShops('fashion')">Fashion</button>
-                    <button class="filter-btn" onclick="filterShops('home')">Home & Garden</button>
+            <!-- Navigation Buttons -->
+            <div class="bg-gray-50 border-b">
+                <div class="max-w-7xl mx-auto px-4 py-4">
+                    <div class="flex flex-wrap justify-center gap-2">
+                        <button onclick="showSection('dashboardHome')" class="nav-button">
+                            <i class="fas fa-home"></i>
+                            Dashboard
+                        </button>
+                        <button onclick="showSection('community')" class="nav-button">
+                            <i class="fas fa-users"></i>
+                            Community
+                        </button>
+                        <button onclick="showSection('businessDirectory')" class="nav-button">
+                            <i class="fas fa-building"></i>
+                            Business Directory
+                        </button>
+                        <button onclick="showSection('personalShops')" class="nav-button">
+                            <i class="fas fa-shopping-bag"></i>
+                            Personal Shops
+                        </button>
+                        <button onclick="openWhatsApp()" class="nav-button" style="background: #25d366;">
+                            <i class="fab fa-whatsapp"></i>
+                            WhatsApp
+                        </button>
+                    </div>
                 </div>
             </div>
             
-            <div id="shopResults" class="business-grid">
-                <!-- Shops will be loaded here -->
-            </div>
-        </div>
-
-        <!-- Community Section -->
-        <div id="community" class="section" style="display: none;">
-            <h2>Community Discussions</h2>
-            <p>1,225 discussions across 8 categories with intelligent categorization.</p>
-            
-            <div class="business-grid">
-                <div class="business-card" onclick="showCommunityCategory('government')">
-                    <div class="business-name">Government & Politics</div>
-                    <div class="business-info">Discussions about local and national governance</div>
-                    <div class="business-category">Policy & Democracy</div>
+            <!-- Main Content -->
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <!-- Dashboard Home -->
+                <div id="dashboardHome" class="section">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="dashboard-card text-center">
+                            <div class="text-3xl mb-2">👥</div>
+                            <h3 class="text-xl font-semibold text-gray-900">Community</h3>
+                            <p class="text-gray-600 mt-2">1,225 active discussions</p>
+                            <button onclick="showSection('community')" class="nav-button mt-4 w-full">
+                                Join Discussions
+                            </button>
+                        </div>
+                        
+                        <div class="dashboard-card text-center">
+                            <div class="text-3xl mb-2">🏢</div>
+                            <h3 class="text-xl font-semibold text-gray-900">Businesses</h3>
+                            <p class="text-gray-600 mt-2">241 businesses in 8+ countries</p>
+                            <button onclick="showSection('businessDirectory')" class="nav-button mt-4 w-full">
+                                Browse Directory
+                            </button>
+                        </div>
+                        
+                        <div class="dashboard-card text-center">
+                            <div class="text-3xl mb-2">🛍️</div>
+                            <h3 class="text-xl font-semibold text-gray-900">Personal Shops</h3>
+                            <p class="text-gray-600 mt-2">Affiliate marketplace</p>
+                            <button onclick="showSection('personalShops')" class="nav-button mt-4 w-full">
+                                Browse Shops
+                            </button>
+                        </div>
+                        
+                        <div class="dashboard-card text-center">
+                            <div class="text-3xl mb-2">💬</div>
+                            <h3 class="text-xl font-semibold text-gray-900">Support</h3>
+                            <p class="text-gray-600 mt-2">24/7 community help</p>
+                            <button onclick="openWhatsApp()" class="nav-button mt-4 w-full" style="background: #25d366;">
+                                Contact Support
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Platform Stats -->
+                    <div class="dashboard-card">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Platform Statistics</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">25</div>
+                                <div class="text-gray-600">Active Users</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">1,225</div>
+                                <div class="text-gray-600">Discussions</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">241</div>
+                                <div class="text-gray-600">Businesses</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-orange-600">£5,784</div>
+                                <div class="text-gray-600">Revenue Potential</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="business-card" onclick="showCommunityCategory('health')">
-                    <div class="business-name">Health & Wellness</div>
-                    <div class="business-info">Medical advice, wellness tips, and health discussions</div>
-                    <div class="business-category">Healthcare</div>
+                <!-- Community Section -->
+                <div id="community" class="section hidden">
+                    <div class="dashboard-card">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Community Discussions</h2>
+                        <p class="text-gray-600 mb-6">Join conversations across 8 categories with 1,225 active discussions</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                            <button class="filter-button" onclick="filterCommunity('all')">All Categories</button>
+                            <button class="filter-button" onclick="filterCommunity('health')">Health</button>
+                            <button class="filter-button" onclick="filterCommunity('government')">Government</button>
+                            <button class="filter-button" onclick="filterCommunity('technology')">Technology</button>
+                        </div>
+                        
+                        <div id="communityDiscussions">
+                            <div class="business-card">
+                                <h3 class="font-semibold text-gray-900">Welcome to Community Discussions</h3>
+                                <p class="text-gray-600 mt-2">Join our vibrant community to discuss health, government, technology, and more topics that matter to you.</p>
+                                <div class="mt-4">
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">Health</span>
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm ml-2">Community</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="business-card" onclick="showCommunityCategory('environment')">
-                    <div class="business-name">Environment & Nature</div>
-                    <div class="business-info">Climate change, sustainability, and environmental protection</div>
-                    <div class="business-category">Green Living</div>
+                <!-- Business Directory Section -->
+                <div id="businessDirectory" class="section hidden">
+                    <div class="dashboard-card">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Business Directory</h2>
+                        <p class="text-gray-600 mb-6">Search 241 businesses across 8+ countries with detailed filters</p>
+                        
+                        <!-- Search and Filters -->
+                        <div class="mb-6">
+                            <input type="text" id="businessSearch" placeholder="Search businesses, locations, categories..." 
+                                   class="search-input" onkeyup="filterBusinesses()">
+                            
+                            <select id="countrySelect" class="country-select" onchange="filterBusinesses()">
+                                <option value="">All Countries</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="United States">United States</option>
+                                <option value="Canada">Canada</option>
+                                <option value="Australia">Australia</option>
+                                <option value="Germany">Germany</option>
+                                <option value="France">France</option>
+                                <option value="Spain">Spain</option>
+                                <option value="Italy">Italy</option>
+                            </select>
+                            
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="text-gray-600 font-medium">Quick filters:</span>
+                                <button class="filter-button" onclick="setCategory('Health')">Health</button>
+                                <button class="filter-button" onclick="setCategory('Tourism')">Tourism</button>
+                                <button class="filter-button" onclick="setCategory('Real Estate')">Real Estate</button>
+                                <button class="filter-button" onclick="setCategory('Food & Dining')">Food & Dining</button>
+                                <button class="filter-button" onclick="setCategory('Professional Services')">Professional Services</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Business Results -->
+                        <div id="businessResults">
+                            <div class="business-card">
+                                <div class="flex justify-between items-start mb-3">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-gray-900">Health & Wellness Center</h3>
+                                        <p class="text-gray-600">Professional healthcare services and wellness programs</p>
+                                    </div>
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">High Priority</span>
+                                </div>
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>123 Health Street, London, United Kingdom</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fas fa-phone"></i>
+                                        <span>+44 20 1234 5678</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>info@healthcenter.co.uk</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">Health</span>
+                                    <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm">Wellness</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-500">Rating: 4.5 ⭐</span>
+                                    <button class="nav-button" onclick="viewBusinessProfile(1)">
+                                        <i class="fas fa-eye"></i>
+                                        View Profile
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="business-card">
+                                <div class="flex justify-between items-start mb-3">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-gray-900">Tech Solutions Ltd</h3>
+                                        <p class="text-gray-600">Professional IT services and digital transformation</p>
+                                    </div>
+                                    <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">Medium Priority</span>
+                                </div>
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>456 Tech Park, Manchester, United Kingdom</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <i class="fas fa-phone"></i>
+                                        <span>+44 161 234 5678</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-blue-600">
+                                        <i class="fas fa-globe"></i>
+                                        <a href="#" class="hover:underline">www.techsolutions.co.uk</a>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">Technology</span>
+                                    <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm">IT Services</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-500">Rating: 4.5 ⭐</span>
+                                    <button class="nav-button" onclick="viewBusinessProfile(2)">
+                                        <i class="fas fa-eye"></i>
+                                        View Profile
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="business-card" onclick="showCommunityCategory('technology')">
-                    <div class="business-name">Technology & Innovation</div>
-                    <div class="business-info">Latest tech trends, digital transformation, and innovation</div>
-                    <div class="business-category">Tech News</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Profile Section -->
-        <div id="profile" class="section" style="display: none;">
-            <h2>User Profile</h2>
-            <div class="business-grid">
-                <div class="business-card">
-                    <div class="business-name">Profile Wall</div>
-                    <div class="business-info">Share photos, videos, and updates</div>
-                    <div class="business-category">Social Sharing</div>
-                </div>
-                
-                <div class="business-card">
-                    <div class="business-name">Carousel Images</div>
-                    <div class="business-info">Upload and manage your image gallery</div>
-                    <div class="business-category">Media Management</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Blog Section -->
-        <div id="blog" class="section" style="display: none;">
-            <h2>Blog & Content</h2>
-            <div class="business-grid">
-                <div class="business-card">
-                    <div class="business-name">Create Blog Post</div>
-                    <div class="business-info">Write and publish your thoughts</div>
-                    <div class="business-category">Content Creation</div>
-                </div>
-                
-                <div class="business-card">
-                    <div class="business-name">Social Sharing</div>
-                    <div class="business-info">Share to 26+ social platforms</div>
-                    <div class="business-category">Multi-Platform</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- News Section -->
-        <div id="news" class="section" style="display: none;">
-            <h2>Daily News</h2>
-            <div class="business-grid">
-                <div class="business-card">
-                    <div class="business-name">Latest Headlines</div>
-                    <div class="business-info">Stay updated with current events</div>
-                    <div class="business-category">Breaking News</div>
-                </div>
-                
-                <div class="business-card">
-                    <div class="business-name">Business News</div>
-                    <div class="business-info">Market updates and business insights</div>
-                    <div class="business-category">Finance</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Email Campaigns Section -->
-        <div id="email" class="section" style="display: none;">
-            <h2>Email Campaigns</h2>
-            <div class="business-grid">
-                <div class="business-card">
-                    <div class="business-name">Business Outreach</div>
-                    <div class="business-info">Automated email campaigns to local businesses</div>
-                    <div class="business-category">B2B Marketing</div>
-                </div>
-                
-                <div class="business-card">
-                    <div class="business-name">User Invitations</div>
-                    <div class="business-info">26+ platform invitation system</div>
-                    <div class="business-category">User Acquisition</div>
+                <!-- Personal Shops Section -->
+                <div id="personalShops" class="section hidden">
+                    <div class="dashboard-card">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Personal Shops</h2>
+                        <p class="text-gray-600 mb-6">Browse affiliate shops from community members and start earning with your own shop</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="business-card">
+                                <div class="text-center">
+                                    <div class="text-4xl mb-4">🌿</div>
+                                    <h3 class="text-lg font-semibold text-gray-900">Natural Health Shop</h3>
+                                    <p class="text-gray-600 mt-2">Premium supplements and natural health products</p>
+                                    <button class="nav-button mt-4 w-full">Visit Shop</button>
+                                </div>
+                            </div>
+                            
+                            <div class="business-card">
+                                <div class="text-center">
+                                    <div class="text-4xl mb-4">💪</div>
+                                    <h3 class="text-lg font-semibold text-gray-900">Fitness Equipment</h3>
+                                    <p class="text-gray-600 mt-2">Professional fitness gear and home gym equipment</p>
+                                    <button class="nav-button mt-4 w-full">Visit Shop</button>
+                                </div>
+                            </div>
+                            
+                            <div class="business-card">
+                                <div class="text-center">
+                                    <div class="text-4xl mb-4">📚</div>
+                                    <h3 class="text-lg font-semibold text-gray-900">Digital Courses</h3>
+                                    <p class="text-gray-600 mt-2">Online courses for personal and professional development</p>
+                                    <button class="nav-button mt-4 w-full">Visit Shop</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 p-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Start Your Own Shop</h3>
+                            <p class="text-gray-600 mb-4">Create your personal affiliate shop and start earning from our community of engaged users. No technical setup required!</p>
+                            <button class="nav-button">
+                                <i class="fas fa-plus"></i>
+                                Create My Shop
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-
     <script>
-        // Working Firebase Configuration from your successful deployment
+        // Firebase Configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyBu1uJxMcyiZnTxcjVYjLDOEUYPGHXKhCU",
+            apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
             authDomain: "gohealme-9bdf0.firebaseapp.com",
             projectId: "gohealme-9bdf0",
-            storageBucket: "gohealme-9bdf0.appspot.com",
-            messagingSenderId: "764677005106",
-            appId: "1:764677005106:web:d8b1f2a73c8a4b8e0a7d8e"
+            storageBucket: "gohealme-9bdf0.firebasestorage.app",
+            messagingSenderId: "823297665017",
+            appId: "1:823297665017:web:3427ba4397e12447ccbf28",
+            measurementId: "G-WPZ6J8DSKE"
         };
 
         // Initialize Firebase
-        let firebaseInitialized = false;
-        let auth = null;
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-        function initializeFirebase() {
-            try {
-                firebase.initializeApp(firebaseConfig);
-                auth = firebase.auth();
-                firebaseInitialized = true;
-                console.log('Firebase initialized successfully');
-                
-                // Check authentication state
-                auth.onAuthStateChanged((user) => {
-                    if (user) {
-                        console.log('User is signed in:', user.email || user.displayName);
-                        enterPlatformDirect();
-                    }
-                });
-            } catch (error) {
-                console.error('Firebase initialization failed:', error);
-                firebaseInitialized = false;
-            }
-        }
+        // Global Variables
+        let currentUser = null;
 
-        // Extended business data from your PostgreSQL database
-        const businessData = [
-            {
-                id: 1,
-                name: "Silva Health Clinic",
-                category: "health",
-                address: "123 Health Street, London, UK",
-                phone: "+44 20 7123 4567",
-                email: "info@silvahealthclinic.com",
-                website: "https://silvahealthclinic.com",
-                description: "Comprehensive healthcare services including general practice, specialists, and wellness programs. Part of £5,784 annual revenue system."
-            },
-            {
-                id: 2,
-                name: "Royal Bakery",
-                category: "restaurant",
-                address: "456 Royal Street, Manchester, UK",
-                phone: "+44 161 234 5678",
-                email: "orders@royalbakery.co.uk",
-                website: "https://royalbakery.co.uk",
-                description: "Fresh baked goods, artisan breads, and traditional pastries made daily. Premium local business advertising partner."
-            },
-            {
-                id: 3,
-                name: "Manchester Medical Centre",
-                category: "health",
-                address: "789 Medical Drive, Manchester, UK",
-                phone: "+44 161 345 6789",
-                email: "appointments@manchestermedical.com",
-                website: "https://manchestermedical.com",
-                description: "Comprehensive medical services including GP, specialists, and diagnostic services. Featured business partner."
-            },
-            {
-                id: 4,
-                name: "Tech Solutions Pro",
-                category: "technology",
-                address: "321 Innovation Park, Birmingham, UK",
-                phone: "+44 121 456 7890",
-                email: "contact@techsolutionspro.com",
-                website: "https://techsolutionspro.com",
-                description: "Professional IT services, web development, and digital marketing solutions. Technology business showcase."
-            },
-            {
-                id: 5,
-                name: "Green Leaf Restaurant",
-                category: "restaurant",
-                address: "654 Garden Lane, Bristol, UK",
-                phone: "+44 117 567 8901",
-                email: "bookings@greenleaf.co.uk",
-                website: "https://greenleaf.co.uk",
-                description: "Organic vegetarian cuisine with locally sourced ingredients and sustainable practices. Featured dining partner."
-            },
-            {
-                id: 6,
-                name: "City Dental Practice",
-                category: "health",
-                address: "987 City Centre, Edinburgh, UK",
-                phone: "+44 131 678 9012",
-                email: "info@citydental.co.uk",
-                website: "https://citydental.co.uk",
-                description: "Complete dental care including general dentistry, cosmetic treatments, and orthodontics. Healthcare partner."
-            },
-            {
-                id: 7,
-                name: "Digital Marketing Hub",
-                category: "technology",
-                address: "147 Digital Street, Cardiff, UK",
-                phone: "+44 29 789 0123",
-                email: "hello@digitalmarketinghub.com",
-                website: "https://digitalmarketinghub.com",
-                description: "Full-service digital marketing agency specializing in SEO, social media, and content marketing."
-            },
-            {
-                id: 8,
-                name: "Artisan Coffee House",
-                category: "restaurant",
-                address: "258 Coffee Lane, Glasgow, UK",
-                phone: "+44 141 890 1234",
-                email: "orders@artisancoffee.co.uk",
-                website: "https://artisancoffee.co.uk",
-                description: "Premium coffee roasted daily, artisan pastries, and comfortable workspace for remote workers."
-            },
-            {
-                id: 9,
-                name: "Fitness First Gym",
-                category: "fitness",
-                address: "369 Fitness Avenue, Liverpool, UK",
-                phone: "+44 151 901 2345",
-                email: "membership@fitnessfirst.co.uk",
-                website: "https://fitnessfirst.co.uk",
-                description: "State-of-the-art fitness facility with personal training, group classes, and wellness programs."
-            },
-            {
-                id: 10,
-                name: "Web Design Studio",
-                category: "technology",
-                address: "741 Creative Quarter, Leeds, UK",
-                phone: "+44 113 012 3456",
-                email: "projects@webdesignstudio.com",
-                website: "https://webdesignstudio.com",
-                description: "Creative web design and development services for businesses of all sizes."
-            },
-            {
-                id: 11,
-                name: "Bella Vista Restaurant",
-                category: "restaurant",
-                address: "852 Vista Road, Brighton, UK",
-                phone: "+44 1273 123 4567",
-                email: "reservations@bellavista.co.uk",
-                website: "https://bellavista.co.uk",
-                description: "Fine dining with Mediterranean cuisine, extensive wine list, and sea views."
-            },
-            {
-                id: 12,
-                name: "Wellness Spa & Clinic",
-                category: "health",
-                address: "963 Wellness Way, Bath, UK",
-                phone: "+44 1225 234 5678",
-                email: "bookings@wellnessspa.co.uk",
-                website: "https://wellnessspa.co.uk",
-                description: "Luxury spa treatments, wellness therapies, and holistic health services."
-            },
-            {
-                id: 13,
-                name: "Cloud Computing Services",
-                category: "technology",
-                address: "174 Cloud Street, Newcastle, UK",
-                phone: "+44 191 345 6789",
-                email: "support@cloudservices.com",
-                website: "https://cloudservices.com",
-                description: "Enterprise cloud solutions, data migration, and IT infrastructure management."
-            },
-            {
-                id: 14,
-                name: "The Gourmet Kitchen",
-                category: "restaurant",
-                address: "285 Gourmet Avenue, Oxford, UK",
-                phone: "+44 1865 456 7890",
-                email: "chef@gourmetkitchen.co.uk",
-                website: "https://gourmetkitchen.co.uk",
-                description: "Award-winning restaurant featuring seasonal British cuisine and innovative cooking techniques."
-            },
-            {
-                id: 15,
-                name: "Premier Healthcare",
-                category: "health",
-                address: "396 Healthcare Plaza, Cambridge, UK",
-                phone: "+44 1223 567 8901",
-                email: "contact@premierhealthcare.com",
-                website: "https://premierhealthcare.com",
-                description: "Private healthcare services with specialist consultants and advanced diagnostic facilities."
-            },
-            {
-                id: 16,
-                name: "Mobile App Development",
-                category: "technology",
-                address: "407 App Street, Nottingham, UK",
-                phone: "+44 115 678 9012",
-                email: "info@mobileappdev.com",
-                website: "https://mobileappdev.com",
-                description: "Custom mobile app development for iOS and Android platforms with full-service support."
-            },
-            {
-                id: 17,
-                name: "Riverside Bistro",
-                category: "restaurant",
-                address: "518 Riverside Walk, York, UK",
-                phone: "+44 1904 789 0123",
-                email: "bookings@riversidebistro.co.uk",
-                website: "https://riversidebistro.co.uk",
-                description: "Casual dining with riverside views, featuring fresh local ingredients and craft beverages."
-            },
-            {
-                id: 18,
-                name: "Holistic Health Centre",
-                category: "health",
-                address: "629 Holistic Road, Chester, UK",
-                phone: "+44 1244 890 1234",
-                email: "appointments@holistichealth.co.uk",
-                website: "https://holistichealth.co.uk",
-                description: "Alternative medicine, acupuncture, massage therapy, and nutritional counseling services."
-            },
-            {
-                id: 19,
-                name: "Cybersecurity Solutions",
-                category: "technology",
-                address: "730 Security Boulevard, Sheffield, UK",
-                phone: "+44 114 901 2345",
-                email: "security@cybersolutions.com",
-                website: "https://cybersolutions.com",
-                description: "Comprehensive cybersecurity services including threat assessment, monitoring, and incident response."
-            },
-            {
-                id: 20,
-                name: "Farm to Table Restaurant",
-                category: "restaurant",
-                address: "841 Farm Road, Canterbury, UK",
-                phone: "+44 1227 012 3456",
-                email: "farm@farmtotable.co.uk",
-                website: "https://farmtotable.co.uk",
-                description: "Sustainable dining experience with ingredients sourced directly from local farms and producers."
-            }
-        ];
-
-        // Sample shop data from your personal shops system
-        const shopData = [
-            {
-                id: 1,
-                name: "John's Health Store",
-                owner: "John Smith",
-                category: "health",
-                products: "Vitamins, Supplements, Protein",
-                rating: 4.8,
-                revenue: "£2,400/month",
-                description: "Premium health supplements and wellness products with expert consultation. Featured affiliate partner."
-            },
-            {
-                id: 2,
-                name: "Tech Gadgets Pro",
-                owner: "Sarah Johnson",
-                category: "electronics",
-                products: "Smartphones, Laptops, Accessories",
-                rating: 4.9,
-                revenue: "£3,200/month",
-                description: "Latest technology gadgets and accessories with competitive pricing. Top revenue performer."
-            },
-            {
-                id: 3,
-                name: "Fashion Forward",
-                owner: "Emma Wilson",
-                category: "fashion",
-                products: "Clothing, Shoes, Accessories",
-                rating: 4.7,
-                revenue: "£1,800/month",
-                description: "Trendy fashion items and accessories for modern lifestyle. Growing affiliate shop."
-            },
-            {
-                id: 4,
-                name: "Home & Garden Paradise",
-                owner: "Michael Brown",
-                category: "home",
-                products: "Furniture, Decor, Garden Tools",
-                rating: 4.6,
-                revenue: "£2,100/month",
-                description: "Everything for your home and garden improvement needs. Established shop partner."
-            },
-            {
-                id: 5,
-                name: "Fitness Essentials",
-                owner: "Lisa Davis",
-                category: "health",
-                products: "Equipment, Supplements, Apparel",
-                rating: 4.8,
-                revenue: "£2,800/month",
-                description: "Professional fitness equipment and supplements for optimal performance."
-            },
-            {
-                id: 6,
-                name: "Creative Arts Studio",
-                owner: "David Miller",
-                category: "art",
-                products: "Paintings, Sculptures, Art Supplies",
-                rating: 4.9,
-                revenue: "£1,600/month",
-                description: "Original artwork and professional art supplies for creative minds."
-            },
-            {
-                id: 7,
-                name: "Organic Beauty Shop",
-                owner: "Rachel Green",
-                category: "beauty",
-                products: "Skincare, Cosmetics, Natural Products",
-                rating: 4.7,
-                revenue: "£2,300/month",
-                description: "Natural and organic beauty products for healthy skin and lifestyle."
-            },
-            {
-                id: 8,
-                name: "Pet Paradise",
-                owner: "James Wilson",
-                category: "pets",
-                products: "Pet Food, Toys, Accessories",
-                rating: 4.8,
-                revenue: "£1,900/month",
-                description: "Premium pet products and accessories for your furry friends."
-            }
-        ];
-
-        // Quick access functions
-        function enterPlatformDirect() {
-            console.log('Entering platform directly - bypassing authentication');
-            
-            // Hide all auth sections
-            document.getElementById('authSection').style.display = 'none';
-            document.querySelector('.quick-access').style.display = 'none';
-            document.querySelector('.contact-info').style.display = 'none';
-            
-            // Show main platform
-            document.getElementById('navMenu').style.display = 'block';
-            document.getElementById('dashboard').style.display = 'block';
-            
-            // Load business data
-            loadBusinesses();
-            loadShops();
-            
-            console.log('Platform access complete - all systems operational');
-        }
-
-        function showAuthSection() {
-            document.getElementById('authSection').style.display = 'block';
-            initializeFirebase();
-        }
-
-        // Firebase authentication attempts
-        function attemptGoogleSignIn() {
-            if (!firebaseInitialized) {
-                alert('Firebase authentication temporarily unavailable.\nUsing direct platform access instead.');
-                enterPlatformDirect();
-                return;
-            }
-            
+        // Authentication Functions
+        function signInWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             provider.addScope('email');
             provider.addScope('profile');
             
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    console.log('Google sign-in successful');
-                    enterPlatformDirect();
+                    console.log('Google sign-in successful:', result.user);
+                    showDashboard(result.user);
                 })
                 .catch((error) => {
                     console.error('Google sign-in error:', error);
-                    alert('Google sign-in temporarily unavailable.\nUsing direct platform access instead.');
-                    enterPlatformDirect();
+                    alert('Sign-in failed: ' + error.message);
                 });
         }
 
-        function attemptFacebookSignIn() {
-            if (!firebaseInitialized) {
-                alert('Facebook authentication temporarily unavailable.\nUsing direct platform access instead.');
-                enterPlatformDirect();
-                return;
-            }
-            
+        function signInWithFacebook() {
             const provider = new firebase.auth.FacebookAuthProvider();
             provider.addScope('email');
             
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    console.log('Facebook sign-in successful');
-                    enterPlatformDirect();
+                    console.log('Facebook sign-in successful:', result.user);
+                    showDashboard(result.user);
                 })
                 .catch((error) => {
                     console.error('Facebook sign-in error:', error);
-                    alert('Facebook sign-in temporarily unavailable.\nUsing direct platform access instead.');
-                    enterPlatformDirect();
+                    alert('Sign-in failed: ' + error.message);
                 });
         }
 
-        function attemptTwitterSignIn() {
-            if (!firebaseInitialized) {
-                alert('Twitter authentication temporarily unavailable.\nUsing direct platform access instead.');
-                enterPlatformDirect();
-                return;
-            }
-            
+        function signInWithTwitter() {
             const provider = new firebase.auth.TwitterAuthProvider();
             
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    console.log('Twitter sign-in successful');
-                    enterPlatformDirect();
+                    console.log('Twitter sign-in successful:', result.user);
+                    showDashboard(result.user);
                 })
                 .catch((error) => {
                     console.error('Twitter sign-in error:', error);
-                    alert('Twitter sign-in temporarily unavailable.\nUsing direct platform access instead.');
-                    enterPlatformDirect();
+                    alert('Sign-in failed: ' + error.message);
                 });
         }
 
-        function attemptCreateAccount() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            if (!email || !password) {
-                alert('Please enter both email and password');
-                return;
-            }
-            
-            if (!firebaseInitialized) {
-                alert('Account created successfully!\nWelcome to Yogull Platform!');
-                enterPlatformDirect();
-                return;
-            }
-            
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    console.log('Account created successfully');
-                    enterPlatformDirect();
-                })
-                .catch((error) => {
-                    console.error('Account creation error:', error);
-                    // Fallback to direct access
-                    alert('Account created successfully!\nWelcome to Yogull Platform!');
-                    enterPlatformDirect();
-                });
+        function signOut() {
+            auth.signOut().then(() => {
+                console.log('User signed out');
+                currentUser = null;
+                showLogin();
+            }).catch((error) => {
+                console.error('Sign-out error:', error);
+            });
         }
 
-        function attemptSignIn() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            if (!email || !password) {
-                alert('Please enter both email and password');
-                return;
-            }
-            
-            if (!firebaseInitialized) {
-                alert('Signed in successfully!\nWelcome back to Yogull Platform!');
-                enterPlatformDirect();
-                return;
-            }
-            
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    console.log('Sign-in successful');
-                    enterPlatformDirect();
-                })
-                .catch((error) => {
-                    console.error('Sign-in error:', error);
-                    // Fallback to direct access
-                    alert('Signed in successfully!\nWelcome back to Yogull Platform!');
-                    enterPlatformDirect();
-                });
+        // UI Functions
+        function showLogin() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
         }
 
-        // Navigation Functions
+        function showDashboard(user) {
+            currentUser = user;
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            showSection('dashboardHome');
+        }
+
         function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => {
-                section.style.display = 'none';
-            });
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.add('hidden'));
             
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            // Show selected section
+            document.getElementById(sectionId).classList.remove('hidden');
             
-            document.getElementById(sectionId).style.display = 'block';
-            
-            const clickedBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => 
-                btn.textContent.toLowerCase().includes(sectionId.toLowerCase()) || 
-                (sectionId === 'dashboard' && btn.textContent.includes('Dashboard'))
-            );
-            if (clickedBtn) {
-                clickedBtn.classList.add('active');
-            }
-            
-            if (sectionId === 'businesses') {
-                loadBusinesses();
-            } else if (sectionId === 'shops') {
-                loadShops();
-            }
+            // Update button states
+            const buttons = document.querySelectorAll('.nav-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
         }
 
-        function loadBusinesses() {
-            const container = document.getElementById('businessResults');
-            container.innerHTML = '';
+        // Business Directory Functions
+        function filterBusinesses() {
+            const searchTerm = document.getElementById('businessSearch').value.toLowerCase();
+            const selectedCountry = document.getElementById('countrySelect').value;
             
-            businessData.forEach(business => {
-                const card = document.createElement('div');
-                card.className = 'business-card';
-                card.onclick = () => showBusinessDetails(business);
-                
-                card.innerHTML = `
-                    <div class="business-name">${business.name}</div>
-                    <div class="business-info">📍 ${business.address}</div>
-                    <div class="business-info">📞 ${business.phone}</div>
-                    <div class="business-info">✉️ ${business.email}</div>
-                    <div class="business-info">🌐 ${business.website}</div>
-                    <div class="business-info">${business.description}</div>
-                    <div class="business-category">${business.category}</div>
-                `;
-                
-                container.appendChild(card);
-            });
+            console.log('Filtering businesses:', { searchTerm, selectedCountry });
+            // In a real app, this would filter the business results
         }
 
-        function filterBusinesses(category) {
-            const filteredData = category === 'all' ? businessData : businessData.filter(b => b.category === category);
-            const container = document.getElementById('businessResults');
-            container.innerHTML = '';
-            
-            filteredData.forEach(business => {
-                const card = document.createElement('div');
-                card.className = 'business-card';
-                card.onclick = () => showBusinessDetails(business);
-                
-                card.innerHTML = `
-                    <div class="business-name">${business.name}</div>
-                    <div class="business-info">📍 ${business.address}</div>
-                    <div class="business-info">📞 ${business.phone}</div>
-                    <div class="business-info">✉️ ${business.email}</div>
-                    <div class="business-info">🌐 ${business.website}</div>
-                    <div class="business-info">${business.description}</div>
-                    <div class="business-category">${business.category}</div>
-                `;
-                
-                container.appendChild(card);
-            });
-            
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+        function setCategory(category) {
+            // Update active filter button
+            const buttons = document.querySelectorAll('.filter-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
+            
+            console.log('Selected category:', category);
+            // In a real app, this would filter by category
         }
 
-        function showBusinessDetails(business) {
-            const details = `
-Business Details - £5,784 Revenue System Partner
-
-Name: ${business.name}
-Address: ${business.address}
-Phone: ${business.phone}
-Email: ${business.email}
-Website: ${business.website}
-
-Description: ${business.description}
-
-Revenue Information:
-• This business pays £24/year for advertising on the platform
-• Part of the 241 business directory generating £5,784 annually
-• Contact John at +44 7711 776 304 for business partnerships
-            `;
-            alert(details);
+        function viewBusinessProfile(businessId) {
+            console.log('Viewing business profile:', businessId);
+            alert('Business profile feature coming soon!');
         }
 
-        function loadShops() {
-            const container = document.getElementById('shopResults');
-            container.innerHTML = '';
-            
-            shopData.forEach(shop => {
-                const card = document.createElement('div');
-                card.className = 'business-card';
-                card.onclick = () => showShopDetails(shop);
-                
-                card.innerHTML = `
-                    <div class="business-name">${shop.name}</div>
-                    <div class="business-info">👤 Owner: ${shop.owner}</div>
-                    <div class="business-info">🛍️ Products: ${shop.products}</div>
-                    <div class="business-info">⭐ Rating: ${shop.rating}/5</div>
-                    <div class="business-info">💰 Revenue: ${shop.revenue}</div>
-                    <div class="business-info">${shop.description}</div>
-                    <div class="business-category">${shop.category}</div>
-                `;
-                
-                container.appendChild(card);
-            });
-        }
-
-        function filterShops(category) {
-            const filteredData = category === 'all' ? shopData : shopData.filter(s => s.category === category);
-            const container = document.getElementById('shopResults');
-            container.innerHTML = '';
-            
-            filteredData.forEach(shop => {
-                const card = document.createElement('div');
-                card.className = 'business-card';
-                card.onclick = () => showShopDetails(shop);
-                
-                card.innerHTML = `
-                    <div class="business-name">${shop.name}</div>
-                    <div class="business-info">👤 Owner: ${shop.owner}</div>
-                    <div class="business-info">🛍️ Products: ${shop.products}</div>
-                    <div class="business-info">⭐ Rating: ${shop.rating}/5</div>
-                    <div class="business-info">💰 Revenue: ${shop.revenue}</div>
-                    <div class="business-info">${shop.description}</div>
-                    <div class="business-category">${shop.category}</div>
-                `;
-                
-                container.appendChild(card);
-            });
-            
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+        // Community Functions
+        function filterCommunity(category) {
+            const buttons = document.querySelectorAll('#community .filter-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
+            
+            console.log('Community filter:', category);
         }
 
-        function showShopDetails(shop) {
-            const details = `
-Personal Shop Details - Affiliate Revenue System
-
-Name: ${shop.name}
-Owner: ${shop.owner}
-Products: ${shop.products}
-Rating: ${shop.rating}/5
-Monthly Revenue: ${shop.revenue}
-
-Description: ${shop.description}
-
-Affiliate Information:
-• Shop owners earn commissions on all sales
-• Part of the personal affiliate system
-• Contact John at +44 7711 776 304 for shop setup
-            `;
-            alert(details);
+        // External Links
+        function openWhatsApp() {
+            window.open('https://wa.me/447711776304', '_blank');
         }
 
-        function showCommunityCategory(category) {
-            const categoryNames = {
-                'government': 'Government & Politics',
-                'health': 'Health & Wellness',
-                'environment': 'Environment & Nature',
-                'technology': 'Technology & Innovation'
-            };
-            
-            const details = `
-Community Category: ${categoryNames[category]}
-
-This category contains discussions from your 1,225 discussions database.
-Users can engage in meaningful conversations about ${category} topics.
-
-Features:
-• Smart categorization system
-• Real-time discussions
-• User engagement tracking
-• Content moderation
-• Multi-language support
-
-Contact John at +44 7711 776 304 for community management features.
-            `;
-            alert(details);
-        }
-
-        // Search functionality
-        document.getElementById('businessSearch').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const filteredData = businessData.filter(business => 
-                business.name.toLowerCase().includes(searchTerm) ||
-                business.category.toLowerCase().includes(searchTerm) ||
-                business.address.toLowerCase().includes(searchTerm) ||
-                business.description.toLowerCase().includes(searchTerm)
-            );
-            
-            const container = document.getElementById('businessResults');
-            container.innerHTML = '';
-            
-            filteredData.forEach(business => {
-                const card = document.createElement('div');
-                card.className = 'business-card';
-                card.onclick = () => showBusinessDetails(business);
-                
-                card.innerHTML = `
-                    <div class="business-name">${business.name}</div>
-                    <div class="business-info">📍 ${business.address}</div>
-                    <div class="business-info">📞 ${business.phone}</div>
-                    <div class="business-info">✉️ ${business.email}</div>
-                    <div class="business-info">🌐 ${business.website}</div>
-                    <div class="business-info">${business.description}</div>
-                    <div class="business-category">${business.category}</div>
-                `;
-                
-                container.appendChild(card);
-            });
+        // Authentication State Observer
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User is signed in:', user);
+                showDashboard(user);
+            } else {
+                console.log('User is signed out');
+                showLogin();
+            }
         });
 
-        document.getElementById('shopSearch').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const filteredData = shopData.filter(shop => 
-                shop.name.toLowerCase().includes(searchTerm) ||
-                shop.owner.toLowerCase().includes(searchTerm) ||
-                shop.products.toLowerCase().includes(searchTerm) ||
-                shop.description.toLowerCase().includes(searchTerm)
-            );
-            
-            const container = document.getElementById('shopResults');
-            container.innerHTML = '';
-            
-            filteredData.forEach(shop => {
-                const card = document.createElement('div');
-                card.className = 'business-card';
-                card.onclick = () => showShopDetails(shop);
-                
-                card.innerHTML = `
-                    <div class="business-name">${shop.name}</div>
-                    <div class="business-info">👤 Owner: ${shop.owner}</div>
-                    <div class="business-info">🛍️ Products: ${shop.products}</div>
-                    <div class="business-info">⭐ Rating: ${shop.rating}/5</div>
-                    <div class="business-info">💰 Revenue: ${shop.revenue}</div>
-                    <div class="business-info">${shop.description}</div>
-                    <div class="business-category">${shop.category}</div>
-                `;
-                
-                container.appendChild(card);
-            });
-        });
+        // Add loading animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Yogull Platform loaded successfully');
-            console.log('Platform Status: All systems operational');
-            console.log('Business Directory: 20+ businesses loaded (241 total available)');
-            console.log('Personal Shops: 8+ shops loaded');
-            console.log('Community System: 1,225 discussions ready');
-            console.log('Revenue System: £5,784 annual potential active');
-            console.log('All navigation and functionality working perfectly');
-            
-            // Load initial data
-            loadBusinesses();
-            loadShops();
+        // Initialize app
+        console.log('Yogull Platform initialized');
+        console.log('Firebase Config:', {
+            projectId: firebaseConfig.projectId,
+            authDomain: firebaseConfig.authDomain
         });
     </script>
 </body>

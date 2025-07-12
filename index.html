@@ -6,11 +6,6 @@
     <title>Yogull - Ordinary People Community</title>
     <meta name="description" content="Yogull - Connect with people worldwide, discover local businesses, and build your community">
     
-    <!-- React and Firebase -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
     <!-- Firebase -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -73,9 +68,6 @@
 
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
-            if (window.updateAuthState) {
-                window.updateAuthState(user);
-            }
         });
     </script>
     
@@ -142,6 +134,7 @@
             transition: color 0.3s ease;
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
+            text-decoration: none;
         }
 
         .nav-link:hover, .nav-link.active {
@@ -196,6 +189,140 @@
 
         .profile-bio {
             opacity: 0.9;
+        }
+
+        /* Profile Actions */
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-btn {
+            background: #f3f4f6;
+            color: #374151;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .profile-btn:hover {
+            background: #e5e7eb;
+            transform: translateY(-1px);
+        }
+
+        .photo-album-btn {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .photo-album-btn:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        /* Social Media Icons Section */
+        .social-connections {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .social-connections h3 {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .social-icons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .social-icon.facebook { background: #1877f2; }
+        .social-icon.twitter { background: #1da1f2; }
+        .social-icon.instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        .social-icon.linkedin { background: #0077b5; }
+        .social-icon.youtube { background: #ff0000; }
+        .social-icon.tiktok { background: #000000; }
+        .social-icon.snapchat { background: #fffc00; color: #000; }
+        .social-icon.discord { background: #7289da; }
+        .social-icon.reddit { background: #ff4500; }
+        .social-icon.pinterest { background: #bd081c; }
+        .social-icon.tumblr { background: #001935; }
+        .social-icon.twitch { background: #9146ff; }
+        .social-icon.spotify { background: #1db954; }
+        .social-icon.medium { background: #000000; }
+        .social-icon.github { background: #333333; }
+        .social-icon.vimeo { background: #1ab7ea; }
+        .social-icon.skype { background: #00aff0; }
+        .social-icon.flickr { background: #ff0084; }
+        .social-icon.soundcloud { background: #ff8800; }
+        .social-icon.behance { background: #1769ff; }
+        .social-icon.dribbble { background: #ea4c89; }
+        .social-icon.deviantart { background: #05cc47; }
+        .social-icon.stackoverflow { background: #f48024; }
+        .social-icon.quora { background: #b92b27; }
+        .social-icon.whatsapp { background: #25d366; }
+        .social-icon.telegram { background: #0088cc; }
+
+        .manage-connections-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .manage-connections-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
         }
 
         /* Post Composer */
@@ -478,262 +605,260 @@
     </style>
 </head>
 <body>
-    <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        
-        function App() {
-            const [user, setUser] = useState(null);
-            const [postContent, setPostContent] = useState('');
-            const [loading, setLoading] = useState(true);
-            
-            useEffect(() => {
-                window.updateAuthState = (user) => {
-                    setUser(user);
-                    setLoading(false);
-                };
-                
-                if (window.currentUser !== undefined) {
-                    setUser(window.currentUser);
-                    setLoading(false);
-                }
-                
-                const timer = setTimeout(() => {
-                    if (loading) setLoading(false);
-                }, 2000);
-                
-                return () => clearTimeout(timer);
-            }, [loading]);
-
-            const handleLogin = async (provider) => {
-                try {
-                    let result;
-                    if (provider === 'google') {
-                        result = await window.firebaseAuth.signInWithGoogle();
-                    } else if (provider === 'facebook') {
-                        result = await window.firebaseAuth.signInWithFacebook();
-                    } else if (provider === 'twitter') {
-                        result = await window.firebaseAuth.signInWithTwitter();
-                    }
-                    
-                    if (result) {
-                        setUser(result);
-                    }
-                } catch (error) {
-                    console.error(`${provider} login failed:`, error);
-                }
-            };
-
-            const handleLogout = async () => {
-                try {
-                    await window.firebaseAuth.logout();
-                    setUser(null);
-                } catch (error) {
-                    console.error('Logout failed:', error);
-                }
-            };
-
-            const handlePost = () => {
-                if (!postContent.trim()) return;
-                
-                // Add to posts (simple implementation)
-                alert('Post created: ' + postContent);
-                setPostContent('');
-            };
-
-            // Multi-share functions exactly as in preview
-            const handleOPCShare = () => {
-                // Navigate to community as in preview
-                window.location.href = '/community';
-            };
-
-            const handleMediaShare = () => {
-                // Share to 4 main social media platforms
-                const platforms = [
-                    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-                    `https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out this amazing platform!')}&url=${encodeURIComponent(window.location.href)}`,
-                    `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`,
-                    `https://wa.me/?text=${encodeURIComponent('Check out this amazing platform! ' + window.location.href)}`
-                ];
-                
-                platforms.forEach((url, index) => {
-                    setTimeout(() => {
-                        window.open(url, '_blank', 'width=600,height=400');
-                    }, index * 100);
-                });
-            };
-
-            const handleMultiShare = () => {
-                // Share to all 26 social media platforms
-                const allPlatforms = [
-                    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-                    `https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out this amazing platform!')}&url=${encodeURIComponent(window.location.href)}`,
-                    `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`,
-                    `https://wa.me/?text=${encodeURIComponent('Check out this amazing platform! ' + window.location.href)}`,
-                    `https://telegram.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent('Check out this amazing platform!')}`,
-                    `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&description=${encodeURIComponent('Check out this amazing platform!')}`,
-                    `https://reddit.com/submit?url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent('Check out this amazing platform!')}`,
-                    `https://tumblr.com/widgets/share/tool?canonicalUrl=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent('Check out this amazing platform!')}`,
-                    `https://discord.com/channels/@me`,
-                    `https://snapchat.com/scan`,
-                    `https://www.tiktok.com/`,
-                    `https://www.instagram.com/`,
-                    `https://www.youtube.com/`,
-                    `https://www.twitch.tv/`,
-                    `https://medium.com/`,
-                    `https://github.com/`,
-                    `https://spotify.com/`,
-                    `https://vimeo.com/`,
-                    `https://www.flickr.com/`,
-                    `https://skype.com/`,
-                    `https://soundcloud.com/`,
-                    `https://www.behance.net/`,
-                    `https://dribbble.com/`,
-                    `https://www.deviantart.com/`,
-                    `https://stackoverflow.com/`,
-                    `https://www.quora.com/`
-                ];
-                
-                allPlatforms.forEach((url, index) => {
-                    setTimeout(() => {
-                        window.open(url, '_blank', 'width=600,height=400');
-                    }, index * 100);
-                });
-            };
-
-            if (loading) {
-                return (
-                    <div className="login-screen">
-                        <div style={{textAlign: 'center', color: 'white'}}>
-                            <div style={{width: '40px', height: '40px', border: '4px solid transparent', borderTop: '4px solid white', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem'}}></div>
-                            <p>Loading...</p>
-                        </div>
-                    </div>
-                );
-            }
-
-            if (!user) {
-                return (
-                    <div className="login-screen">
-                        <div className="login-card">
-                            <div className="login-logo">
-                                <img src="attached_assets/yogull Health_1752330896917.jpg" alt="Yogull" />
-                            </div>
-                            <h1 className="login-title">Welcome to Yogull</h1>
-                            <p className="login-subtitle">Ordinary People Community</p>
-                            
-                            <button className="social-btn google" onClick={() => handleLogin('google')}>
-                                🔍 Continue with Google
-                            </button>
-                            <button className="social-btn facebook" onClick={() => handleLogin('facebook')}>
-                                📘 Continue with Facebook
-                            </button>
-                            <button className="social-btn twitter" onClick={() => handleLogin('twitter')}>
-                                🐦 Continue with Twitter
-                            </button>
-                        </div>
-                    </div>
-                );
-            }
-
-            return (
-                <div>
-                    <div className="header">
-                        <div className="container">
-                            <div className="header-content">
-                                <div className="logo">
-                                    <img src="attached_assets/yogull Health_1752330896917.jpg" alt="Yogull" />
-                                    <span>Yogull</span>
-                                </div>
-                                <nav className="nav-links">
-                                    <span className="nav-link active">Home</span>
-                                    <span className="nav-link">Community</span>
-                                    <span className="nav-link">Business</span>
-                                    <span className="nav-link">Shop</span>
-                                    <span className="nav-link">Login</span>
-                                </nav>
-                                <button className="logout-btn" onClick={handleLogout}>
-                                    🚪 Logout
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="container" style={{padding: '2rem 1rem'}}>
-                        <div className="profile-header">
-                            <div className="profile-avatar">JP</div>
-                            <div className="profile-name">John Proctor</div>
-                            <div className="profile-bio">Going crazy</div>
-                        </div>
-                        
-                        <div className="post-composer">
-                            <textarea 
-                                className="post-input" 
-                                placeholder="What's on your mind?"
-                                value={postContent}
-                                onChange={(e) => setPostContent(e.target.value)}
-                            ></textarea>
-                            
-                            <div className="multi-share-container">
-                                <button className="multi-share-btn opc" onClick={handleOPCShare}>
-                                    OPC Share
-                                </button>
-                                <button className="multi-share-btn media" onClick={handleMediaShare}>
-                                    Media Share
-                                </button>
-                                <button className="multi-share-btn multi" onClick={handleMultiShare}>
-                                    Multi Share
-                                </button>
-                            </div>
-                            
-                            <div className="post-actions">
-                                <div>
-                                    <button className="photo-btn">📷 Photo</button>
-                                    <button className="video-btn">🎥 Video</button>
-                                </div>
-                                <button className="post-btn" onClick={handlePost}>
-                                    Post
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div className="post-card">
-                            <div className="post-header">
-                                <div className="post-avatar">JP</div>
-                                <div className="post-meta">
-                                    <h4>John Proctor</h4>
-                                    <p>2 hours ago</p>
-                                </div>
-                            </div>
-                            <div className="post-content">
-                                <p>Just joined the Yogull community! Excited to connect with like-minded people and share my health journey.</p>
-                            </div>
-                            <div className="post-actions-bar">
-                                <button className="post-action">
-                                    ❤️ Like
-                                </button>
-                                <button className="post-action">
-                                    💬 Comment
-                                </button>
-                                <button className="post-action">
-                                    🔗 Share
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+    <div class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="attached_assets/yogull Health_1752330896917.jpg" alt="Yogull" />
+                    <span>Yogull</span>
                 </div>
-            );
+                <nav class="nav-links">
+                    <a href="#" class="nav-link active">Home</a>
+                    <a href="#" class="nav-link">Community</a>
+                    <a href="#" class="nav-link">Business</a>
+                    <a href="#" class="nav-link">Shop</a>
+                    <a href="#" class="nav-link">Login</a>
+                </nav>
+                <button class="logout-btn" onclick="handleLogout()">
+                    🚪 Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="padding: 2rem 1rem;">
+        <div class="profile-header">
+            <div class="profile-avatar">JP</div>
+            <div class="profile-name">John Proctor</div>
+            <div class="profile-bio">Going crazy</div>
+        </div>
+        
+        <!-- Profile Actions -->
+        <div class="profile-actions">
+            <button class="profile-btn" onclick="alert('Edit Profile clicked!')">
+                ✏️ Edit Profile
+            </button>
+            <button class="profile-btn" onclick="alert('Account Settings clicked!')">
+                ⚙️ Account Settings
+            </button>
+            <button class="photo-album-btn" onclick="handlePhotoAlbum()">
+                📸 Photo Album
+            </button>
+        </div>
+        
+        <!-- Social Media Connections -->
+        <div class="social-connections">
+            <h3>
+                🔗 Connect All 
+                <span style="color: #6b7280; font-size: 1rem;">26</span>
+                Social Media Platforms
+            </h3>
+            
+            <div class="social-icons-grid">
+                <div class="social-icon facebook" onclick="handleSocialConnect('Facebook')">f</div>
+                <div class="social-icon twitter" onclick="handleSocialConnect('Twitter')">𝕏</div>
+                <div class="social-icon instagram" onclick="handleSocialConnect('Instagram')">📷</div>
+                <div class="social-icon linkedin" onclick="handleSocialConnect('LinkedIn')">in</div>
+                <div class="social-icon youtube" onclick="handleSocialConnect('YouTube')">▶️</div>
+                <div class="social-icon tiktok" onclick="handleSocialConnect('TikTok')">🎵</div>
+                <div class="social-icon snapchat" onclick="handleSocialConnect('Snapchat')">👻</div>
+                <div class="social-icon discord" onclick="handleSocialConnect('Discord')">🎮</div>
+                <div class="social-icon reddit" onclick="handleSocialConnect('Reddit')">🤖</div>
+                <div class="social-icon pinterest" onclick="handleSocialConnect('Pinterest')">📌</div>
+                <div class="social-icon tumblr" onclick="handleSocialConnect('Tumblr')">t</div>
+                <div class="social-icon twitch" onclick="handleSocialConnect('Twitch')">🎮</div>
+                <div class="social-icon spotify" onclick="handleSocialConnect('Spotify')">🎵</div>
+                <div class="social-icon medium" onclick="handleSocialConnect('Medium')">M</div>
+                <div class="social-icon github" onclick="handleSocialConnect('GitHub')">🐙</div>
+                <div class="social-icon vimeo" onclick="handleSocialConnect('Vimeo')">V</div>
+                <div class="social-icon skype" onclick="handleSocialConnect('Skype')">S</div>
+                <div class="social-icon flickr" onclick="handleSocialConnect('Flickr')">📸</div>
+                <div class="social-icon soundcloud" onclick="handleSocialConnect('SoundCloud')">🔊</div>
+                <div class="social-icon behance" onclick="handleSocialConnect('Behance')">B</div>
+                <div class="social-icon dribbble" onclick="handleSocialConnect('Dribbble')">⚪</div>
+                <div class="social-icon deviantart" onclick="handleSocialConnect('DeviantArt')">🎨</div>
+                <div class="social-icon stackoverflow" onclick="handleSocialConnect('StackOverflow')">SO</div>
+                <div class="social-icon quora" onclick="handleSocialConnect('Quora')">Q</div>
+                <div class="social-icon whatsapp" onclick="handleSocialConnect('WhatsApp')">📱</div>
+                <div class="social-icon telegram" onclick="handleSocialConnect('Telegram')">✈️</div>
+            </div>
+            
+            <button class="manage-connections-btn" onclick="alert('Manage Connections clicked!')">
+                🔗 Manage Connections
+            </button>
+        </div>
+        
+        <div class="post-composer">
+            <textarea 
+                class="post-input" 
+                placeholder="What's on your mind?"
+                id="postContent"
+            ></textarea>
+            
+            <div class="multi-share-container">
+                <button class="multi-share-btn opc" onclick="handleOPCShare()">
+                    OPC Share
+                </button>
+                <button class="multi-share-btn media" onclick="handleMediaShare()">
+                    Media Share
+                </button>
+                <button class="multi-share-btn multi" onclick="handleMultiShare()">
+                    Multi Share
+                </button>
+            </div>
+            
+            <div class="post-actions">
+                <div>
+                    <button class="photo-btn" onclick="handlePhotoUpload()">📷 Photo</button>
+                    <button class="video-btn" onclick="handleVideoUpload()">🎥 Video</button>
+                </div>
+                <button class="post-btn" onclick="handlePost()">
+                    Post
+                </button>
+            </div>
+        </div>
+        
+        <div class="post-card">
+            <div class="post-header">
+                <div class="post-avatar">JP</div>
+                <div class="post-meta">
+                    <h4>John Proctor</h4>
+                    <p>2 hours ago</p>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>Just joined the Yogull community! Excited to connect with like-minded people and share my health journey.</p>
+            </div>
+            <div class="post-actions-bar">
+                <button class="post-action" onclick="alert('Like clicked!')">
+                    ❤️ Like
+                </button>
+                <button class="post-action" onclick="alert('Comment clicked!')">
+                    💬 Comment
+                </button>
+                <button class="post-action" onclick="alert('Share clicked!')">
+                    🔗 Share
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Working JavaScript functions
+        function handlePost() {
+            const postContent = document.getElementById('postContent').value;
+            if (!postContent.trim()) {
+                alert('Please enter some content to post!');
+                return;
+            }
+            alert('Post created: ' + postContent);
+            document.getElementById('postContent').value = '';
         }
 
-        ReactDOM.render(<App />, document.getElementById('root'));
-    </script>
-    
-    <style>
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        function handleOPCShare() {
+            alert('OPC Share activated - Navigating to Community');
+            // You can add actual navigation here
         }
-    </style>
+
+        function handleMediaShare() {
+            alert('Media Share activated - Sharing to 4 platforms');
+            const platforms = [
+                `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+                `https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out this amazing platform!')}&url=${encodeURIComponent(window.location.href)}`,
+                `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`,
+                `https://wa.me/?text=${encodeURIComponent('Check out this amazing platform! ' + window.location.href)}`
+            ];
+            
+            platforms.forEach((url, index) => {
+                setTimeout(() => {
+                    window.open(url, '_blank', 'width=600,height=400');
+                }, index * 100);
+            });
+        }
+
+        function handleMultiShare() {
+            alert('Multi Share activated - Sharing to 26 platforms');
+            const allPlatforms = [
+                `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+                `https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out this amazing platform!')}&url=${encodeURIComponent(window.location.href)}`,
+                `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`,
+                `https://wa.me/?text=${encodeURIComponent('Check out this amazing platform! ' + window.location.href)}`,
+                `https://telegram.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent('Check out this amazing platform!')}`,
+                `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&description=${encodeURIComponent('Check out this amazing platform!')}`,
+                `https://reddit.com/submit?url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent('Check out this amazing platform!')}`,
+                `https://tumblr.com/widgets/share/tool?canonicalUrl=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent('Check out this amazing platform!')}`,
+                `https://discord.com/channels/@me`,
+                `https://snapchat.com/scan`,
+                `https://www.tiktok.com/`,
+                `https://www.instagram.com/`,
+                `https://www.youtube.com/`,
+                `https://www.twitch.tv/`,
+                `https://medium.com/`,
+                `https://github.com/`,
+                `https://spotify.com/`,
+                `https://vimeo.com/`,
+                `https://www.flickr.com/`,
+                `https://skype.com/`,
+                `https://soundcloud.com/`,
+                `https://www.behance.net/`,
+                `https://dribbble.com/`,
+                `https://www.deviantart.com/`,
+                `https://stackoverflow.com/`,
+                `https://www.quora.com/`
+            ];
+            
+            allPlatforms.forEach((url, index) => {
+                setTimeout(() => {
+                    window.open(url, '_blank', 'width=600,height=400');
+                }, index * 100);
+            });
+        }
+
+        function handlePhotoAlbum() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.multiple = true;
+            input.onchange = (e) => {
+                const files = Array.from(e.target.files);
+                alert(`Selected ${files.length} photos for album upload`);
+            };
+            input.click();
+        }
+
+        function handlePhotoUpload() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    alert(`Selected photo: ${file.name}`);
+                }
+            };
+            input.click();
+        }
+
+        function handleVideoUpload() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'video/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    alert(`Selected video: ${file.name}`);
+                }
+            };
+            input.click();
+        }
+
+        function handleSocialConnect(platform) {
+            alert(`Connecting to ${platform}...`);
+        }
+
+        function handleLogout() {
+            alert('Logout clicked!');
+        }
+    </script>
 </body>
 </html>

@@ -1449,6 +1449,129 @@
 
             alert(`Comments for ${itemId}:\n\n${itemComments.join('\n')}`);
         }
+
+        function showEditProfile() {
+            const editProfileContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>Edit Profile</h1>
+                        <button onclick="showHome()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                            Back to Profile
+                        </button>
+                    </div>
+                    
+                    <div class="post-card">
+                        <h3>Profile Information</h3>
+                        <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Full Name</label>
+                                <input type="text" value="John Proctor" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Bio</label>
+                                <textarea style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; height: 100px;">Going crazy</textarea>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Location</label>
+                                <input type="text" value="United Kingdom" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Website</label>
+                                <input type="text" value="yogull.com" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Interests</label>
+                                <input type="text" value="Health, Wellness, Community, Business" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                                <button onclick="saveProfile()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                    Save Changes
+                                </button>
+                                <button onclick="showHome()" style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = editProfileContent;
+        }
+
+        function showAccountSettings() {
+            const accountSettingsContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>Account Settings</h1>
+                        <button onclick="showHome()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                            Back to Profile
+                        </button>
+                    </div>
+                    
+                    <div class="post-card">
+                        <h3>Privacy Settings</h3>
+                        <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Profile Visibility</span>
+                                <select style="padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                                    <option selected>Public</option>
+                                    <option>Friends Only</option>
+                                    <option>Private</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Show Online Status</span>
+                                <input type="checkbox" checked style="width: 1.5rem; height: 1.5rem;">
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Email Notifications</span>
+                                <input type="checkbox" checked style="width: 1.5rem; height: 1.5rem;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <h3>Security</h3>
+                        <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Change Password</label>
+                                <input type="password" placeholder="Current Password" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                                <input type="password" placeholder="New Password" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                                <input type="password" placeholder="Confirm New Password" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Two-Factor Authentication</span>
+                                <button style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">
+                                    Enable
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button onclick="saveSettings()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                            Save Settings
+                        </button>
+                        <button onclick="showHome()" style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = accountSettingsContent;
+        }
+
+        function saveProfile() {
+            alert('Profile updated successfully!');
+            showHome();
+        }
+
+        function saveSettings() {
+            alert('Settings saved successfully!');
+            showHome();
+        }
     </script>
 </body>
 </html>

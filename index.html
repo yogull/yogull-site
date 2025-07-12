@@ -65,6 +65,47 @@
             margin-bottom: 2rem;
         }
         
+        .health-card {
+            background: var(--bg-primary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .health-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .supplement-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease;
+        }
+        
+        .supplement-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .metric-card {
+            background: var(--bg-primary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            transition: transform 0.2s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+        
         .nav-button {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
@@ -82,28 +123,48 @@
         
         .nav-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
         }
         
         .nav-button.active {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .health-progress {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .health-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, #059669 100%);
+            transition: width 0.3s ease;
         }
         
         .social-login-btn {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: 12px;
             border: none;
-            border-radius: 0.5rem;
-            font-size: 1rem;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
+            gap: 8px;
         }
         
         .google-btn {
@@ -123,7 +184,168 @@
         
         .social-login-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .supplement-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .taken {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .overdue {
+            background: #fecaca;
+            color: #991b1b;
+        }
+        
+        /* Enhanced mobile responsiveness */
+        @media (max-width: 768px) {
+            .nav-button {
+                font-size: 14px;
+                padding: 0.5rem 1rem;
+            }
+            
+            .platform-card {
+                padding: 1rem;
+            }
+            
+            .dashboard-card {
+                padding: 1rem;
+            }
+        }
+        
+        /* Quick action buttons */
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.25rem;
+        }
+        
+        .action-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .action-btn.success {
+            background: var(--success);
+        }
+        
+        .action-btn.warning {
+            background: var(--warning);
+        }
+        
+        .action-btn.danger {
+            background: var(--danger);
+        }
+        
+        .community-post {
+            background: var(--bg-primary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease;
+        }
+        
+        .community-post:hover {
+            transform: translateY(-1px);
+        }
+        
+        .business-card {
+            background: var(--bg-primary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .business-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Form styles */
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
         
         .btn {
@@ -138,6 +360,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            margin-bottom: 0.5rem;
         }
         
         .btn-primary {
@@ -155,37 +378,7 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
         
-        .form-input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .section {
-            display: none;
-        }
-        
-        .section.active {
-            display: block;
-        }
-        
-        .hidden {
-            display: none !important;
-        }
-        
+        /* Toast notification */
         .toast {
             position: fixed;
             top: 20px;
@@ -206,38 +399,7 @@
             to { transform: translateX(0); opacity: 1; }
         }
         
-        .sidebar {
-            position: fixed;
-            left: -300px;
-            top: 0;
-            width: 300px;
-            height: 100vh;
-            background: var(--bg-primary);
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            transition: left 0.3s ease;
-            z-index: 1000;
-            overflow-y: auto;
-        }
-        
-        .sidebar.open {
-            left: 0;
-        }
-        
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-            display: none;
-        }
-        
-        .sidebar-overlay.open {
-            display: block;
-        }
-        
+        /* Mobile navigation */
         .mobile-nav {
             position: fixed;
             bottom: 0;
@@ -287,151 +449,16 @@
                 display: none;
             }
         }
-        
-        .business-card {
-            background: var(--bg-primary);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-            margin-bottom: 1rem;
-            transition: transform 0.2s ease;
-            cursor: pointer;
-        }
-        
-        .business-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-        
-        .community-post {
-            background: var(--bg-primary);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-            margin-bottom: 1rem;
-            transition: transform 0.2s ease;
-        }
-        
-        .community-post:hover {
-            transform: translateY(-1px);
-        }
-        
-        .health-card {
-            background: var(--bg-primary);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        
-        .health-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-        
-        .supplement-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: transform 0.2s ease;
-        }
-        
-        .supplement-card:hover {
-            transform: translateY(-2px);
-        }
-        
-        .metric-card {
-            background: var(--bg-primary);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-            transition: transform 0.2s ease;
-        }
-        
-        .metric-card:hover {
-            transform: translateY(-2px);
-        }
-        
-        .health-progress {
-            width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .health-progress-fill {
-            height: 100%;
-            background: var(--success);
-            transition: width 0.3s ease;
-        }
-        
-        .supplement-status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
-        .supplement-status.taken {
-            background: var(--success);
-            color: white;
-        }
-        
-        .supplement-status.pending {
-            background: var(--warning);
-            color: white;
-        }
-        
-        .supplement-status.missed {
-            background: var(--danger);
-            color: white;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stat-card {
-            background: var(--bg-primary);
-            padding: 1.5rem;
-            border-radius: 1rem;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="min-h-screen bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center p-4">
+    <!-- Authentication Screen -->
+    <div id="authScreen" class="min-h-screen bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
             <div class="text-center mb-8">
-                <!-- Your Yogull Logo -->
+                <!-- Your Yogull Logo (base64 encoded) -->
                 <div class="w-20 h-20 mx-auto mb-4">
-                    <img src="attached_assets/yogull Health_1752326874163.jpg" alt="Yogull Logo" class="w-full h-full object-contain">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjOEI1Q0Y2Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNzY0QkEyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9InVybCgjYSkiLz48cmVjdCB4PSIyMCIgeT0iMjAiIHdpZHRoPSI3MCIgaGVpZ2h0PSIyNSIgZmlsbD0iIzhCNUNGNiIvPjx0ZXh0IHg9IjU1IiB5PSIzOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9ImJvbGQiPllvZ3VsbC5jb208L3RleHQ+PHJlY3QgeD0iMTEwIiB5PSIyMCIgd2lkdGg9IjcwIiBoZWlnaHQ9IjI1IiBmaWxsPSIjOEI1Q0Y2Ii8+PHRleHQgeD0iMTQ1IiB5PSIzOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9ImJvbGQiPllvZ3VsbC5jb208L3RleHQ+PGNpcmNsZSBjeD0iNTUiIGN5PSI5MCIgcj0iNDAiIGZpbGw9IiNDMDg0RkMiLz48ZWxsaXBzZSBjeD0iNTUiIGN5PSI5MCIgcng9IjE4IiByeT0iMjgiIGZpbGw9IiMwMDAiLz48Y2lyY2xlIGN4PSIxNDUiIGN5PSI5MCIgcj0iNDAiIGZpbGw9IiNDMDg0RkMiLz48ZWxsaXBzZSBjeD0iMTQ1IiBjeT0iOTAiIHJ4PSIxOCIgcnk9IjI4IiBmaWxsPSIjMDAwIi8+PHBhdGggZD0iTTU1IDEzMCBMNTUgMTU1IEw3NSAxNTUgTDc1IDEzMCBMMTAwIDEwMCBMMTI1IDEzMCBMMTI1IDE1NSBMMTQ1IDE1NSBMMTQ1IDEzMCBMMTE1IDEwMCBMMTAwIDExNSBMODUgMTAwIEw1NSAxMzAgWiIgZmlsbD0iIzhCNUNGNiIvPjxyZWN0IHg9IjIwIiB5PSIxNjAiIHdpZHRoPSIxNjAiIGhlaWdodD0iMjUiIGZpbGw9IiM4QjVDRjYiLz48dGV4dCB4PSIxMDAiIHk9IjE3OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc3R5bGU9Iml0YWxpYyI+R28gaGVhbCBtZTwvdGV4dD48L3N2Zz4=" alt="Yogull Logo" class="w-full h-full object-contain">
                 </div>
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">Yogull</h1>
                 <p class="text-gray-600 mb-4">Business & Social Community Platform</p>
@@ -476,11 +503,11 @@
             </div>
             
             <!-- Email Authentication Form -->
-            <div id="emailAuthForm" class="space-y-4">
-                <div class="form-group">
+            <div class="space-y-4">
+                <div>
                     <input type="email" id="authEmail" class="form-input" placeholder="Enter your email address" required>
                 </div>
-                <div class="form-group">
+                <div>
                     <input type="password" id="authPassword" class="form-input" placeholder="Enter your password" required>
                 </div>
                 
@@ -531,16 +558,13 @@
     </div>
     
     <!-- Main Platform -->
-    <div id="platform" class="hidden">
+    <div id="mainPlatform" class="hidden">
         <!-- Header -->
         <div class="bg-white shadow-sm border-b sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 py-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <button onclick="openSidebar()" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
-                            <i class="fas fa-bars text-xl"></i>
-                        </button>
-                        <div class="hidden lg:flex items-center gap-4">
+                        <div class="flex items-center gap-4">
                             <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
                                 <i class="fas fa-heartbeat text-white"></i>
                             </div>
@@ -551,7 +575,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-4">
-                        <div class="hidden md:flex items-center gap-2">
+                        <div class="flex items-center gap-2">
                             <span class="text-gray-600">Welcome back!</span>
                             <span id="userDisplayName" class="font-semibold text-gray-900"></span>
                         </div>
@@ -564,10 +588,10 @@
         </div>
         
         <!-- Navigation -->
-        <div class="hidden lg:block bg-gray-50 border-b">
+        <div class="bg-gray-50 border-b">
             <div class="max-w-7xl mx-auto px-4 py-4">
                 <div class="flex flex-wrap justify-center gap-2">
-                    <button onclick="showSection('dashboard')" class="nav-button" id="dashboardBtn">
+                    <button onclick="showSection('dashboard')" class="nav-button active" id="dashboardBtn">
                         <i class="fas fa-home"></i>
                         Dashboard
                     </button>
@@ -619,7 +643,7 @@
             </div>
         </div>
         
-        <!-- Main Content -->
+        <!-- Main Content Area -->
         <div class="max-w-7xl mx-auto px-4 py-6 main-content">
             
             <!-- Dashboard Section -->
@@ -642,25 +666,25 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
                             <i class="fas fa-pills text-3xl mb-2"></i>
-                            <div class="text-2xl font-bold" id="supplementCompliance">85%</div>
+                            <div class="text-2xl font-bold">85%</div>
                             <div class="text-sm text-purple-100">Supplement Compliance</div>
                         </div>
                         
                         <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
                             <i class="fas fa-weight text-3xl mb-2"></i>
-                            <div class="text-2xl font-bold" id="currentWeight">75kg</div>
+                            <div class="text-2xl font-bold">75kg</div>
                             <div class="text-sm text-purple-100">Current Weight</div>
                         </div>
                         
                         <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
                             <i class="fas fa-walking text-3xl mb-2"></i>
-                            <div class="text-2xl font-bold" id="dailySteps">7,500</div>
+                            <div class="text-2xl font-bold">7,500</div>
                             <div class="text-sm text-purple-100">Daily Steps</div>
                         </div>
                         
                         <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
                             <i class="fas fa-bed text-3xl mb-2"></i>
-                            <div class="text-2xl font-bold" id="sleepAverage">7.5h</div>
+                            <div class="text-2xl font-bold">7.5h</div>
                             <div class="text-sm text-purple-100">Sleep Average</div>
                         </div>
                     </div>
@@ -670,7 +694,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                     <div class="health-card">
                         <h3 class="text-xl font-semibold text-gray-900 mb-4">Today's Supplements</h3>
-                        <div class="space-y-3" id="todaysSupplements">
+                        <div class="space-y-3">
                             <div class="flex items-center justify-between">
                                 <span class="text-gray-700">Vitamin D3</span>
                                 <span class="supplement-status taken">Taken</span>
@@ -684,7 +708,7 @@
                                 <span class="supplement-status taken">Taken</span>
                             </div>
                         </div>
-                        <button onclick="showSection('supplements')" class="nav-button mt-4 w-full">
+                        <button onclick="showSection('supplements')" class="action-btn success w-full mt-4">
                             Manage Supplements
                         </button>
                     </div>
@@ -711,14 +735,14 @@
                                 </div>
                             </div>
                         </div>
-                        <button onclick="showSection('biometrics')" class="nav-button mt-4 w-full">
+                        <button onclick="showSection('biometrics')" class="action-btn w-full mt-4">
                             View Biometrics
                         </button>
                     </div>
                     
                     <div class="health-card">
                         <h3 class="text-xl font-semibold text-gray-900 mb-4">Community Activity</h3>
-                        <div class="space-y-3" id="communityActivity">
+                        <div class="space-y-3">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
                                     <i class="fas fa-heart text-white text-xs"></i>
@@ -738,7 +762,7 @@
                                 <span class="text-gray-700 text-sm">2 new followers</span>
                             </div>
                         </div>
-                        <button onclick="showSection('community')" class="nav-button mt-4 w-full">
+                        <button onclick="showSection('community')" class="action-btn w-full mt-4">
                             Join Community
                         </button>
                     </div>
@@ -776,7 +800,7 @@
                         <div class="community-post">
                             <div class="flex items-start gap-3 mb-3">
                                 <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-user text-white"></i>
+                                    <i class="fas fa-heartbeat text-white"></i>
                                 </div>
                                 <div>
                                     <h3 class="font-semibold">Health & Wellness</h3>
@@ -1104,57 +1128,6 @@
                                 <span>£10 - £100 per product</span>
                             </div>
                         </div>
-                        
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-book text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Educational Content</h3>
-                                    <p class="text-sm text-gray-600">Education & Training</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Online courses, tutorials, and educational materials</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-pound-sign"></i>
-                                <span>£20 - £200 per course</span>
-                            </div>
-                        </div>
-                        
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-camera text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Photography Services</h3>
-                                    <p class="text-sm text-gray-600">Creative Services</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Professional photography for events, portraits, and businesses</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-pound-sign"></i>
-                                <span>£100 - £800 per session</span>
-                            </div>
-                        </div>
-                        
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-wrench text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Home Services</h3>
-                                    <p class="text-sm text-gray-600">Home & Garden</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Home repair, maintenance, and improvement services</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-pound-sign"></i>
-                                <span>£30 - £300 per job</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1256,13 +1229,12 @@
                 </div>
             </div>
             
-            <!-- Other sections would go here... -->
-            
+            <!-- Additional sections would continue here with the same pattern... -->
         </div>
         
         <!-- Mobile Navigation -->
-        <div class="mobile-nav lg:hidden">
-            <div class="mobile-nav-item" onclick="showSection('dashboard')">
+        <div class="mobile-nav">
+            <div class="mobile-nav-item active" onclick="showSection('dashboard')">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </div>
@@ -1284,40 +1256,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="p-4 border-b">
-            <h2 class="text-xl font-bold text-gray-900">Menu</h2>
-        </div>
-        <div class="p-4">
-            <div class="space-y-2">
-                <button onclick="showSection('dashboard'); closeSidebar();" class="w-full text-left p-3 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-home mr-2"></i>
-                    Dashboard
-                </button>
-                <button onclick="showSection('community'); closeSidebar();" class="w-full text-left p-3 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-users mr-2"></i>
-                    Community
-                </button>
-                <button onclick="showSection('personalShop'); closeSidebar();" class="w-full text-left p-3 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-store mr-2"></i>
-                    Personal Shop
-                </button>
-                <button onclick="showSection('businessDirectory'); closeSidebar();" class="w-full text-left p-3 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-building mr-2"></i>
-                    Business Directory
-                </button>
-                <button onclick="showSection('adminDashboard'); closeSidebar();" class="w-full text-left p-3 rounded-lg hover:bg-gray-100">
-                    <i class="fas fa-cogs mr-2"></i>
-                    Admin Dashboard
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Sidebar Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     
     <script>
         // Firebase Configuration
@@ -1344,11 +1282,11 @@
         auth.onAuthStateChanged((user) => {
             if (user) {
                 console.log('User signed in:', user.email);
-                hideLogin();
+                hideAuthScreen();
                 updateUserDisplay(user);
             } else {
                 console.log('User signed out');
-                showLogin();
+                showAuthScreen();
             }
         });
         
@@ -1509,14 +1447,14 @@
         }
         
         // UI Functions
-        function hideLogin() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('platform').classList.remove('hidden');
+        function hideAuthScreen() {
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('mainPlatform').classList.remove('hidden');
         }
         
-        function showLogin() {
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.getElementById('platform').classList.add('hidden');
+        function showAuthScreen() {
+            document.getElementById('authScreen').classList.remove('hidden');
+            document.getElementById('mainPlatform').classList.add('hidden');
         }
         
         function updateUserDisplay(user) {
@@ -1552,16 +1490,6 @@
             console.log('Switched to section:', sectionId);
         }
         
-        function openSidebar() {
-            document.getElementById('sidebar').classList.add('open');
-            document.getElementById('sidebarOverlay').classList.add('open');
-        }
-        
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('sidebarOverlay').classList.remove('open');
-        }
-        
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
@@ -1583,7 +1511,7 @@
             }, 4000);
         }
         
-        // Initialize
+        // Initialize platform
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Yogull Platform initialized');
             

@@ -757,11 +757,6 @@
         // Firebase Authentication Functions with Enhanced Error Handling
         function signInWithGoogle() {
             console.log('Attempting Google sign-in...');
-            if (!auth) {
-                console.error('Firebase auth not initialized');
-                return;
-            }
-            
             try {
                 const provider = new firebase.auth.GoogleAuthProvider();
                 provider.addScope('email');
@@ -770,37 +765,27 @@
                 auth.signInWithPopup(provider)
                     .then((result) => {
                         console.log('Google sign-in successful:', result.user.email);
-                        console.log('User display name:', result.user.displayName);
+                        alert('Successfully signed in with Google!\nWelcome: ' + result.user.displayName);
                         hideAuthSection();
-                        showWelcomeMessage('Welcome back, ' + (result.user.displayName || result.user.email) + '!');
                     })
                     .catch((error) => {
                         console.error('Google sign-in error:', error);
-                        console.error('Error code:', error.code);
-                        console.error('Error message:', error.message);
-                        
                         if (error.code === 'auth/popup-closed-by-user') {
-                            console.log('User cancelled Google sign-in');
+                            alert('Google sign-in was cancelled. Please try again.');
                         } else if (error.code === 'auth/popup-blocked') {
-                            console.log('Popup blocked for Google sign-in');
-                        } else if (error.code === 'auth/unauthorized-domain') {
-                            console.log('Domain not authorized for Google sign-in');
+                            alert('Popup blocked. Please allow popups for yogull.com and try again.');
                         } else {
-                            console.log('Other Google sign-in error:', error.code);
+                            alert('Google sign-in temporarily unavailable. Please use email/password login.');
                         }
                     });
             } catch (error) {
                 console.error('Google provider error:', error);
+                alert('Google sign-in temporarily unavailable. Please use email/password login.');
             }
         }
 
         function signInWithFacebook() {
             console.log('Attempting Facebook sign-in...');
-            if (!auth) {
-                console.error('Firebase auth not initialized');
-                return;
-            }
-            
             try {
                 const provider = new firebase.auth.FacebookAuthProvider();
                 provider.addScope('email');
@@ -808,44 +793,49 @@
                 auth.signInWithPopup(provider)
                     .then((result) => {
                         console.log('Facebook sign-in successful:', result.user.email);
-                        console.log('User display name:', result.user.displayName);
+                        alert('Successfully signed in with Facebook!\nWelcome: ' + result.user.displayName);
                         hideAuthSection();
-                        showWelcomeMessage('Welcome back, ' + (result.user.displayName || result.user.email) + '!');
                     })
                     .catch((error) => {
                         console.error('Facebook sign-in error:', error);
-                        console.error('Error code:', error.code);
-                        console.error('Error message:', error.message);
+                        if (error.code === 'auth/popup-closed-by-user') {
+                            alert('Facebook sign-in was cancelled. Please try again.');
+                        } else if (error.code === 'auth/popup-blocked') {
+                            alert('Popup blocked. Please allow popups for yogull.com and try again.');
+                        } else {
+                            alert('Facebook sign-in temporarily unavailable. Please use email/password login.');
+                        }
                     });
             } catch (error) {
                 console.error('Facebook provider error:', error);
+                alert('Facebook sign-in temporarily unavailable. Please use email/password login.');
             }
         }
 
         function signInWithTwitter() {
             console.log('Attempting Twitter sign-in...');
-            if (!auth) {
-                console.error('Firebase auth not initialized');
-                return;
-            }
-            
             try {
                 const provider = new firebase.auth.TwitterAuthProvider();
                 
                 auth.signInWithPopup(provider)
                     .then((result) => {
                         console.log('Twitter sign-in successful:', result.user.displayName);
-                        console.log('User email:', result.user.email);
+                        alert('Successfully signed in with Twitter!\nWelcome: ' + result.user.displayName);
                         hideAuthSection();
-                        showWelcomeMessage('Welcome back, ' + (result.user.displayName || result.user.email) + '!');
                     })
                     .catch((error) => {
                         console.error('Twitter sign-in error:', error);
-                        console.error('Error code:', error.code);
-                        console.error('Error message:', error.message);
+                        if (error.code === 'auth/popup-closed-by-user') {
+                            alert('Twitter sign-in was cancelled. Please try again.');
+                        } else if (error.code === 'auth/popup-blocked') {
+                            alert('Popup blocked. Please allow popups for yogull.com and try again.');
+                        } else {
+                            alert('Twitter sign-in temporarily unavailable. Please use email/password login.');
+                        }
                     });
             } catch (error) {
                 console.error('Twitter provider error:', error);
+                alert('Twitter sign-in temporarily unavailable. Please use email/password login.');
             }
         }
 
@@ -854,12 +844,12 @@
             const password = document.getElementById('password').value;
             
             if (!email || !password) {
-                console.log('Email and password required');
+                alert('Please enter both email and password');
                 return;
             }
             
-            if (!auth) {
-                console.error('Firebase auth not initialized');
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long');
                 return;
             }
             
@@ -868,13 +858,20 @@
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     console.log('Account created successfully:', userCredential.user.email);
+                    alert('Account created successfully! Welcome to Yogull Platform!');
                     hideAuthSection();
-                    showWelcomeMessage('Account created successfully! Welcome to Yogull Platform!');
                 })
                 .catch((error) => {
                     console.error('Account creation error:', error);
-                    console.error('Error code:', error.code);
-                    console.error('Error message:', error.message);
+                    if (error.code === 'auth/email-already-in-use') {
+                        alert('This email is already registered. Please use the Sign In button instead.');
+                    } else if (error.code === 'auth/invalid-email') {
+                        alert('Please enter a valid email address.');
+                    } else if (error.code === 'auth/weak-password') {
+                        alert('Password is too weak. Please use at least 6 characters.');
+                    } else {
+                        alert('Account creation failed. Please try again.');
+                    }
                 });
         }
 
@@ -883,12 +880,7 @@
             const password = document.getElementById('password').value;
             
             if (!email || !password) {
-                console.log('Email and password required');
-                return;
-            }
-            
-            if (!auth) {
-                console.error('Firebase auth not initialized');
+                alert('Please enter both email and password');
                 return;
             }
             
@@ -897,13 +889,20 @@
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     console.log('Sign-in successful:', userCredential.user.email);
+                    alert('Successfully signed in! Welcome back to Yogull Platform!');
                     hideAuthSection();
-                    showWelcomeMessage('Successfully signed in! Welcome back to Yogull Platform!');
                 })
                 .catch((error) => {
                     console.error('Sign-in error:', error);
-                    console.error('Error code:', error.code);
-                    console.error('Error message:', error.message);
+                    if (error.code === 'auth/user-not-found') {
+                        alert('No account found with this email. Please create an account first.');
+                    } else if (error.code === 'auth/wrong-password') {
+                        alert('Incorrect password. Please try again.');
+                    } else if (error.code === 'auth/invalid-email') {
+                        alert('Please enter a valid email address.');
+                    } else {
+                        alert('Sign-in failed. Please check your credentials and try again.');
+                    }
                 });
         }
 

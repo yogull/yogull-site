@@ -739,8 +739,9 @@
                 auth.signInWithPopup(provider)
                     .then((result) => {
                         console.log('Google sign-in successful:', result.user.email);
-                        alert('Successfully signed in with Google!\nWelcome: ' + result.user.displayName);
+                        // Direct redirect to dashboard without alert popup
                         hideAuthSection();
+                        showWelcomeMessage('Welcome back, ' + result.user.displayName + '!');
                     })
                     .catch((error) => {
                         console.error('Google sign-in error:', error);
@@ -767,8 +768,8 @@
                 auth.signInWithPopup(provider)
                     .then((result) => {
                         console.log('Facebook sign-in successful:', result.user.email);
-                        alert('Successfully signed in with Facebook!\nWelcome: ' + result.user.displayName);
                         hideAuthSection();
+                        showWelcomeMessage('Welcome back, ' + result.user.displayName + '!');
                     })
                     .catch((error) => {
                         console.error('Facebook sign-in error:', error);
@@ -832,8 +833,8 @@
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     console.log('Account created successfully:', userCredential.user.email);
-                    alert('Account created successfully!\nWelcome to Yogull Platform!');
                     hideAuthSection();
+                    showWelcomeMessage('Account created successfully! Welcome to Yogull Platform!');
                 })
                 .catch((error) => {
                     console.error('Account creation error:', error);
@@ -870,8 +871,8 @@
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     console.log('Sign-in successful:', userCredential.user.email);
-                    alert('Successfully signed in!\nWelcome back to Yogull Platform!');
                     hideAuthSection();
+                    showWelcomeMessage('Successfully signed in! Welcome back to Yogull Platform!');
                 })
                 .catch((error) => {
                     console.error('Sign-in error:', error);
@@ -890,8 +891,31 @@
         }
 
         function hideAuthSection() {
+            // Hide auth section
             document.querySelector('.auth-section').style.display = 'none';
+            // Close any open modals/alerts
+            const modals = document.querySelectorAll('.modal, .alert, .popup');
+            modals.forEach(modal => modal.style.display = 'none');
+            // Show dashboard
             showSection('dashboard');
+            // Remove the overlay if it exists
+            const overlay = document.querySelector('.overlay');
+            if (overlay) overlay.remove();
+        }
+
+        function showWelcomeMessage(message) {
+            // Create a temporary welcome message instead of alert
+            const welcomeDiv = document.createElement('div');
+            welcomeDiv.innerHTML = `
+                <div style="position: fixed; top: 20px; right: 20px; background: #4CAF50; color: white; padding: 15px 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10000; font-size: 16px;">
+                    ${message}
+                </div>
+            `;
+            document.body.appendChild(welcomeDiv);
+            // Remove after 3 seconds
+            setTimeout(() => {
+                welcomeDiv.remove();
+            }, 3000);
         }
 
         // Extended business data with all businesses from your PostgreSQL database

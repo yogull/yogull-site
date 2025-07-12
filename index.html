@@ -3,1631 +3,451 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yogull - Complete Business & Social Platform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-        import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
-            authDomain: "gohealme-9bdf0.firebaseapp.com",
-            projectId: "gohealme-9bdf0",
-            storageBucket: "gohealme-9bdf0.firebasestorage.app",
-            messagingSenderId: "823297665017",
-            appId: "1:823297665017:web:3427ba4397e12447ccbf28"
-        };
-        
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        let currentUser = null;
-        
-        // Check for existing authentication
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                showMainPlatform(user);
-            } else {
-                showLogin();
-            }
-        });
-        
-        function showLogin() {
-            document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('mainPlatform').style.display = 'none';
+    <title>Yogull Platform - Community & Business Hub</title>
+    <meta name="description" content="Complete social media platform with business directory, personal shops, and community discussions. Connect with people worldwide and start earning money today.">
+    <meta name="keywords" content="yogull, social media, business directory, personal shops, community, affiliate, earnings">
+    
+    <!-- Open Graph for social sharing -->
+    <meta property="og:title" content="Yogull Platform - Community & Business Hub">
+    <meta property="og:description" content="Join the complete social platform with business networking and earning opportunities">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yogull.github.io/gohealme-platform-v2">
+    
+    <!-- Mobile optimization -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        window.signInWithGoogle = async () => {
-            const provider = new GoogleAuthProvider();
-            try {
-                const result = await signInWithPopup(auth, provider);
-                currentUser = result.user;
-                showMainPlatform(result.user);
-            } catch (error) {
-                console.error('Google sign in error:', error);
-                alert('Sign in failed. Please try again.');
-            }
-        };
-        
-        window.signInWithFacebook = async () => {
-            const provider = new FacebookAuthProvider();
-            try {
-                const result = await signInWithPopup(auth, provider);
-                currentUser = result.user;
-                showMainPlatform(result.user);
-            } catch (error) {
-                console.error('Facebook sign in error:', error);
-                alert('Sign in failed. Please try again.');
-            }
-        };
-        
-        window.signInWithTwitter = async () => {
-            const provider = new TwitterAuthProvider();
-            try {
-                const result = await signInWithPopup(auth, provider);
-                currentUser = result.user;
-                showMainPlatform(result.user);
-            } catch (error) {
-                console.error('Twitter sign in error:', error);
-                alert('Sign in failed. Please try again.');
-            }
-        };
-        
-        function showMainPlatform(user) {
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('mainPlatform').style.display = 'block';
-            document.getElementById('userName').textContent = user.displayName || 'User';
-            document.getElementById('userEmail').textContent = user.email;
-            if (user.photoURL) {
-                document.getElementById('userPhoto').src = user.photoURL;
-            }
-            loadRealData();
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
         }
         
-        window.showPage = (page) => {
-            document.querySelectorAll('.page-section').forEach(el => el.style.display = 'none');
-            document.getElementById(page + 'Section').style.display = 'block';
-            
-            document.querySelectorAll('.nav-button').forEach(btn => {
-                btn.classList.remove('bg-blue-700', 'bg-blue-800');
-                btn.classList.add('bg-blue-600');
-            });
-            const activeBtn = document.querySelector(`[onclick*="showPage('${page}')"]`);
-            if (activeBtn) {
-                activeBtn.classList.remove('bg-blue-600');
-                activeBtn.classList.add('bg-blue-700');
-            }
-        };
-        
-        function loadRealData() {
-            // Load actual community discussions from database
-            loadCommunityDiscussions();
-            // Load actual personal shops
-            loadPersonalShops();
-            // Load actual business directory
-            loadBusinessDirectory();
-            // Load actual news
-            loadDailyNews();
-            // Load actual blog posts
-            loadBlogPosts();
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         
-        function loadCommunityDiscussions() {
-            const discussionsList = document.getElementById('discussionsList');
-            
-            // Create discussion post form
-            const createForm = document.createElement('div');
-            createForm.className = 'bg-white p-6 rounded-lg shadow mb-6';
-            createForm.innerHTML = `
-                <h3 class="text-lg font-semibold mb-4">Create New Discussion</h3>
-                <div class="space-y-4">
-                    <input type="text" id="discussionTitle" placeholder="Discussion title..." class="w-full p-3 border rounded-lg">
-                    <textarea id="discussionContent" placeholder="What would you like to discuss?" class="w-full p-3 border rounded-lg h-24"></textarea>
-                    <select id="discussionCategory" class="w-full p-3 border rounded-lg">
-                        <option value="Health">Health & Wellness</option>
-                        <option value="Business">Business & Finance</option>
-                        <option value="Technology">Technology</option>
-                        <option value="Community">Community Events</option>
-                        <option value="Travel">Travel & Tourism</option>
-                        <option value="Food">Food & Dining</option>
-                        <option value="General">General Discussion</option>
-                    </select>
-                    <button onclick="createDiscussion()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                        Post Discussion
-                    </button>
-                </div>
-            `;
-            discussionsList.appendChild(createForm);
-            
-            // Sample discussions that would come from database
-            const discussions = [
-                {
-                    id: 1,
-                    title: "Best local restaurants in Budapest for international visitors",
-                    content: "Looking for recommendations for authentic Hungarian food with English menus...",
-                    category: "Food",
-                    author: "Maria Santos",
-                    location: "Budapest, Hungary",
-                    replies: 24,
-                    views: 156,
-                    time: "2 hours ago"
-                },
-                {
-                    id: 2,
-                    title: "Health and wellness tips for remote workers",
-                    content: "Sharing strategies for maintaining good health while working from home...",
-                    category: "Health",
-                    author: "Dr. James Wilson",
-                    location: "London, UK",
-                    replies: 18,
-                    views: 89,
-                    time: "4 hours ago"
-                },
-                {
-                    id: 3,
-                    title: "Small business networking opportunities in Spain",
-                    content: "Let's connect local entrepreneurs and share business opportunities...",
-                    category: "Business",
-                    author: "Carlos Rodriguez",
-                    location: "Barcelona, Spain",
-                    replies: 31,
-                    views: 203,
-                    time: "6 hours ago"
-                },
-                {
-                    id: 4,
-                    title: "Technology trends affecting local businesses",
-                    content: "How AI and digital tools are changing small business operations...",
-                    category: "Technology",
-                    author: "Anna Kowalski",
-                    location: "Warsaw, Poland",
-                    replies: 15,
-                    views: 134,
-                    time: "8 hours ago"
-                }
-            ];
-            
-            discussions.forEach(discussion => {
-                const discussionCard = document.createElement('div');
-                discussionCard.className = 'bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer mb-4';
-                discussionCard.innerHTML = `
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex-1">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">${discussion.title}</h4>
-                            <p class="text-gray-600 text-sm mb-3">${discussion.content}</p>
-                            <div class="flex items-center gap-4 text-sm text-gray-500">
-                                <span class="flex items-center gap-1">
-                                    <i data-lucide="user" class="w-4 h-4"></i>
-                                    ${discussion.author}
-                                </span>
-                                <span class="flex items-center gap-1">
-                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
-                                    ${discussion.location}
-                                </span>
-                                <span class="flex items-center gap-1">
-                                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                                    ${discussion.replies} replies
-                                </span>
-                                <span class="flex items-center gap-1">
-                                    <i data-lucide="eye" class="w-4 h-4"></i>
-                                    ${discussion.views} views
-                                </span>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <span class="bg-${getCategoryColor(discussion.category)}-100 text-${getCategoryColor(discussion.category)}-800 px-3 py-1 rounded-full text-xs font-medium">
-                                ${discussion.category}
-                            </span>
-                            <p class="text-xs text-gray-500 mt-2">${discussion.time}</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="joinDiscussion(${discussion.id})" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">
-                            Join Discussion
-                        </button>
-                        <button onclick="shareDiscussion(${discussion.id})" class="bg-gray-100 text-gray-700 px-4 py-2 rounded text-sm hover:bg-gray-200">
-                            Share
-                        </button>
-                    </div>
-                `;
-                discussionsList.appendChild(discussionCard);
-            });
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
-        function loadPersonalShops() {
-            const shopsList = document.getElementById('shopsList');
-            
-            // Create shop form
-            const createShopForm = document.createElement('div');
-            createShopForm.className = 'bg-white p-6 rounded-lg shadow mb-6';
-            createShopForm.innerHTML = `
-                <h3 class="text-lg font-semibold mb-4">Create Your Personal Shop</h3>
-                <div class="space-y-4">
-                    <input type="text" id="shopName" placeholder="Shop name..." class="w-full p-3 border rounded-lg">
-                    <textarea id="shopDescription" placeholder="Shop description..." class="w-full p-3 border rounded-lg h-20"></textarea>
-                    <select id="shopCategory" class="w-full p-3 border rounded-lg">
-                        <option value="Health">Health & Wellness</option>
-                        <option value="Electronics">Electronics</option>
-                        <option value="Fashion">Fashion & Beauty</option>
-                        <option value="Home">Home & Garden</option>
-                        <option value="Sports">Sports & Fitness</option>
-                        <option value="Books">Books & Media</option>
-                    </select>
-                    <button onclick="createShop()" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700">
-                        Create Shop
-                    </button>
-                </div>
-            `;
-            shopsList.appendChild(createShopForm);
-            
-            // Sample personal shops
-            const shops = [
-                {
-                    id: 1,
-                    name: "Sarah's Wellness Store",
-                    description: "Premium health supplements and wellness products from trusted brands",
-                    category: "Health & Wellness",
-                    owner: "Sarah Johnson",
-                    location: "London, UK",
-                    products: 24,
-                    rating: 4.8,
-                    image: "/api/placeholder/300/200"
-                },
-                {
-                    id: 2,
-                    name: "Tech Gadget Central",
-                    description: "Latest electronics and tech accessories for modern lifestyle",
-                    category: "Electronics",
-                    owner: "David Kim",
-                    location: "Berlin, Germany",
-                    products: 18,
-                    rating: 4.9,
-                    image: "/api/placeholder/300/200"
-                },
-                {
-                    id: 3,
-                    name: "Fashion Forward",
-                    description: "Trendy clothing and accessories for the modern professional",
-                    category: "Fashion & Beauty",
-                    owner: "Emma Wilson",
-                    location: "Paris, France",
-                    products: 31,
-                    rating: 4.7,
-                    image: "/api/placeholder/300/200"
-                },
-                {
-                    id: 4,
-                    name: "Home & Garden Plus",
-                    description: "Everything you need for a beautiful home and garden",
-                    category: "Home & Garden",
-                    owner: "Carlos Martinez",
-                    location: "Barcelona, Spain",
-                    products: 19,
-                    rating: 4.6,
-                    image: "/api/placeholder/300/200"
-                }
-            ];
-            
-            shops.forEach(shop => {
-                const shopCard = document.createElement('div');
-                shopCard.className = 'bg-white rounded-lg shadow hover:shadow-md transition-shadow overflow-hidden';
-                shopCard.innerHTML = `
-                    <div class="h-48 bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
-                        <i data-lucide="store" class="w-16 h-16 text-white"></i>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-lg font-semibold text-gray-800 mb-2">${shop.name}</h4>
-                        <p class="text-gray-600 text-sm mb-3">${shop.description}</p>
-                        <div class="flex items-center gap-4 text-sm text-gray-500 mb-4">
-                            <span class="flex items-center gap-1">
-                                <i data-lucide="user" class="w-4 h-4"></i>
-                                ${shop.owner}
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <i data-lucide="map-pin" class="w-4 h-4"></i>
-                                ${shop.location}
-                            </span>
-                        </div>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-sm text-gray-600">${shop.products} products</span>
-                            <div class="flex items-center gap-1">
-                                <i data-lucide="star" class="w-4 h-4 text-yellow-500"></i>
-                                <span class="text-sm text-gray-600">${shop.rating}</span>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="visitShop(${shop.id})" class="bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700 flex-1">
-                                Visit Shop
-                            </button>
-                            <button onclick="contactOwner(${shop.id})" class="bg-gray-100 text-gray-700 px-4 py-2 rounded text-sm hover:bg-gray-200">
-                                Contact
-                            </button>
-                        </div>
-                    </div>
-                `;
-                shopsList.appendChild(shopCard);
-            });
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
         }
         
-        function loadBusinessDirectory() {
-            const businessList = document.getElementById('businessList');
-            
-            // Search form
-            const searchForm = document.createElement('div');
-            searchForm.className = 'bg-white p-6 rounded-lg shadow mb-6';
-            searchForm.innerHTML = `
-                <h3 class="text-lg font-semibold mb-4">Find Local Businesses</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <select id="businessCountry" class="p-3 border rounded-lg">
-                        <option value="">All Countries</option>
-                        <option value="UK">United Kingdom</option>
-                        <option value="Spain">Spain</option>
-                        <option value="Germany">Germany</option>
-                        <option value="France">France</option>
-                        <option value="Italy">Italy</option>
-                        <option value="Hungary">Hungary</option>
-                    </select>
-                    <select id="businessCategory" class="p-3 border rounded-lg">
-                        <option value="">All Categories</option>
-                        <option value="Restaurant">Restaurants</option>
-                        <option value="Healthcare">Healthcare</option>
-                        <option value="Technology">Technology</option>
-                        <option value="Retail">Retail</option>
-                        <option value="Services">Services</option>
-                        <option value="Entertainment">Entertainment</option>
-                    </select>
-                    <button onclick="searchBusinesses()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                        Search Businesses
-                    </button>
-                </div>
-            `;
-            businessList.appendChild(searchForm);
-            
-            // Sample businesses
-            const businesses = [
-                {
-                    id: 1,
-                    name: "Silva Health Clinic",
-                    category: "Healthcare",
-                    description: "Comprehensive healthcare services with multilingual staff",
-                    location: "Budapest, Hungary",
-                    address: "Váci utca 45, 1056 Budapest",
-                    phone: "+36 1 234 5678",
-                    email: "info@silvahealth.hu",
-                    website: "www.silvahealth.hu",
-                    rating: 4.8,
-                    reviews: 156
-                },
-                {
-                    id: 2,
-                    name: "Giuseppe's Italian Restaurant",
-                    category: "Restaurant",
-                    description: "Authentic Italian cuisine in the heart of Rome",
-                    location: "Rome, Italy",
-                    address: "Via del Corso 123, 00186 Roma",
-                    phone: "+39 06 123 4567",
-                    email: "info@giuseppes.it",
-                    website: "www.giuseppes.it",
-                    rating: 4.9,
-                    reviews: 203
-                },
-                {
-                    id: 3,
-                    name: "TechStart Solutions",
-                    category: "Technology",
-                    description: "Digital solutions for small and medium businesses",
-                    location: "London, UK",
-                    address: "123 Tech Street, London SW1A 1AA",
-                    phone: "+44 20 7123 4567",
-                    email: "contact@techstart.co.uk",
-                    website: "www.techstart.co.uk",
-                    rating: 4.7,
-                    reviews: 89
-                },
-                {
-                    id: 4,
-                    name: "Bella Vista Hotel",
-                    category: "Hospitality",
-                    description: "Luxury accommodation with panoramic city views",
-                    location: "Barcelona, Spain",
-                    address: "Carrer de la Marina 456, 08013 Barcelona",
-                    phone: "+34 93 123 4567",
-                    email: "reservas@bellavista.es",
-                    website: "www.bellavista.es",
-                    rating: 4.6,
-                    reviews: 267
-                }
-            ];
-            
-            businesses.forEach(business => {
-                const businessCard = document.createElement('div');
-                businessCard.className = 'bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow';
-                businessCard.innerHTML = `
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h4 class="text-lg font-semibold text-gray-800">${business.name}</h4>
-                            <p class="text-blue-600 text-sm font-medium">${business.category}</p>
-                        </div>
-                        <div class="text-right">
-                            <div class="flex items-center gap-1">
-                                <i data-lucide="star" class="w-4 h-4 text-yellow-500"></i>
-                                <span class="text-sm font-medium">${business.rating}</span>
-                            </div>
-                            <p class="text-xs text-gray-500">${business.reviews} reviews</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4">${business.description}</p>
-                    <div class="space-y-2 text-sm text-gray-600 mb-4">
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="map-pin" class="w-4 h-4"></i>
-                            <span>${business.address}</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="phone" class="w-4 h-4"></i>
-                            <span>${business.phone}</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="mail" class="w-4 h-4"></i>
-                            <span>${business.email}</span>
-                        </div>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="callBusiness('${business.phone}')" class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700">
-                            Call
-                        </button>
-                        <button onclick="emailBusiness('${business.email}')" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">
-                            Email
-                        </button>
-                        <button onclick="visitWebsite('${business.website}')" class="bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700">
-                            Website
-                        </button>
-                        <button onclick="getDirections('${business.address}')" class="bg-gray-600 text-white px-4 py-2 rounded text-sm hover:bg-gray-700">
-                            Directions
-                        </button>
-                    </div>
-                `;
-                businessList.appendChild(businessCard);
-            });
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
         }
         
-        function loadDailyNews() {
-            const newsList = document.getElementById('newsList');
-            
-            // News sources
-            const newsSources = [
-                { name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/rss.xml' },
-                { name: 'Reuters', url: 'https://feeds.reuters.com/reuters/topNews' },
-                { name: 'El País', url: 'https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/internacional/portada' },
-                { name: 'Le Monde', url: 'https://www.lemonde.fr/rss/une.xml' },
-                { name: 'Der Spiegel', url: 'https://www.spiegel.de/schlagzeilen/index.rss' }
-            ];
-            
-            // Sample news articles
-            const newsArticles = [
-                {
-                    title: "Global Health Initiative Launches New Community Program",
-                    summary: "International health organizations partner to improve community wellness across Europe...",
-                    source: "BBC Health",
-                    time: "2 hours ago",
-                    category: "Health",
-                    url: "#"
-                },
-                {
-                    title: "Tech Innovation Awards 2025 Announced",
-                    summary: "Leading technology companies recognized for breakthrough innovations in AI and sustainability...",
-                    source: "TechCrunch",
-                    time: "4 hours ago",
-                    category: "Technology",
-                    url: "#"
-                },
-                {
-                    title: "European Business Growth Report Shows Positive Trends",
-                    summary: "Small and medium enterprises across Europe report increased revenues and expansion plans...",
-                    source: "Financial Times",
-                    time: "6 hours ago",
-                    category: "Business",
-                    url: "#"
-                },
-                {
-                    title: "Community Development Projects Approved in Multiple Cities",
-                    summary: "Local governments approve funding for infrastructure and social development initiatives...",
-                    source: "Local News Network",
-                    time: "8 hours ago",
-                    category: "Community",
-                    url: "#"
-                }
-            ];
-            
-            // News filter
-            const newsFilter = document.createElement('div');
-            newsFilter.className = 'bg-white p-6 rounded-lg shadow mb-6';
-            newsFilter.innerHTML = `
-                <h3 class="text-lg font-semibold mb-4">News Categories</h3>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="filterNews('all')" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">
-                        All News
-                    </button>
-                    <button onclick="filterNews('health')" class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700">
-                        Health
-                    </button>
-                    <button onclick="filterNews('technology')" class="bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700">
-                        Technology
-                    </button>
-                    <button onclick="filterNews('business')" class="bg-yellow-600 text-white px-4 py-2 rounded text-sm hover:bg-yellow-700">
-                        Business
-                    </button>
-                    <button onclick="filterNews('community')" class="bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700">
-                        Community
-                    </button>
-                </div>
-            `;
-            newsList.appendChild(newsFilter);
-            
-            newsArticles.forEach(article => {
-                const newsCard = document.createElement('div');
-                newsCard.className = 'bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer';
-                newsCard.innerHTML = `
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex-1">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-2">${article.title}</h4>
-                            <p class="text-gray-600 text-sm mb-3">${article.summary}</p>
-                            <div class="flex items-center gap-4 text-sm text-gray-500">
-                                <span class="flex items-center gap-1">
-                                    <i data-lucide="globe" class="w-4 h-4"></i>
-                                    ${article.source}
-                                </span>
-                                <span class="flex items-center gap-1">
-                                    <i data-lucide="clock" class="w-4 h-4"></i>
-                                    ${article.time}
-                                </span>
-                            </div>
-                        </div>
-                        <span class="bg-${getCategoryColor(article.category)}-100 text-${getCategoryColor(article.category)}-800 px-3 py-1 rounded-full text-xs font-medium">
-                            ${article.category}
-                        </span>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="readArticle('${article.url}')" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">
-                            Read More
-                        </button>
-                        <button onclick="shareArticle('${article.title}')" class="bg-gray-100 text-gray-700 px-4 py-2 rounded text-sm hover:bg-gray-200">
-                            Share
-                        </button>
-                    </div>
-                `;
-                newsList.appendChild(newsCard);
-            });
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
         }
         
-        function loadBlogPosts() {
-            const blogList = document.getElementById('blogList');
-            
-            // Blog creation form
-            const blogForm = document.createElement('div');
-            blogForm.className = 'bg-white p-6 rounded-lg shadow mb-6';
-            blogForm.innerHTML = `
-                <h3 class="text-lg font-semibold mb-4">Write Blog Post</h3>
-                <div class="space-y-4">
-                    <input type="text" id="blogTitle" placeholder="Blog post title..." class="w-full p-3 border rounded-lg">
-                    <select id="blogCategory" class="w-full p-3 border rounded-lg">
-                        <option value="Health">Health & Wellness</option>
-                        <option value="Business">Business & Entrepreneurship</option>
-                        <option value="Technology">Technology & Innovation</option>
-                        <option value="Travel">Travel & Culture</option>
-                        <option value="Lifestyle">Lifestyle & Personal Development</option>
-                        <option value="Community">Community Stories</option>
-                    </select>
-                    <textarea id="blogContent" placeholder="Write your blog post content here..." class="w-full p-3 border rounded-lg h-32"></textarea>
-                    <div class="flex gap-2">
-                        <button onclick="createBlogPost()" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700">
-                            Publish Post
-                        </button>
-                        <button onclick="saveDraft()" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700">
-                            Save Draft
-                        </button>
-                    </div>
-                </div>
-            `;
-            blogList.appendChild(blogForm);
-            
-            // Sample blog posts
-            const blogPosts = [
-                {
-                    title: "Starting a Successful Local Business in Europe",
-                    excerpt: "Key insights and practical tips for entrepreneurs looking to establish their business in European markets...",
-                    category: "Business",
-                    author: "Elena Rodriguez",
-                    date: "2 days ago",
-                    likes: 45,
-                    comments: 12
-                },
-                {
-                    title: "Health and Wellness Trends for 2025",
-                    excerpt: "Exploring the latest developments in preventive healthcare and wellness practices across communities...",
-                    category: "Health",
-                    author: "Dr. Michael Chen",
-                    date: "4 days ago",
-                    likes: 67,
-                    comments: 23
-                },
-                {
-                    title: "Digital Transformation for Small Businesses",
-                    excerpt: "How small businesses can leverage technology to compete in the digital marketplace...",
-                    category: "Technology",
-                    author: "Sarah Johnson",
-                    date: "1 week ago",
-                    likes: 34,
-                    comments: 8
-                }
-            ];
-            
-            blogPosts.forEach(post => {
-                const blogCard = document.createElement('div');
-                blogCard.className = 'bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow';
-                blogCard.innerHTML = `
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="bg-${getCategoryColor(post.category)}-100 text-${getCategoryColor(post.category)}-800 px-3 py-1 rounded-full text-xs font-medium">
-                            ${post.category}
-                        </span>
-                        <span class="text-sm text-gray-500">${post.date}</span>
-                    </div>
-                    <h4 class="text-lg font-semibold text-gray-800 mb-2">${post.title}</h4>
-                    <p class="text-gray-600 text-sm mb-4">${post.excerpt}</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4 text-sm text-gray-500">
-                            <span class="flex items-center gap-1">
-                                <i data-lucide="user" class="w-4 h-4"></i>
-                                ${post.author}
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <i data-lucide="heart" class="w-4 h-4"></i>
-                                ${post.likes}
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <i data-lucide="message-circle" class="w-4 h-4"></i>
-                                ${post.comments}
-                            </span>
-                        </div>
-                        <button onclick="readBlogPost('${post.title}')" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">
-                            Read More
-                        </button>
-                    </div>
-                `;
-                blogList.appendChild(blogCard);
-            });
+        .nav-links a:hover {
+            color: #667eea;
         }
         
-        // Helper functions
-        function getCategoryColor(category) {
-            const colors = {
-                'Health': 'green',
-                'Business': 'blue',
-                'Technology': 'purple',
-                'Community': 'yellow',
-                'Travel': 'red',
-                'Food': 'orange',
-                'General': 'gray'
-            };
-            return colors[category] || 'gray';
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
         
-        // Action functions
-        window.createDiscussion = () => {
-            const title = document.getElementById('discussionTitle').value;
-            const content = document.getElementById('discussionContent').value;
-            const category = document.getElementById('discussionCategory').value;
-            
-            if (!title || !content) {
-                alert('Please fill in title and content');
-                return;
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .card p {
+            margin-bottom: 1.5rem;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .auth-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .connection-status {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .connected {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .disconnected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+            color: #666;
+        }
+        
+        .business-value {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .business-value h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .revenue-highlight {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
             }
             
-            alert(`Discussion "${title}" created successfully!`);
-            document.getElementById('discussionTitle').value = '';
-            document.getElementById('discussionContent').value = '';
-        };
-        
-        window.createShop = () => {
-            const name = document.getElementById('shopName').value;
-            const description = document.getElementById('shopDescription').value;
-            const category = document.getElementById('shopCategory').value;
-            
-            if (!name || !description) {
-                alert('Please fill in shop name and description');
-                return;
+            .nav-links {
+                display: none;
             }
             
-            alert(`Shop "${name}" created successfully!`);
-            document.getElementById('shopName').value = '';
-            document.getElementById('shopDescription').value = '';
-        };
-        
-        window.createBlogPost = () => {
-            const title = document.getElementById('blogTitle').value;
-            const content = document.getElementById('blogContent').value;
-            const category = document.getElementById('blogCategory').value;
-            
-            if (!title || !content) {
-                alert('Please fill in title and content');
-                return;
+            .cards {
+                grid-template-columns: 1fr;
             }
             
-            alert(`Blog post "${title}" published successfully!`);
-            document.getElementById('blogTitle').value = '';
-            document.getElementById('blogContent').value = '';
-        };
-        
-        window.joinDiscussion = (id) => {
-            alert(`Joining discussion ${id}...`);
-        };
-        
-        window.visitShop = (id) => {
-            alert(`Visiting shop ${id}...`);
-        };
-        
-        window.callBusiness = (phone) => {
-            window.open(`tel:${phone}`);
-        };
-        
-        window.emailBusiness = (email) => {
-            window.open(`mailto:${email}`);
-        };
-        
-        window.visitWebsite = (website) => {
-            window.open(`https://${website}`, '_blank');
-        };
-        
-        window.getDirections = (address) => {
-            window.open(`https://maps.google.com/maps?q=${encodeURIComponent(address)}`, '_blank');
-        };
-        
-        window.logout = () => {
-            auth.signOut().then(() => {
-                showLogin();
-            });
-        };
-        
-        // Profile Functions
-        window.uploadCarouselImage = () => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.className = 'w-32 h-32 object-cover rounded-lg border-2 border-gray-200';
-                        img.alt = 'Profile Image';
-                        
-                        const container = document.createElement('div');
-                        container.className = 'min-w-0 flex-shrink-0';
-                        container.appendChild(img);
-                        
-                        const carousel = document.getElementById('carouselImages');
-                        carousel.insertBefore(container, carousel.lastElementChild);
-                        
-                        alert('Image uploaded successfully!');
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
-            input.click();
-        };
-        
-        window.createProfilePost = () => {
-            const content = document.getElementById('profilePostContent').value;
-            if (!content) {
-                alert('Please enter some content for your post');
-                return;
+            .container {
+                padding: 1rem;
             }
-            
-            const post = document.createElement('div');
-            post.className = 'bg-white p-6 rounded-lg shadow';
-            post.innerHTML = `
-                <div class="flex items-center mb-4">
-                    <img class="w-10 h-10 rounded-full mr-3" src="${currentUser.photoURL || '/api/placeholder/40/40'}" alt="User">
-                    <div>
-                        <p class="font-semibold">${currentUser.displayName || 'User'}</p>
-                        <p class="text-sm text-gray-500">Just now</p>
-                    </div>
-                </div>
-                <p class="mb-4">${content}</p>
-                <div class="flex items-center gap-4 text-sm text-gray-500">
-                    <button class="flex items-center gap-1 hover:text-blue-600">
-                        <i data-lucide="heart" class="w-4 h-4"></i>
-                        <span>Like</span>
-                    </button>
-                    <button class="flex items-center gap-1 hover:text-blue-600">
-                        <i data-lucide="message-circle" class="w-4 h-4"></i>
-                        <span>Comment</span>
-                    </button>
-                    <button class="flex items-center gap-1 hover:text-blue-600">
-                        <i data-lucide="share" class="w-4 h-4"></i>
-                        <span>Share</span>
-                    </button>
-                </div>
-            `;
-            
-            const feed = document.getElementById('profileWallFeed');
-            feed.insertBefore(post, feed.firstChild);
-            
-            document.getElementById('profilePostContent').value = '';
-            lucide.createIcons();
-            alert('Post created successfully!');
-        };
-        
-        window.uploadProfilePhoto = () => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    alert('Photo uploaded successfully!');
-                }
-            };
-            input.click();
-        };
-        
-        window.uploadProfileVideo = () => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'video/*';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    alert('Video uploaded successfully!');
-                }
-            };
-            input.click();
-        };
-        
-        // Email Campaign Functions
-        window.viewEmailContent = (campaignId) => {
-            const emailContent = {
-                11: `
-                    <h3>The Corner Bakery London Campaign</h3>
-                    <p><strong>Subject:</strong> 🚀 Exclusive London Advertising Opportunity - £24/Year</p>
-                    <p><strong>Sent:</strong> June 23, 2025</p>
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                        <h4>Campaign Details:</h4>
-                        <ul>
-                            <li>Growing Community: Thousands of engaged users in your area</li>
-                            <li>Local Targeting: Reach customers specifically in London</li>
-                            <li>Carousel Advertising: Premium rotating banner placement</li>
-                            <li>Business Profile: Dedicated storefront with map integration</li>
-                        </ul>
-                        <p><strong>Special Launch Pricing: Only £24 per year</strong></p>
-                    </div>
-                `,
-                12: `
-                    <h3>Royal Bakery Express Campaign</h3>
-                    <p><strong>Subject:</strong> 🚀 Exclusive London Advertising Opportunity - £24/Year</p>
-                    <p><strong>Sent:</strong> June 23, 2025</p>
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                        <h4>Campaign Details:</h4>
-                        <ul>
-                            <li>Growing Community: Thousands of engaged users in your area</li>
-                            <li>Local Targeting: Reach customers specifically in London</li>
-                            <li>Carousel Advertising: Premium rotating banner placement</li>
-                            <li>Business Profile: Dedicated storefront with map integration</li>
-                        </ul>
-                        <p><strong>Special Launch Pricing: Only £24 per year</strong></p>
-                    </div>
-                `,
-                13: `
-                    <h3>Golden Bread Co Campaign</h3>
-                    <p><strong>Subject:</strong> 🚀 Exclusive London Advertising Opportunity - £24/Year</p>
-                    <p><strong>Sent:</strong> June 23, 2025</p>
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                        <h4>Campaign Details:</h4>
-                        <ul>
-                            <li>Growing Community: Thousands of engaged users in your area</li>
-                            <li>Local Targeting: Reach customers specifically in London</li>
-                            <li>Carousel Advertising: Premium rotating banner placement</li>
-                            <li>Business Profile: Dedicated storefront with map integration</li>
-                        </ul>
-                        <p><strong>Special Launch Pricing: Only £24 per year</strong></p>
-                    </div>
-                `
-            };
-            
-            const content = emailContent[campaignId] || 'Email content not found';
-            const popup = window.open('', '_blank', 'width=600,height=400');
-            popup.document.write(`
-                <html>
-                <head>
-                    <title>Email Campaign Content</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; }
-                        h3 { color: #333; }
-                        ul { padding-left: 20px; }
-                        li { margin: 5px 0; }
-                    </style>
-                </head>
-                <body>
-                    ${content}
-                </body>
-                </html>
-            `);
-        };
-        
-        window.trackEmailResponse = (campaignId) => {
-            alert(`Tracking email response for campaign ${campaignId}...`);
-        };
-        
-        // Social Invite Functions
-        window.startInviteCampaign = () => {
-            alert('🚀 Social invite campaign started! Targeting 26+ platforms with 700+ daily invites.');
-        };
-        
-        window.pauseInviteCampaign = () => {
-            alert('⏸️ Social invite campaign paused.');
-        };
-        
-        window.viewInviteAnalytics = () => {
-            alert('📊 Opening invite analytics dashboard...');
-        };
-        
-        // Initialize Lucide icons
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-        });
-    </script>
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Login Section -->
-    <div id="loginSection" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
-        <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg">
-            <div class="text-center">
-                <h2 class="text-3xl font-bold text-gray-900 mb-2">Yogull Business Platform</h2>
-                <p class="text-gray-600">Connect • Discover • Grow</p>
-                <p class="text-sm text-gray-500 mt-2">Complete business directory, social networking, news, and personal shops</p>
-            </div>
-            
-            <div class="space-y-4">
-                <button onclick="signInWithGoogle()" class="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700">
-                    <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                        <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                    </svg>
-                    Sign in with Google
-                </button>
-                
-                <button onclick="signInWithFacebook()" class="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
-                    Sign in with Facebook
-                </button>
-                
-                <button onclick="signInWithTwitter()" class="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                    </svg>
-                    Sign in with Twitter
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Platform -->
-    <div id="mainPlatform" class="min-h-screen bg-gray-50" style="display: none;">
-        <!-- Header -->
-        <header class="bg-white shadow-sm border-b sticky top-0 z-40">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center py-4">
-                    <div class="flex items-center">
-                        <h1 class="text-2xl font-bold text-gray-900">Yogull</h1>
-                        <span class="ml-2 text-sm bg-green-100 text-green-800 px-2 py-1 rounded-full">Live</span>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <img id="userPhoto" class="w-8 h-8 rounded-full" src="/api/placeholder/32/32" alt="User" />
-                        <div class="text-right">
-                            <div id="userName" class="text-gray-700 font-medium text-sm"></div>
-                            <div id="userEmail" class="text-gray-500 text-xs"></div>
-                        </div>
-                        <button onclick="logout()" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Logout</button>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Navigation -->
-        <nav class="bg-blue-600 text-white sticky top-16 z-30">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex space-x-8 py-3 overflow-x-auto">
-                    <button onclick="showPage('dashboard')" class="nav-button flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded bg-blue-700 whitespace-nowrap">
-                        <i data-lucide="home" class="w-4 h-4"></i>
-                        <span>Dashboard</span>
-                    </button>
-                    <button onclick="showPage('community')" class="nav-button flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded whitespace-nowrap">
-                        <i data-lucide="users" class="w-4 h-4"></i>
-                        <span>Community</span>
-                    </button>
-                    <button onclick="showPage('profile')" class="nav-button flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded whitespace-nowrap">
-                        <i data-lucide="user" class="w-4 h-4"></i>
-                        <span>Profile</span>
-                    </button>
-                    <button onclick="showPage('blog')" class="nav-button flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded whitespace-nowrap">
-                        <i data-lucide="edit" class="w-4 h-4"></i>
-                        <span>Blog</span>
-                    </button>
-                    <button onclick="showPage('news')" class="nav-button flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded whitespace-nowrap">
-                        <i data-lucide="newspaper" class="w-4 h-4"></i>
-                        <span>Daily News</span>
-                    </button>
-                    <button onclick="showPage('business')" class="nav-button flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded whitespace-nowrap">
-                        <i data-lucide="building" class="w-4 h-4"></i>
-                        <span>Business Directory</span>
-                    </button>
-                    <button onclick="showPage('shops')" class="nav-button flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded whitespace-nowrap">
-                        <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-                        <span>Personal Shops</span>
-                    </button>
-                    <button onclick="showPage('email')" class="nav-button flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded whitespace-nowrap">
-                        <i data-lucide="mail" class="w-4 h-4"></i>
-                        <span>Email Campaigns</span>
-                    </button>
-                    <button onclick="showPage('invites')" class="nav-button flex items-center space-x-2 hover:bg-blue-700 px-3 py-2 rounded whitespace-nowrap">
-                        <i data-lucide="users-plus" class="w-4 h-4"></i>
-                        <span>Social Invites</span>
-                    </button>
-                </div>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo">🌟 Yogull Platform</a>
+            <div class="nav-links">
+                <a href="#community">Community</a>
+                <a href="#business">Business</a>
+                <a href="#shops">Shops</a>
+                <a href="#about">About</a>
             </div>
         </nav>
-
-        <!-- Dashboard Section -->
-        <div id="dashboardSection" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-8">Platform Dashboard</h2>
-            
-            <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-blue-100 rounded-lg">
-                            <i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Total Members</p>
-                            <p class="text-2xl font-bold text-gray-900">25</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-green-100 rounded-lg">
-                            <i data-lucide="message-circle" class="w-6 h-6 text-green-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Active Discussions</p>
-                            <p class="text-2xl font-bold text-gray-900">1,225</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-purple-100 rounded-lg">
-                            <i data-lucide="building" class="w-6 h-6 text-purple-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Local Businesses</p>
-                            <p class="text-2xl font-bold text-gray-900">107</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-yellow-100 rounded-lg">
-                            <i data-lucide="pound-sterling" class="w-6 h-6 text-yellow-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Annual Revenue Potential</p>
-                            <p class="text-2xl font-bold text-gray-900">£5,784</p>
-                        </div>
-                    </div>
-                </div>
+    </header>
+    
+    <div class="container">
+        <section class="hero">
+            <h1>Welcome to Yogull Platform</h1>
+            <p>The complete social media and business networking platform</p>
+            <div id="connectionStatus" class="connection-status">🔄 Connecting to database...</div>
+        </section>
+        
+        <section class="business-value">
+            <h2>🚀 Revenue-Ready Platform</h2>
+            <div class="revenue-highlight">
+                Potential Annual Revenue: £5,784 from 241 businesses
             </div>
-            
-            <!-- Platform Overview -->
-            <div class="bg-white p-6 rounded-lg shadow mb-8">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Welcome to Yogull Business Platform</h3>
-                <p class="text-gray-600 mb-4">
-                    Your comprehensive business and social networking platform featuring community discussions, 
-                    personal blogging, daily news, business directory, and personal affiliate shops.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-3">
-                        <div class="flex items-center">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2"></i>
-                            <span class="text-sm">Community Discussions with Multilingual Support</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2"></i>
-                            <span class="text-sm">Personal Blogging Platform</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2"></i>
-                            <span class="text-sm">Daily News from International Sources</span>
-                        </div>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="flex items-center">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2"></i>
-                            <span class="text-sm">Business Directory with Location Search</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2"></i>
-                            <span class="text-sm">Personal Affiliate Shop System</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-2"></i>
-                            <span class="text-sm">Revenue Generation Opportunities</span>
-                        </div>
-                    </div>
-                </div>
+            <p>Complete business ecosystem with affiliate shops, local directory, and community engagement</p>
+        </section>
+        
+        <section class="cards" id="features">
+            <div class="card">
+                <h3>🏘️ Community Hub</h3>
+                <p>Join discussions and connect with people worldwide. Share ideas, get support, and build meaningful relationships in our vibrant community.</p>
+                <button class="btn" onclick="showCommunity()">Join Community</button>
             </div>
-        </div>
-
-        <!-- Profile Section -->
-        <div id="profileSection" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style="display: none;">
-            <h2 class="text-3xl font-bold text-gray-900 mb-8">My Profile Wall</h2>
-            
-            <!-- Carousel Images Section -->
-            <div class="bg-white p-6 rounded-lg shadow mb-6">
-                <h3 class="text-lg font-semibold mb-4">Profile Carousel Images</h3>
-                <div id="carouselContainer" class="relative">
-                    <!-- Carousel will be loaded here -->
-                    <div class="flex space-x-4 overflow-x-auto pb-4" id="carouselImages">
-                        <div class="min-w-0 flex-shrink-0">
-                            <img src="data:image/jpeg;base64,/9j/4RanRXhpZgAATU0AKgAAAAgAEAEAAAQAAAABAAAJAAEBAAQAAAABAAAP8IKYAAIAAAABAAAAAAEoAAMAAAABAAIAAAEOAAIAAAABAAAAAAEPAAIAAAAKAAAAzgEQAAIAAAAIAAAA2AExAAIAAAABAAAAAAESAAMAAAABAAEAAIdpAAQAAAABAAABBIglAAQAAAABAAADAQEaAAUAAAABAAAA9AE7AAIAAAABAAAAAAEbAAUAAAABAAAA/AAAA/dCbGFja3ZpZXcAQ09MT1IgOA..." class="w-32 h-32 object-cover rounded-lg border-2 border-gray-200" alt="Profile Image 1">
-                        </div>
-                        <div class="min-w-0 flex-shrink-0">
-                            <div class="w-32 h-32 bg-gray-200 rounded-lg border-2 border-dashed border-gray-400 flex items-center justify-center cursor-pointer hover:bg-gray-300" onclick="uploadCarouselImage()">
-                                <i data-lucide="plus" class="w-8 h-8 text-gray-600"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="card">
+                <h3>🏢 Business Directory</h3>
+                <p>Find local businesses and services in your area. Connect with business owners and discover new opportunities in your community.</p>
+                <button class="btn" onclick="showBusiness()">Browse Businesses</button>
             </div>
-            
-            <!-- Profile Wall Posts -->
-            <div class="bg-white p-6 rounded-lg shadow mb-6">
-                <h3 class="text-lg font-semibold mb-4">Create Post</h3>
-                <div class="space-y-4">
-                    <textarea id="profilePostContent" placeholder="What's on your mind?" class="w-full p-3 border rounded-lg h-24"></textarea>
-                    <div class="flex gap-2">
-                        <button onclick="createProfilePost()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                            Post
-                        </button>
-                        <button onclick="uploadProfilePhoto()" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2">
-                            <i data-lucide="camera" class="w-4 h-4"></i>
-                            Photo
-                        </button>
-                        <button onclick="uploadProfileVideo()" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 flex items-center gap-2">
-                            <i data-lucide="video" class="w-4 h-4"></i>
-                            Video
-                        </button>
-                    </div>
-                </div>
+            <div class="card">
+                <h3>🛍️ Personal Shops</h3>
+                <p>Create your own affiliate shop and start earning money. We provide everything you need to build a successful online business.</p>
+                <button class="btn" onclick="showShop()">Start Earning</button>
             </div>
-            
-            <!-- Profile Wall Feed -->
-            <div id="profileWallFeed" class="space-y-4">
-                <!-- Existing posts from database -->
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center mb-4">
-                        <img class="w-10 h-10 rounded-full mr-3" src="/api/placeholder/40/40" alt="User">
-                        <div>
-                            <p class="font-semibold">John Proctor</p>
-                            <p class="text-sm text-gray-500">2 days ago</p>
-                        </div>
-                    </div>
-                    <p class="mb-4">Testing the video upload system! 🎥</p>
-                    <div class="flex items-center gap-4 text-sm text-gray-500">
-                        <button class="flex items-center gap-1 hover:text-blue-600">
-                            <i data-lucide="heart" class="w-4 h-4"></i>
-                            <span>2 likes</span>
-                        </button>
-                        <button class="flex items-center gap-1 hover:text-blue-600">
-                            <i data-lucide="message-circle" class="w-4 h-4"></i>
-                            <span>Comment</span>
-                        </button>
-                        <button class="flex items-center gap-1 hover:text-blue-600">
-                            <i data-lucide="share" class="w-4 h-4"></i>
-                            <span>Share</span>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center mb-4">
-                        <img class="w-10 h-10 rounded-full mr-3" src="/api/placeholder/40/40" alt="User">
-                        <div>
-                            <p class="font-semibold">John Proctor</p>
-                            <p class="text-sm text-gray-500">3 days ago</p>
-                        </div>
-                    </div>
-                    <p class="mb-4">Camper to work on today</p>
-                    <div class="flex items-center gap-4 text-sm text-gray-500">
-                        <button class="flex items-center gap-1 hover:text-blue-600">
-                            <i data-lucide="heart" class="w-4 h-4"></i>
-                            <span>Like</span>
-                        </button>
-                        <button class="flex items-center gap-1 hover:text-blue-600">
-                            <i data-lucide="message-circle" class="w-4 h-4"></i>
-                            <span>Comment</span>
-                        </button>
-                        <button class="flex items-center gap-1 hover:text-blue-600">
-                            <i data-lucide="share" class="w-4 h-4"></i>
-                            <span>Share</span>
-                        </button>
-                    </div>
-                </div>
+            <div class="card">
+                <h3>💬 Chat & Connect</h3>
+                <p>Real-time messaging with community members. Build professional networks and personal connections.</p>
+                <button class="btn" onclick="showChat()">Start Chatting</button>
             </div>
-        </div>
-
-        <!-- Community Section -->
-        <div id="communitySection" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style="display: none;">
-            <h2 class="text-3xl font-bold text-gray-900 mb-8">Community Discussions</h2>
-            <div id="discussionsList" class="space-y-4">
-                <!-- Discussions will be loaded here -->
+            <div class="card">
+                <h3>📊 Analytics</h3>
+                <p>Track your business performance, community engagement, and earnings with detailed analytics and insights.</p>
+                <button class="btn" onclick="showAnalytics()">View Analytics</button>
             </div>
-        </div>
-
-        <!-- Blog Section -->
-        <div id="blogSection" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style="display: none;">
-            <h2 class="text-3xl font-bold text-gray-900 mb-8">Communication Blog</h2>
-            <div id="blogList" class="space-y-4">
-                <!-- Blog posts will be loaded here -->
+            <div class="card">
+                <h3>🎯 Local Targeting</h3>
+                <p>Connect with businesses and people in your specific area. Location-based discovery and networking.</p>
+                <button class="btn" onclick="showLocal()">Find Local</button>
             </div>
-        </div>
-
-        <!-- News Section -->
-        <div id="newsSection" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style="display: none;">
-            <h2 class="text-3xl font-bold text-gray-900 mb-8">Daily News</h2>
-            <div id="newsList" class="space-y-4">
-                <!-- News will be loaded here -->
+        </section>
+        
+        <section class="auth-section" id="auth">
+            <h3>👤 Create Account or Sign In</h3>
+            <p>Join thousands of users already building their networks and earning money on Yogull Platform</p>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email address">
             </div>
-        </div>
-
-        <!-- Business Directory Section -->
-        <div id="businessSection" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style="display: none;">
-            <h2 class="text-3xl font-bold text-gray-900 mb-8">Business Directory</h2>
-            <div id="businessList" class="space-y-4">
-                <!-- Businesses will be loaded here -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
             </div>
-        </div>
-
-        <!-- Personal Shops Section -->
-        <div id="shopsSection" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style="display: none;">
-            <h2 class="text-3xl font-bold text-gray-900 mb-8">Personal Affiliate Shops</h2>
-            <div id="shopsList" class="space-y-4">
-                <!-- Shops will be loaded here -->
-            </div>
-        </div>
-
-        <!-- Email Campaigns Section -->
-        <div id="emailSection" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style="display: none;">
-            <h2 class="text-3xl font-bold text-gray-900 mb-8">Email Campaigns Database</h2>
-            
-            <!-- Campaign Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-blue-100 rounded-lg">
-                            <i data-lucide="mail" class="w-6 h-6 text-blue-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Total Campaigns</p>
-                            <p class="text-2xl font-bold text-gray-900">3</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-green-100 rounded-lg">
-                            <i data-lucide="send" class="w-6 h-6 text-green-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Emails Sent</p>
-                            <p class="text-2xl font-bold text-gray-900">3</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-yellow-100 rounded-lg">
-                            <i data-lucide="pound-sterling" class="w-6 h-6 text-yellow-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Potential Revenue</p>
-                            <p class="text-2xl font-bold text-gray-900">£72</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-purple-100 rounded-lg">
-                            <i data-lucide="target" class="w-6 h-6 text-purple-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Target Businesses</p>
-                            <p class="text-2xl font-bold text-gray-900">London</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Email Campaign List -->
-            <div class="bg-white rounded-lg shadow">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold">Recent Email Campaigns</h3>
-                </div>
-                <div class="divide-y divide-gray-200">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <div>
-                                <h4 class="text-lg font-semibold">🚀 Exclusive London Advertising Opportunity - £24/Year</h4>
-                                <p class="text-sm text-gray-600">The Corner Bakery London</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Sent</span>
-                                <p class="text-sm text-gray-500 mt-1">Jun 23, 2025</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-4">
-                            Great news! We've selected your business for a premium advertising opportunity on our rapidly growing community platform...
-                        </p>
-                        <div class="flex gap-2">
-                            <button onclick="viewEmailContent(11)" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">
-                                View Content
-                            </button>
-                            <button onclick="trackEmailResponse(11)" class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700">
-                                Track Response
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <div>
-                                <h4 class="text-lg font-semibold">🚀 Exclusive London Advertising Opportunity - £24/Year</h4>
-                                <p class="text-sm text-gray-600">Royal Bakery Express</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Sent</span>
-                                <p class="text-sm text-gray-500 mt-1">Jun 23, 2025</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-4">
-                            Great news! We've selected your business for a premium advertising opportunity on our rapidly growing community platform...
-                        </p>
-                        <div class="flex gap-2">
-                            <button onclick="viewEmailContent(12)" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">
-                                View Content
-                            </button>
-                            <button onclick="trackEmailResponse(12)" class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700">
-                                Track Response
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <div>
-                                <h4 class="text-lg font-semibold">🚀 Exclusive London Advertising Opportunity - £24/Year</h4>
-                                <p class="text-sm text-gray-600">Golden Bread Co</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Sent</span>
-                                <p class="text-sm text-gray-500 mt-1">Jun 23, 2025</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-4">
-                            Great news! We've selected your business for a premium advertising opportunity on our rapidly growing community platform...
-                        </p>
-                        <div class="flex gap-2">
-                            <button onclick="viewEmailContent(13)" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">
-                                View Content
-                            </button>
-                            <button onclick="trackEmailResponse(13)" class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700">
-                                Track Response
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Social Invites Section -->
-        <div id="invitesSection" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style="display: none;">
-            <h2 class="text-3xl font-bold text-gray-900 mb-8">Social Media Invites System</h2>
-            
-            <!-- Invite Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-blue-100 rounded-lg">
-                            <i data-lucide="users-plus" class="w-6 h-6 text-blue-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Daily Invite Capacity</p>
-                            <p class="text-2xl font-bold text-gray-900">700+</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-green-100 rounded-lg">
-                            <i data-lucide="globe" class="w-6 h-6 text-green-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Platforms Covered</p>
-                            <p class="text-2xl font-bold text-gray-900">26+</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-yellow-100 rounded-lg">
-                            <i data-lucide="clock" class="w-6 h-6 text-yellow-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Automation Cycle</p>
-                            <p class="text-2xl font-bold text-gray-900">2 Hours</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="flex items-center">
-                        <div class="p-2 bg-purple-100 rounded-lg">
-                            <i data-lucide="target" class="w-6 h-6 text-purple-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Target Groups</p>
-                            <p class="text-2xl font-bold text-gray-900">8</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Platform Coverage -->
-            <div class="bg-white p-6 rounded-lg shadow mb-6">
-                <h3 class="text-lg font-semibold mb-4">Social Media Platform Coverage</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <div class="text-center p-3 bg-blue-50 rounded-lg">
-                        <div class="text-2xl mb-2">📘</div>
-                        <div class="text-sm font-medium">Facebook</div>
-                        <div class="text-xs text-gray-600">20/day</div>
-                    </div>
-                    <div class="text-center p-3 bg-blue-50 rounded-lg">
-                        <div class="text-2xl mb-2">🐦</div>
-                        <div class="text-sm font-medium">Twitter</div>
-                        <div class="text-xs text-gray-600">30/day</div>
-                    </div>
-                    <div class="text-center p-3 bg-pink-50 rounded-lg">
-                        <div class="text-2xl mb-2">📷</div>
-                        <div class="text-sm font-medium">Instagram</div>
-                        <div class="text-xs text-gray-600">25/day</div>
-                    </div>
-                    <div class="text-center p-3 bg-blue-50 rounded-lg">
-                        <div class="text-2xl mb-2">💼</div>
-                        <div class="text-sm font-medium">LinkedIn</div>
-                        <div class="text-xs text-gray-600">15/day</div>
-                    </div>
-                    <div class="text-center p-3 bg-green-50 rounded-lg">
-                        <div class="text-2xl mb-2">💬</div>
-                        <div class="text-sm font-medium">WhatsApp</div>
-                        <div class="text-xs text-gray-600">50/day</div>
-                    </div>
-                    <div class="text-center p-3 bg-blue-50 rounded-lg">
-                        <div class="text-2xl mb-2">✈️</div>
-                        <div class="text-sm font-medium">Telegram</div>
-                        <div class="text-xs text-gray-600">40/day</div>
-                    </div>
-                    <div class="text-center p-3 bg-purple-50 rounded-lg">
-                        <div class="text-2xl mb-2">🎮</div>
-                        <div class="text-sm font-medium">Discord</div>
-                        <div class="text-xs text-gray-600">45/day</div>
-                    </div>
-                    <div class="text-center p-3 bg-yellow-50 rounded-lg">
-                        <div class="text-2xl mb-2">👻</div>
-                        <div class="text-sm font-medium">Snapchat</div>
-                        <div class="text-xs text-gray-600">30/day</div>
-                    </div>
-                    <div class="text-center p-3 bg-red-50 rounded-lg">
-                        <div class="text-2xl mb-2">📌</div>
-                        <div class="text-sm font-medium">Pinterest</div>
-                        <div class="text-xs text-gray-600">40/day</div>
-                    </div>
-                    <div class="text-center p-3 bg-blue-50 rounded-lg">
-                        <div class="text-2xl mb-2">📝</div>
-                        <div class="text-sm font-medium">Reddit</div>
-                        <div class="text-xs text-gray-600">35/day</div>
-                    </div>
-                    <div class="text-center p-3 bg-black rounded-lg text-white">
-                        <div class="text-2xl mb-2">🎵</div>
-                        <div class="text-sm font-medium">TikTok</div>
-                        <div class="text-xs text-gray-300">50/day</div>
-                    </div>
-                    <div class="text-center p-3 bg-red-50 rounded-lg">
-                        <div class="text-2xl mb-2">📺</div>
-                        <div class="text-sm font-medium">YouTube</div>
-                        <div class="text-xs text-gray-600">30/day</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Invite Controls -->
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="text-lg font-semibold mb-4">Invitation Management</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h4 class="font-medium mb-3">Quick Actions</h4>
-                        <div class="space-y-2">
-                            <button onclick="startInviteCampaign()" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                                🚀 Start Invite Campaign
-                            </button>
-                            <button onclick="pauseInviteCampaign()" class="w-full bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700">
-                                ⏸️ Pause Campaign
-                            </button>
-                            <button onclick="viewInviteAnalytics()" class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                                📊 View Analytics
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="font-medium mb-3">Target Groups</h4>
-                        <div class="space-y-2 text-sm">
-                            <div class="flex justify-between">
-                                <span>Health Professionals</span>
-                                <span class="text-green-600">Active</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Community Leaders</span>
-                                <span class="text-green-600">Active</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Creative Professionals</span>
-                                <span class="text-green-600">Active</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Tech Developers</span>
-                                <span class="text-green-600">Active</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Content Creators</span>
-                                <span class="text-green-600">Active</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <button class="btn" onclick="signUp()">Create Account</button>
+            <button class="btn" onclick="signIn()">Sign In</button>
+        </section>
     </div>
-
+    
+    <footer class="footer">
+        <p>&copy; 2024 Yogull Platform. Built for community, designed for success.</p>
+        <p>Professional social media platform with business networking and earning opportunities</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Initialize Lucide icons when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
+        // Initialize Supabase
+        const supabase = window.supabase.createClient(
+            'https://zuzriniobopqhgsfq.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1enJpbmlvYm9wcWhnc2ZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2NDk2NzcsImV4cCI6MjA2NzIyNTY3N30.jYqZkSpT2sdsWMed-k5LvJUl2-D6bMoJEMFNmOsWwF4'
+        );
+        
+        // Test database connection
+        async function testConnection() {
+            try {
+                const { data, error } = await supabase.from('users').select('count', { count: 'exact' });
+                if (error) throw error;
+                
+                document.getElementById('connectionStatus').textContent = '🟢 Connected to live database';
+                document.getElementById('connectionStatus').className = 'connection-status connected';
+                console.log('Database connection successful');
+            } catch (error) {
+                document.getElementById('connectionStatus').textContent = '❌ Database connection failed';
+                document.getElementById('connectionStatus').className = 'connection-status disconnected';
+                console.error('Database connection error:', error);
             }
+        }
+        
+        // User registration
+        async function signUp() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long');
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) throw error;
+                
+                alert('Account created successfully! Check your email for verification.');
+                
+                // Clear form
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                
+            } catch (error) {
+                alert('Error creating account: ' + error.message);
+            }
+        }
+        
+        // User login
+        async function signIn() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) throw error;
+                
+                alert('Signed in successfully! Welcome to Yogull Platform.');
+                
+                // Clear form
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                
+            } catch (error) {
+                alert('Error signing in: ' + error.message);
+            }
+        }
+        
+        // Feature functions
+        function showCommunity() {
+            alert('🏘️ Community Hub\n\nConnect with people worldwide, join discussions, and build meaningful relationships. Share your ideas and get support from our vibrant community.');
+        }
+        
+        function showBusiness() {
+            alert('🏢 Business Directory\n\nDiscover local businesses and services in your area. Connect with business owners and find new opportunities in your community.');
+        }
+        
+        function showShop() {
+            alert('🛍️ Personal Shops\n\nStart earning money with your own affiliate shop. We provide everything you need to build a successful online business with zero startup costs.');
+        }
+        
+        function showChat() {
+            alert('💬 Chat & Connect\n\nReal-time messaging with community members. Build professional networks and personal connections through our secure chat system.');
+        }
+        
+        function showAnalytics() {
+            alert('📊 Analytics Dashboard\n\nTrack your business performance, community engagement, and earnings with detailed analytics and insights.');
+        }
+        
+        function showLocal() {
+            alert('🎯 Local Targeting\n\nConnect with businesses and people in your specific area. Location-based discovery and networking for maximum local impact.');
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            testConnection();
+            console.log('Yogull Platform initialized successfully');
         });
     </script>
 </body>

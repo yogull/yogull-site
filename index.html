@@ -79,267 +79,169 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.15);
         }
         
-        .supplement-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: transform 0.2s ease;
-        }
-        
-        .supplement-card:hover {
-            transform: translateY(-2px);
-        }
-        
-        .metric-card {
-            background: var(--bg-primary);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-            transition: transform 0.2s ease;
-        }
-        
-        .metric-card:hover {
-            transform: translateY(-2px);
-        }
-        
-        .nav-button {
+        .btn-primary {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
+            padding: 0.75rem 2rem;
             border-radius: 0.5rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0.25rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
         
-        .nav-button:hover {
+        .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
         }
         
-        .nav-button.active {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-        }
-        
-        .section {
-            display: none;
-        }
-        
-        .section.active {
-            display: block;
-        }
-        
-        .health-progress {
-            width: 100%;
-            height: 8px;
-            background: var(--border);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .health-progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--success) 0%, #059669 100%);
-            transition: width 0.3s ease;
-        }
-        
-        .social-login-btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
+        .btn-secondary {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 2px solid var(--primary);
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            transition: all 0.2s ease;
         }
         
-        .google-btn {
-            background: #4285f4;
-            color: white;
-        }
-        
-        .facebook-btn {
-            background: #1877f2;
-            color: white;
-        }
-        
-        .twitter-btn {
-            background: #1da1f2;
-            color: white;
-        }
-        
-        .social-login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-        
-        .profile-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        
-        .supplement-status {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        
-        .taken {
-            background: #dcfce7;
-            color: #166534;
-        }
-        
-        .pending {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        
-        .overdue {
-            background: #fecaca;
-            color: #991b1b;
-        }
-        
-        /* Enhanced mobile responsiveness */
-        @media (max-width: 768px) {
-            .nav-button {
-                font-size: 14px;
-                padding: 0.5rem 1rem;
-            }
-            
-            .platform-card {
-                padding: 1rem;
-            }
-            
-            .dashboard-card {
-                padding: 1rem;
-            }
-        }
-        
-        /* Quick action buttons */
-        .action-btn {
+        .btn-secondary:hover {
             background: var(--primary);
             color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0.25rem;
-        }
-        
-        .action-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-        
-        .action-btn.success {
-            background: var(--success);
-        }
-        
-        .action-btn.warning {
-            background: var(--warning);
-        }
-        
-        .action-btn.danger {
-            background: var(--danger);
-        }
-        
-        .community-post {
-            background: var(--bg-primary);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-            margin-bottom: 1rem;
-            transition: transform 0.2s ease;
-        }
-        
-        .community-post:hover {
-            transform: translateY(-1px);
-        }
-        
-        .business-card {
-            background: var(--bg-primary);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-            margin-bottom: 1rem;
-            transition: transform 0.2s ease;
-            cursor: pointer;
-        }
-        
-        .business-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
         }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: inherit;
+            font-size: 1rem;
+            width: 100%;
+            text-align: left;
         }
         
-        .stat-card {
-            background: var(--bg-primary);
-            padding: 1.5rem;
-            border-radius: 1rem;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
+        .nav-item:hover {
+            background: rgba(99, 102, 241, 0.1);
             color: var(--primary);
         }
         
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
         }
         
-        .hidden {
-            display: none !important;
+        .health-metric {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
         }
         
-        /* Form styles */
+        .metric-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .metric-steps { background: var(--success); }
+        .metric-sleep { background: var(--primary); }
+        .metric-weight { background: var(--warning); }
+        .metric-heart { background: var(--danger); }
+        
+        .supplement-card {
+            background: var(--bg-primary);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        
+        .supplement-taken {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--bg-primary);
+            border-radius: 0.5rem;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-left: 4px solid var(--success);
+            z-index: 1001;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
         .form-input {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
             border-radius: 0.5rem;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
-            margin-bottom: 1rem;
+            transition: border-color 0.2s ease;
         }
         
         .form-input:focus {
@@ -348,1184 +250,879 @@
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
         
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            .platform-card, .dashboard-card {
+                padding: 1.5rem;
+            }
+            
+            .modal-content {
+                max-width: 95%;
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Loading animations */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Chart containers */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 1rem 0;
+        }
+        
+        /* Authentication forms */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+        
+        .auth-card {
+            background: var(--bg-primary);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
             margin-bottom: 0.5rem;
         }
         
-        .btn-primary {
-            background: var(--primary);
-            color: white;
+        .auth-subtitle {
+            color: var(--text-secondary);
         }
         
-        .btn-success {
-            background: var(--success);
-            color: white;
+        .social-auth {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
         
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        .social-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 2px solid var(--border);
+            background: var(--bg-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
         
-        /* Toast notification */
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            background: var(--text-primary);
-            color: white;
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            max-width: 300px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-            animation: slideIn 0.3s ease;
+        .social-btn:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
         }
         
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+            color: var(--text-secondary);
         }
         
-        /* Mobile navigation */
-        .mobile-nav {
-            position: fixed;
-            bottom: 0;
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
             left: 0;
             right: 0;
+            height: 1px;
+            background: var(--border);
+        }
+        
+        .divider span {
             background: var(--bg-primary);
-            border-top: 1px solid var(--border);
-            padding: 1rem;
-            display: flex;
-            justify-content: space-around;
-            z-index: 900;
+            padding: 0 1rem;
         }
         
-        .mobile-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.25rem;
-            text-decoration: none;
+        /* Responsive design */
+        @media (max-width: 640px) {
+            .auth-container {
+                padding: 1rem;
+            }
+            
+            .auth-card {
+                padding: 1.5rem;
+            }
+            
+            .social-auth {
+                flex-direction: column;
+            }
+        }
+        
+        /* Platform-specific styles */
+        .platform-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .platform-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .platform-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .platform-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .platform-subtitle {
             color: var(--text-secondary);
-            font-size: 0.75rem;
-            transition: color 0.3s ease;
-            cursor: pointer;
+            font-size: 1.1rem;
         }
         
-        .mobile-nav-item:hover,
-        .mobile-nav-item.active {
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: var(--bg-primary);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
             color: var(--primary);
         }
         
-        .mobile-nav-item i {
-            font-size: 1.25rem;
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
         
-        @media (max-width: 1024px) {
-            .mobile-nav {
-                display: flex;
-            }
-            
-            .main-content {
-                padding-bottom: 6rem;
-            }
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
         
-        @media (min-width: 1025px) {
-            .mobile-nav {
-                display: none;
-            }
+        /* Business directory styles */
+        .business-card {
+            background: var(--bg-primary);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+        
+        .business-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .business-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .business-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 0.5rem;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .business-info h3 {
+            margin: 0 0 0.25rem 0;
+            color: var(--text-primary);
+        }
+        
+        .business-info p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .business-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .business-tag {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+        }
+        
+        /* Personal shop styles */
+        .shop-card {
+            background: var(--bg-primary);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .shop-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .shop-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .shop-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .shop-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .shop-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .shop-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        /* Community styles */
+        .discussion-card {
+            background: var(--bg-primary);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .discussion-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .discussion-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .discussion-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .discussion-meta {
+            flex: 1;
+        }
+        
+        .discussion-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .discussion-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .discussion-content {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .discussion-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .discussion-action {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+        
+        .discussion-action:hover {
+            color: var(--primary);
+        }
+        
+        /* Profile styles */
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 1rem;
+            padding: 2rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 600;
+        }
+        
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-bio {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+        
+        .profile-stat {
+            text-align: center;
+        }
+        
+        .profile-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .profile-stat-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        /* Dashboard styles */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-stat {
+            background: var(--bg-primary);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        .dashboard-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .dashboard-stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .dashboard-chart {
+            background: var(--bg-primary);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+        
+        .dashboard-chart h3 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        /* Utility classes */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        .text-primary { color: var(--primary); }
+        .text-secondary { color: var(--text-secondary); }
+        .text-success { color: var(--success); }
+        .text-warning { color: var(--warning); }
+        .text-danger { color: var(--danger); }
+        .bg-primary { background: var(--primary); }
+        .bg-secondary { background: var(--bg-secondary); }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+        .p-1 { padding: 0.5rem; }
+        .p-2 { padding: 1rem; }
+        .p-3 { padding: 1.5rem; }
+        .p-4 { padding: 2rem; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-1 { gap: 0.5rem; }
+        .gap-2 { gap: 1rem; }
+        .gap-3 { gap: 1.5rem; }
+        .gap-4 { gap: 2rem; }
+        .rounded { border-radius: 0.5rem; }
+        .rounded-lg { border-radius: 1rem; }
+        .rounded-full { border-radius: 50%; }
+        .shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .shadow-lg { box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        .hidden { display: none; }
+        .block { display: block; }
+        .inline-block { display: inline-block; }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .fixed { position: fixed; }
+        .top-0 { top: 0; }
+        .bottom-0 { bottom: 0; }
+        .left-0 { left: 0; }
+        .right-0 { right: 0; }
+        .z-10 { z-index: 10; }
+        .z-20 { z-index: 20; }
+        .z-30 { z-index: 30; }
+        .opacity-50 { opacity: 0.5; }
+        .opacity-75 { opacity: 0.75; }
+        .cursor-pointer { cursor: pointer; }
+        .select-none { user-select: none; }
+        .overflow-hidden { overflow: hidden; }
+        .overflow-auto { overflow: auto; }
+        .transition { transition: all 0.2s ease; }
+        .transform { transform: translateZ(0); }
+        .scale-105 { transform: scale(1.05); }
+        .rotate-180 { transform: rotate(180deg); }
+        .border { border: 1px solid var(--border); }
+        .border-2 { border: 2px solid var(--border); }
+        .border-primary { border-color: var(--primary); }
+        .border-secondary { border-color: var(--text-secondary); }
+        .font-light { font-weight: 300; }
+        .font-normal { font-weight: 400; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-base { font-size: 1rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .leading-tight { line-height: 1.25; }
+        .leading-normal { line-height: 1.5; }
+        .leading-relaxed { line-height: 1.625; }
+        .uppercase { text-transform: uppercase; }
+        .lowercase { text-transform: lowercase; }
+        .capitalize { text-transform: capitalize; }
+        .tracking-wide { letter-spacing: 0.025em; }
+        .tracking-wider { letter-spacing: 0.05em; }
+        .tracking-widest { letter-spacing: 0.1em; }
+        .min-h-screen { min-height: 100vh; }
+        .max-w-xs { max-width: 20rem; }
+        .max-w-sm { max-width: 24rem; }
+        .max-w-md { max-width: 28rem; }
+        .max-w-lg { max-width: 32rem; }
+        .max-w-xl { max-width: 36rem; }
+        .max-w-2xl { max-width: 42rem; }
+        .max-w-3xl { max-width: 48rem; }
+        .max-w-4xl { max-width: 56rem; }
+        .max-w-5xl { max-width: 64rem; }
+        .max-w-6xl { max-width: 72rem; }
+        .max-w-full { max-width: 100%; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .my-1 { margin-top: 0.25rem; margin-bottom: 0.25rem; }
+        .my-2 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+        .my-3 { margin-top: 0.75rem; margin-bottom: 0.75rem; }
+        .my-4 { margin-top: 1rem; margin-bottom: 1rem; }
+        .my-5 { margin-top: 1.25rem; margin-bottom: 1.25rem; }
+        .my-6 { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+        .my-8 { margin-top: 2rem; margin-bottom: 2rem; }
+        .my-10 { margin-top: 2.5rem; margin-bottom: 2.5rem; }
+        .my-12 { margin-top: 3rem; margin-bottom: 3rem; }
+        .my-16 { margin-top: 4rem; margin-bottom: 4rem; }
+        .my-20 { margin-top: 5rem; margin-bottom: 5rem; }
+        .my-24 { margin-top: 6rem; margin-bottom: 6rem; }
+        .px-1 { padding-left: 0.25rem; padding-right: 0.25rem; }
+        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .px-8 { padding-left: 2rem; padding-right: 2rem; }
+        .px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
+        .px-12 { padding-left: 3rem; padding-right: 3rem; }
+        .px-16 { padding-left: 4rem; padding-right: 4rem; }
+        .px-20 { padding-left: 5rem; padding-right: 5rem; }
+        .px-24 { padding-left: 6rem; padding-right: 6rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+        .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .py-10 { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+        .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+        .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+        .py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+        .space-x-1 > * + * { margin-left: 0.25rem; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .space-x-3 > * + * { margin-left: 0.75rem; }
+        .space-x-4 > * + * { margin-left: 1rem; }
+        .space-x-5 > * + * { margin-left: 1.25rem; }
+        .space-x-6 > * + * { margin-left: 1.5rem; }
+        .space-x-8 > * + * { margin-left: 2rem; }
+        .space-y-1 > * + * { margin-top: 0.25rem; }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-y-5 > * + * { margin-top: 1.25rem; }
+        .space-y-6 > * + * { margin-top: 1.5rem; }
+        .space-y-8 > * + * { margin-top: 2rem; }
+        .divide-x > * + * { border-left-width: 1px; }
+        .divide-y > * + * { border-top-width: 1px; }
+        .divide-gray-200 > * + * { border-color: #e5e7eb; }
+        .divide-gray-300 > * + * { border-color: #d1d5db; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        .not-sr-only { position: static; width: auto; height: auto; padding: 0; margin: 0; overflow: visible; clip: auto; white-space: normal; }
+        .focus\:outline-none:focus { outline: none; }
+        .focus\:ring-1:focus { box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.5); }
+        .focus\:ring-2:focus { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); }
+        .focus\:ring-4:focus { box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.5); }
+        .focus\:ring-primary:focus { box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); }
+        .focus\:ring-secondary:focus { box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.5); }
+        .focus\:ring-success:focus { box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5); }
+        .focus\:ring-warning:focus { box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.5); }
+        .focus\:ring-danger:focus { box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.5); }
+        .focus\:ring-offset-2:focus { box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(99, 102, 241, 0.5); }
+        .focus\:ring-offset-4:focus { box-shadow: 0 0 0 4px #fff, 0 0 0 8px rgba(99, 102, 241, 0.5); }
+        .hover\:bg-primary:hover { background: var(--primary); }
+        .hover\:bg-secondary:hover { background: var(--bg-secondary); }
+        .hover\:bg-success:hover { background: var(--success); }
+        .hover\:bg-warning:hover { background: var(--warning); }
+        .hover\:bg-danger:hover { background: var(--danger); }
+        .hover\:text-primary:hover { color: var(--primary); }
+        .hover\:text-secondary:hover { color: var(--text-secondary); }
+        .hover\:text-success:hover { color: var(--success); }
+        .hover\:text-warning:hover { color: var(--warning); }
+        .hover\:text-danger:hover { color: var(--danger); }
+        .hover\:text-white:hover { color: white; }
+        .hover\:border-primary:hover { border-color: var(--primary); }
+        .hover\:border-secondary:hover { border-color: var(--text-secondary); }
+        .hover\:border-success:hover { border-color: var(--success); }
+        .hover\:border-warning:hover { border-color: var(--warning); }
+        .hover\:border-danger:hover { border-color: var(--danger); }
+        .hover\:scale-105:hover { transform: scale(1.05); }
+        .hover\:scale-110:hover { transform: scale(1.1); }
+        .hover\:rotate-180:hover { transform: rotate(180deg); }
+        .hover\:shadow-lg:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .hover\:shadow-xl:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .group:hover .group-hover\:block { display: block; }
+        .group:hover .group-hover\:hidden { display: none; }
+        .group:hover .group-hover\:scale-105 { transform: scale(1.05); }
+        .group:hover .group-hover\:scale-110 { transform: scale(1.1); }
+        .group:hover .group-hover\:rotate-180 { transform: rotate(180deg); }
+        .group:hover .group-hover\:text-primary { color: var(--primary); }
+        .group:hover .group-hover\:text-secondary { color: var(--text-secondary); }
+        .group:hover .group-hover\:text-success { color: var(--success); }
+        .group:hover .group-hover\:text-warning { color: var(--warning); }
+        .group:hover .group-hover\:text-danger { color: var(--danger); }
+        .group:hover .group-hover\:text-white { color: white; }
+        .group:hover .group-hover\:bg-primary { background: var(--primary); }
+        .group:hover .group-hover\:bg-secondary { background: var(--bg-secondary); }
+        .group:hover .group-hover\:bg-success { background: var(--success); }
+        .group:hover .group-hover\:bg-warning { background: var(--warning); }
+        .group:hover .group-hover\:bg-danger { background: var(--danger); }
+        .active\:scale-95:active { transform: scale(0.95); }
+        .active\:scale-100:active { transform: scale(1); }
+        .disabled\:opacity-50:disabled { opacity: 0.5; }
+        .disabled\:cursor-not-allowed:disabled { cursor: not-allowed; }
+        .disabled\:bg-gray-300:disabled { background: #d1d5db; }
+        .disabled\:text-gray-500:disabled { color: #6b7280; }
+        .disabled\:border-gray-300:disabled { border-color: #d1d5db; }
     </style>
 </head>
 <body>
-    <!-- Authentication Screen -->
-    <div id="authScreen" class="min-h-screen bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
-            <div class="text-center mb-8">
-                <!-- Your Yogull Logo (base64 encoded) -->
-                <div class="w-20 h-20 mx-auto mb-4">
-                    <img src="attached_assets/yogull Health_1752330896917.jpg" alt="Yogull Logo - Purple OO Design with 'Go heal me' branding" class="w-full h-full object-contain rounded-lg">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="platform-header">
+                <div class="platform-logo">
+                    <img src="attached_assets/yogull Health_1752330896917.jpg" alt="Yogull Health Platform">
                 </div>
-                <h1 class="text-3xl font-bold text-gray-900 mb-2">Yogull</h1>
-                <p class="text-gray-600 mb-4">Business & Social Community Platform</p>
-                
-                <!-- What You Get When Signing Up -->
-                <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 mb-6 text-left">
-                    <h3 class="text-lg font-bold text-gray-900 mb-4 text-center">🎯 What You Get FREE When You Join:</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                        <div class="space-y-2">
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-users text-blue-600"></i>
-                                <span><strong>Community Access:</strong> 1,225+ discussions, social networking</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-store text-green-600"></i>
-                                <span><strong>Personal Shop:</strong> Create your own business (FREE)</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-blog text-purple-600"></i>
-                                <span><strong>Personal Blog:</strong> Share your story and expertise</span>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-building text-orange-600"></i>
-                                <span><strong>Business Directory:</strong> 241 businesses, networking</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-newspaper text-blue-600"></i>
-                                <span><strong>Daily News:</strong> Community updates and trending topics</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-pound-sign text-purple-600"></i>
-                                <span><strong>Revenue Potential:</strong> Make money from your business</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center mt-4 p-3 bg-white rounded-lg">
-                        <p class="text-gray-700 font-semibold">🚀 Everything you need to connect, share, and build your business - completely FREE!</p>
-                    </div>
-                </div>
+                <h1 class="platform-title">Yogull</h1>
+                <p class="platform-subtitle">Go heal me</p>
             </div>
             
-            <!-- Email Authentication Form -->
-            <div class="space-y-4">
-                <div>
-                    <input type="email" id="authEmail" class="form-input" placeholder="Enter your email address" required>
-                </div>
-                <div>
-                    <input type="password" id="authPassword" class="form-input" placeholder="Enter your password" required>
-                </div>
-                
-                <div class="space-y-3">
-                    <button onclick="signInWithEmail()" class="btn btn-primary w-full">
-                        <i class="fas fa-sign-in-alt"></i>
-                        Sign In with Email
-                    </button>
-                    <button onclick="signUpWithEmail()" class="btn btn-success w-full">
-                        <i class="fas fa-user-plus"></i>
-                        Sign Up with Email
-                    </button>
-                </div>
-                
-                <div class="text-center">
-                    <div class="text-gray-400 text-sm mb-3">or continue with</div>
-                </div>
+            <div class="auth-header">
+                <h2 class="auth-title">Welcome Back</h2>
+                <p class="auth-subtitle">Sign in to your account</p>
             </div>
             
-            <!-- Social Login Buttons -->
-            <div class="space-y-3">
-                <button onclick="signInWithGoogle()" class="social-login-btn google-btn">
+            <div class="social-auth">
+                <button class="social-btn" onclick="signInWithGoogle()">
                     <i class="fab fa-google"></i>
-                    Continue with Google
+                    Google
                 </button>
-                
-                <button onclick="signInWithFacebook()" class="social-login-btn facebook-btn">
+                <button class="social-btn" onclick="signInWithFacebook()">
                     <i class="fab fa-facebook-f"></i>
-                    Continue with Facebook
+                    Facebook
                 </button>
-                
-                <button onclick="signInWithTwitter()" class="social-login-btn twitter-btn">
+                <button class="social-btn" onclick="signInWithTwitter()">
                     <i class="fab fa-twitter"></i>
-                    Continue with Twitter
+                    Twitter
                 </button>
             </div>
             
-            <div class="mt-6 text-center">
-                <button onclick="resetPassword()" class="text-blue-600 hover:text-blue-800 text-sm">
-                    Forgot Password?
-                </button>
+            <div class="divider">
+                <span>or</span>
             </div>
             
-            <div class="mt-6 text-center text-sm text-gray-600">
-                <p>The original Ordinary People Community - Track supplements, monitor health metrics, join discussions, manage your personal shop, and access the complete wellness ecosystem</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Main Platform -->
-    <div id="mainPlatform" class="hidden">
-        <!-- Header -->
-        <div class="bg-white shadow-sm border-b sticky top-0 z-40">
-            <div class="max-w-7xl mx-auto px-4 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
-                                <i class="fas fa-heartbeat text-white"></i>
-                            </div>
-                            <div>
-                                <h1 class="text-xl font-bold text-gray-900">Ordinary People Community</h1>
-                                <p class="text-sm text-gray-600">Complete Health & Wellness Platform</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="flex items-center gap-2">
-                            <span class="text-gray-600">Welcome back!</span>
-                            <span id="userDisplayName" class="font-semibold text-gray-900"></span>
-                        </div>
-                        <button onclick="signOut()" class="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Navigation -->
-        <div class="bg-gray-50 border-b">
-            <div class="max-w-7xl mx-auto px-4 py-4">
-                <div class="flex flex-wrap justify-center gap-2">
-                    <button onclick="showSection('dashboard')" class="nav-button active" id="dashboardBtn">
-                        <i class="fas fa-home"></i>
-                        Dashboard
-                    </button>
-                    <button onclick="showSection('health')" class="nav-button" id="healthBtn">
-                        <i class="fas fa-heartbeat"></i>
-                        Health Hub
-                    </button>
-                    <button onclick="showSection('supplements')" class="nav-button" id="supplementsBtn">
-                        <i class="fas fa-pills"></i>
-                        Supplements
-                    </button>
-                    <button onclick="showSection('biometrics')" class="nav-button" id="biometricsBtn">
-                        <i class="fas fa-chart-line"></i>
-                        Biometrics
-                    </button>
-                    <button onclick="showSection('profileWall')" class="nav-button" id="profileWallBtn">
-                        <i class="fas fa-user"></i>
-                        Profile Wall
-                    </button>
-                    <button onclick="showSection('community')" class="nav-button" id="communityBtn">
-                        <i class="fas fa-users"></i>
-                        Community
-                    </button>
-                    <button onclick="showSection('blog')" class="nav-button" id="blogBtn">
-                        <i class="fas fa-blog"></i>
-                        Blog
-                    </button>
-                    <button onclick="showSection('news')" class="nav-button" id="newsBtn">
-                        <i class="fas fa-newspaper"></i>
-                        News
-                    </button>
-                    <button onclick="showSection('personalShop')" class="nav-button" id="personalShopBtn">
-                        <i class="fas fa-store"></i>
-                        Personal Shop
-                    </button>
-                    <button onclick="showSection('businessDirectory')" class="nav-button" id="businessDirectoryBtn">
-                        <i class="fas fa-building"></i>
-                        Business Directory
-                    </button>
-                    <button onclick="showSection('emailCampaigns')" class="nav-button" id="emailCampaignsBtn">
-                        <i class="fas fa-envelope"></i>
-                        Email Campaigns
-                    </button>
-                    <button onclick="showSection('adminDashboard')" class="nav-button" id="adminDashboardBtn">
-                        <i class="fas fa-cogs"></i>
-                        Admin Dashboard
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Main Content Area -->
-        <div class="max-w-7xl mx-auto px-4 py-6 main-content">
-            
-            <!-- Dashboard Section -->
-            <div id="dashboard" class="section active">
-                <div class="dashboard-card">
-                    <div class="flex items-center justify-between mb-6">
-                        <div>
-                            <h2 class="text-2xl font-bold mb-2">
-                                <i class="fas fa-home mr-2"></i>
-                                Welcome to Your Health Dashboard
-                            </h2>
-                            <p class="text-purple-100">Your complete wellness management center</p>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm text-purple-100">Today's Date</div>
-                            <div class="text-xl font-bold" id="currentDate">Saturday, July 12, 2025</div>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
-                            <i class="fas fa-pills text-3xl mb-2"></i>
-                            <div class="text-2xl font-bold">85%</div>
-                            <div class="text-sm text-purple-100">Supplement Compliance</div>
-                        </div>
-                        
-                        <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
-                            <i class="fas fa-weight text-3xl mb-2"></i>
-                            <div class="text-2xl font-bold">75kg</div>
-                            <div class="text-sm text-purple-100">Current Weight</div>
-                        </div>
-                        
-                        <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
-                            <i class="fas fa-walking text-3xl mb-2"></i>
-                            <div class="text-2xl font-bold">7,500</div>
-                            <div class="text-sm text-purple-100">Daily Steps</div>
-                        </div>
-                        
-                        <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
-                            <i class="fas fa-bed text-3xl mb-2"></i>
-                            <div class="text-2xl font-bold">7.5h</div>
-                            <div class="text-sm text-purple-100">Sleep Average</div>
-                        </div>
-                    </div>
+            <form id="emailLoginForm" class="space-y-4">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-input" required>
                 </div>
                 
-                <!-- Quick Actions -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    <div class="health-card">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Today's Supplements</h3>
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-700">Vitamin D3</span>
-                                <span class="supplement-status taken">Taken</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-700">Omega-3</span>
-                                <span class="supplement-status pending">Pending</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-700">Multivitamin</span>
-                                <span class="supplement-status taken">Taken</span>
-                            </div>
-                        </div>
-                        <button onclick="showSection('supplements')" class="action-btn success w-full mt-4">
-                            Manage Supplements
-                        </button>
-                    </div>
-                    
-                    <div class="health-card">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Health Metrics</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="text-gray-700">Steps Goal</span>
-                                    <span class="text-gray-900 font-semibold">75%</span>
-                                </div>
-                                <div class="health-progress">
-                                    <div class="health-progress-fill" style="width: 75%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-2">
-                                    <span class="text-gray-700">Sleep Goal</span>
-                                    <span class="text-gray-900 font-semibold">94%</span>
-                                </div>
-                                <div class="health-progress">
-                                    <div class="health-progress-fill" style="width: 94%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <button onclick="showSection('biometrics')" class="action-btn w-full mt-4">
-                            View Biometrics
-                        </button>
-                    </div>
-                    
-                    <div class="health-card">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Community Activity</h3>
-                        <div class="space-y-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-heart text-white text-xs"></i>
-                                </div>
-                                <span class="text-gray-700 text-sm">5 likes on your post</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-comment text-white text-xs"></i>
-                                </div>
-                                <span class="text-gray-700 text-sm">3 new comments</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-users text-white text-xs"></i>
-                                </div>
-                                <span class="text-gray-700 text-sm">2 new followers</span>
-                            </div>
-                        </div>
-                        <button onclick="showSection('community')" class="action-btn w-full mt-4">
-                            Join Community
-                        </button>
-                    </div>
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-input" required>
                 </div>
-            </div>
+                
+                <button type="submit" class="btn-primary w-full">
+                    Sign In
+                </button>
+            </form>
             
-            <!-- Community Section -->
-            <div id="community" class="section">
-                <div class="platform-card">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
-                        <i class="fas fa-users text-purple-600 mr-2"></i>
-                        Community Discussions
-                    </h2>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-number">1,225</div>
-                            <div class="stat-label">Total Discussions</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">25</div>
-                            <div class="stat-label">Active Users</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">77</div>
-                            <div class="stat-label">Messages Today</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">8</div>
-                            <div class="stat-label">Categories</div>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="community-post">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-heartbeat text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Health & Wellness</h3>
-                                    <p class="text-sm text-gray-600">245 discussions</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Share your wellness journey, tips, and experiences with the community</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-comment"></i>
-                                <span>Latest: 2 hours ago</span>
-                            </div>
-                        </div>
-                        
-                        <div class="community-post">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-leaf text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Environment & Nature</h3>
-                                    <p class="text-sm text-gray-600">189 discussions</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Discuss environmental topics, sustainability, and green living</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-comment"></i>
-                                <span>Latest: 4 hours ago</span>
-                            </div>
-                        </div>
-                        
-                        <div class="community-post">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-laptop text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Technology & Innovation</h3>
-                                    <p class="text-sm text-gray-600">156 discussions</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Latest tech trends, innovations, and digital transformation</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-comment"></i>
-                                <span>Latest: 6 hours ago</span>
-                            </div>
-                        </div>
-                        
-                        <div class="community-post">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-landmark text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Government & Politics</h3>
-                                    <p class="text-sm text-gray-600">198 discussions</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Local and national political discussions, policy debates</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-comment"></i>
-                                <span>Latest: 8 hours ago</span>
-                            </div>
-                        </div>
-                        
-                        <div class="community-post">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-graduation-cap text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Education & Learning</h3>
-                                    <p class="text-sm text-gray-600">134 discussions</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Educational resources, learning opportunities, and skill development</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-comment"></i>
-                                <span>Latest: 12 hours ago</span>
-                            </div>
-                        </div>
-                        
-                        <div class="community-post">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-chart-line text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Economy & Business</h3>
-                                    <p class="text-sm text-gray-600">167 discussions</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Economic trends, business opportunities, and financial discussions</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-comment"></i>
-                                <span>Latest: 1 day ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Business Directory Section -->
-            <div id="businessDirectory" class="section">
-                <div class="platform-card">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
-                        <i class="fas fa-building text-purple-600 mr-2"></i>
-                        Business Directory
-                    </h2>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-number">241</div>
-                            <div class="stat-label">Total Businesses</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">£5,784</div>
-                            <div class="stat-label">Annual Revenue Potential</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">8</div>
-                            <div class="stat-label">Countries</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">107</div>
-                            <div class="stat-label">Business Categories</div>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-utensils text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Local Restaurant</h3>
-                                    <p class="text-sm text-gray-600">Food & Dining</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Family-owned restaurant serving authentic cuisine with fresh ingredients</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>London, UK</span>
-                            </div>
-                        </div>
-                        
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-dumbbell text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Fitness Center</h3>
-                                    <p class="text-sm text-gray-600">Health & Fitness</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Modern gym with personal training services and state-of-the-art equipment</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>Manchester, UK</span>
-                            </div>
-                        </div>
-                        
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-tools text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Tech Repair Shop</h3>
-                                    <p class="text-sm text-gray-600">Technology</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Professional device repair and maintenance services for all electronics</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>Birmingham, UK</span>
-                            </div>
-                        </div>
-                        
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-home text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Real Estate Agency</h3>
-                                    <p class="text-sm text-gray-600">Property & Real Estate</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Helping families find their perfect home with expert local knowledge</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>Leeds, UK</span>
-                            </div>
-                        </div>
-                        
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-car text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Auto Repair Service</h3>
-                                    <p class="text-sm text-gray-600">Automotive</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Trusted auto repair with certified mechanics and quality parts</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>Glasgow, UK</span>
-                            </div>
-                        </div>
-                        
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-graduation-cap text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Learning Center</h3>
-                                    <p class="text-sm text-gray-600">Education</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Professional tutoring and educational support for all ages</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>Edinburgh, UK</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Personal Shop Section -->
-            <div id="personalShop" class="section">
-                <div class="platform-card">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
-                        <i class="fas fa-store text-purple-600 mr-2"></i>
-                        Personal Shop
-                    </h2>
-                    
-                    <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 mb-6">
-                        <h3 class="text-lg font-bold text-gray-900 mb-4">🚀 Create Your Own Business - Completely FREE!</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                            <div class="space-y-2">
-                                <div class="flex items-center gap-2">
-                                    <i class="fas fa-store text-green-600"></i>
-                                    <span><strong>FREE Shop Setup:</strong> No setup fees, no monthly costs</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fas fa-users text-blue-600"></i>
-                                    <span><strong>Built-in Customers:</strong> 1,225+ community members</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fas fa-credit-card text-purple-600"></i>
-                                    <span><strong>Payment Processing:</strong> Secure transactions included</span>
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex items-center gap-2">
-                                    <i class="fas fa-chart-line text-orange-600"></i>
-                                    <span><strong>Success Stories:</strong> Members earning £800+ monthly</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fas fa-globe text-blue-600"></i>
-                                    <span><strong>Global Reach:</strong> 8+ countries, international customers</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fas fa-handshake text-purple-600"></i>
-                                    <span><strong>Support:</strong> Complete business assistance included</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-palette text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Handmade Crafts</h3>
-                                    <p class="text-sm text-gray-600">Arts & Crafts</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Unique handcrafted items and custom artwork created with love</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-pound-sign"></i>
-                                <span>£15 - £150 per item</span>
-                            </div>
-                        </div>
-                        
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-laptop-code text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Digital Services</h3>
-                                    <p class="text-sm text-gray-600">Professional Services</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Web design, digital marketing, and online business solutions</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-pound-sign"></i>
-                                <span>£50 - £500 per project</span>
-                            </div>
-                        </div>
-                        
-                        <div class="business-card">
-                            <div class="flex items-start gap-3 mb-3">
-                                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-leaf text-white"></i>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold">Health Products</h3>
-                                    <p class="text-sm text-gray-600">Health & Wellness</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 mb-3">Natural health and wellness products for better living</p>
-                            <div class="flex items-center gap-2 text-sm text-gray-500">
-                                <i class="fas fa-pound-sign"></i>
-                                <span>£10 - £100 per product</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Admin Dashboard Section -->
-            <div id="adminDashboard" class="section">
-                <div class="platform-card">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">
-                        <i class="fas fa-cogs text-purple-600 mr-2"></i>
-                        Admin Control Panel
-                    </h2>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-number">25</div>
-                            <div class="stat-label">Total Users</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">1,225</div>
-                            <div class="stat-label">Total Discussions</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">77</div>
-                            <div class="stat-label">Messages</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">£5,784</div>
-                            <div class="stat-label">Annual Revenue</div>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="health-card">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-4">
-                                <i class="fas fa-users text-blue-600 mr-2"></i>
-                                User Management
-                            </h3>
-                            <p class="text-gray-600 mb-4">Manage user accounts, permissions, and platform access</p>
-                            <div class="space-y-2">
-                                <div class="flex justify-between text-sm">
-                                    <span>Active Users</span>
-                                    <span class="font-semibold">23</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span>New This Week</span>
-                                    <span class="font-semibold">3</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span>Premium Users</span>
-                                    <span class="font-semibold">8</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="health-card">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-4">
-                                <i class="fas fa-chart-bar text-green-600 mr-2"></i>
-                                Platform Analytics
-                            </h3>
-                            <p class="text-gray-600 mb-4">Track engagement, growth, and platform performance</p>
-                            <div class="space-y-2">
-                                <div class="flex justify-between text-sm">
-                                    <span>Daily Active Users</span>
-                                    <span class="font-semibold">18</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span>Posts Today</span>
-                                    <span class="font-semibold">12</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span>Engagement Rate</span>
-                                    <span class="font-semibold">74%</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="health-card">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-4">
-                                <i class="fas fa-pound-sign text-purple-600 mr-2"></i>
-                                Revenue Management
-                            </h3>
-                            <p class="text-gray-600 mb-4">Monitor business advertising and revenue streams</p>
-                            <div class="space-y-2">
-                                <div class="flex justify-between text-sm">
-                                    <span>This Month</span>
-                                    <span class="font-semibold">£482</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span>Active Advertisers</span>
-                                    <span class="font-semibold">15</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span>Conversion Rate</span>
-                                    <span class="font-semibold">6.2%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Additional sections would continue here with the same pattern... -->
-        </div>
-        
-        <!-- Mobile Navigation -->
-        <div class="mobile-nav">
-            <div class="mobile-nav-item active" onclick="showSection('dashboard')">
-                <i class="fas fa-home"></i>
-                <span>Dashboard</span>
-            </div>
-            <div class="mobile-nav-item" onclick="showSection('community')">
-                <i class="fas fa-users"></i>
-                <span>Community</span>
-            </div>
-            <div class="mobile-nav-item" onclick="showSection('personalShop')">
-                <i class="fas fa-store"></i>
-                <span>Shop</span>
-            </div>
-            <div class="mobile-nav-item" onclick="showSection('businessDirectory')">
-                <i class="fas fa-building"></i>
-                <span>Business</span>
-            </div>
-            <div class="mobile-nav-item" onclick="showSection('adminDashboard')">
-                <i class="fas fa-cogs"></i>
-                <span>Admin</span>
+            <div class="text-center mt-4">
+                <p class="text-secondary">
+                    Don't have an account? 
+                    <a href="#" onclick="showSignup()" class="text-primary">Sign up</a>
+                </p>
             </div>
         </div>
     </div>
-    
+
+    <!-- Firebase Configuration -->
     <script>
-        // Firebase Configuration
+        // Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyDjFx8ZGNFRLtUpkuHPgUPsIXGGU9cThlg",
+            apiKey: "AIzaSyBxYsKoVVTfjgNGWzuCFgqkXzJJt_2P8XU",
             authDomain: "gohealme-9bdf0.firebaseapp.com",
             projectId: "gohealme-9bdf0",
-            storageBucket: "gohealme-9bdf0.firebasestorage.app",
-            messagingSenderId: "764936244554",
-            appId: "1:764936244554:web:b3d1a1f5c8e9d0a2e4f5g6"
+            storageBucket: "gohealme-9bdf0.appspot.com",
+            messagingSenderId: "404015711419",
+            appId: "1:404015711419:web:8a8d6b6f6e5d4c3a2b1c9e"
         };
-        
+
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        
-        console.log('Firebase Config Check:');
-        console.log('Project ID:', firebaseConfig.projectId);
-        console.log('Auth Domain:', firebaseConfig.authDomain);
-        console.log('API Key present:', !!firebaseConfig.apiKey);
-        console.log('App ID present:', !!firebaseConfig.appId);
-        
-        // Initialize Firebase Auth
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                console.log('User signed in:', user.email);
-                hideAuthScreen();
-                updateUserDisplay(user);
-            } else {
-                console.log('User signed out');
-                showAuthScreen();
-            }
-        });
-        
-        console.log('Firebase Auth initialized successfully');
-        
-        // Authentication Functions
+        const db = firebase.firestore();
+
+        // Authentication functions
         function signInWithGoogle() {
-            console.log('Attempting Google sign-in...');
             const provider = new firebase.auth.GoogleAuthProvider();
-            provider.addScope('email');
-            provider.addScope('profile');
-            
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    console.log('Google sign-in successful:', result.user.email);
-                    showToast('Successfully signed in with Google!', 'success');
+                    console.log('Google sign-in successful:', result.user);
+                    window.location.href = '/dashboard';
                 })
                 .catch((error) => {
                     console.error('Google sign-in error:', error);
-                    handleAuthError(error, 'Google');
+                    showToast('Google sign-in failed. Please try again.', 'error');
                 });
         }
-        
+
         function signInWithFacebook() {
-            console.log('Attempting Facebook sign-in...');
             const provider = new firebase.auth.FacebookAuthProvider();
-            provider.addScope('email');
-            
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    console.log('Facebook sign-in successful:', result.user.email);
-                    showToast('Successfully signed in with Facebook!', 'success');
+                    console.log('Facebook sign-in successful:', result.user);
+                    window.location.href = '/dashboard';
                 })
                 .catch((error) => {
                     console.error('Facebook sign-in error:', error);
-                    handleAuthError(error, 'Facebook');
+                    showToast('Facebook sign-in failed. Please try again.', 'error');
                 });
         }
-        
+
         function signInWithTwitter() {
-            console.log('Attempting Twitter sign-in...');
             const provider = new firebase.auth.TwitterAuthProvider();
-            
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    console.log('Twitter sign-in successful:', result.user.displayName);
-                    showToast('Successfully signed in with Twitter!', 'success');
+                    console.log('Twitter sign-in successful:', result.user);
+                    window.location.href = '/dashboard';
                 })
                 .catch((error) => {
-                    console.error('Twitter/X sign-in error:', error);
-                    handleAuthError(error, 'Twitter');
+                    console.error('Twitter sign-in error:', error);
+                    showToast('Twitter sign-in failed. Please try again.', 'error');
                 });
         }
-        
-        function signInWithEmail() {
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-            
-            if (!email || !password) {
-                showToast('Please enter both email and password', 'error');
-                return;
-            }
+
+        // Email sign-in
+        document.getElementById('emailLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    console.log('Email sign-in successful:', userCredential.user.email);
-                    showToast('Successfully signed in!', 'success');
+                    console.log('Email sign-in successful:', userCredential.user);
+                    window.location.href = '/dashboard';
                 })
                 .catch((error) => {
                     console.error('Email sign-in error:', error);
-                    handleAuthError(error, 'Email');
+                    showToast('Email sign-in failed. Please check your credentials.', 'error');
                 });
-        }
-        
-        function signUpWithEmail() {
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-            
-            if (!email || !password) {
-                showToast('Please enter both email and password', 'error');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showToast('Password must be at least 6 characters long', 'error');
-                return;
-            }
-            
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    console.log('Email sign-up successful:', userCredential.user.email);
-                    showToast('Account created successfully!', 'success');
-                })
-                .catch((error) => {
-                    console.error('Email sign-up error:', error);
-                    handleAuthError(error, 'Email');
-                });
-        }
-        
-        function signOut() {
-            auth.signOut().then(() => {
-                console.log('User signed out');
-                showToast('Successfully signed out', 'success');
-            }).catch((error) => {
-                console.error('Sign out error:', error);
-                showToast('Error signing out', 'error');
-            });
-        }
-        
-        function resetPassword() {
-            const email = document.getElementById('authEmail').value;
-            
-            if (!email) {
-                showToast('Please enter your email address first', 'error');
-                return;
-            }
-            
-            auth.sendPasswordResetEmail(email)
-                .then(() => {
-                    showToast('Password reset email sent!', 'success');
-                })
-                .catch((error) => {
-                    console.error('Password reset error:', error);
-                    showToast('Error sending password reset email', 'error');
-                });
-        }
-        
-        function handleAuthError(error, provider) {
-            let message = `${provider} sign-in failed. `;
-            
-            switch (error.code) {
-                case 'auth/popup-closed-by-user':
-                    message += 'Sign-in was cancelled. Please try again.';
-                    break;
-                case 'auth/popup-blocked':
-                    message += 'Popup blocked. Please allow popups and try again.';
-                    break;
-                case 'auth/user-not-found':
-                    message += 'No account found with this email.';
-                    break;
-                case 'auth/wrong-password':
-                    message += 'Incorrect password.';
-                    break;
-                case 'auth/email-already-in-use':
-                    message += 'This email is already registered.';
-                    break;
-                case 'auth/invalid-email':
-                    message += 'Please enter a valid email address.';
-                    break;
-                case 'auth/weak-password':
-                    message += 'Password is too weak.';
-                    break;
-                default:
-                    message += 'Please try again or use email/password.';
-            }
-            
-            showToast(message, 'error');
-        }
-        
-        // UI Functions
-        function hideAuthScreen() {
-            document.getElementById('authScreen').classList.add('hidden');
-            document.getElementById('mainPlatform').classList.remove('hidden');
-        }
-        
-        function showAuthScreen() {
-            document.getElementById('authScreen').classList.remove('hidden');
-            document.getElementById('mainPlatform').classList.add('hidden');
-        }
-        
-        function updateUserDisplay(user) {
-            const displayName = user.displayName || user.email || 'User';
-            document.getElementById('userDisplayName').textContent = displayName;
-        }
-        
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
-            
-            // Update nav buttons
-            document.querySelectorAll('.nav-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Activate corresponding nav button
-            const navButton = document.getElementById(sectionId + 'Btn');
-            if (navButton) {
-                navButton.classList.add('active');
-            }
-            
-            // Update mobile nav
-            document.querySelectorAll('.mobile-nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            console.log('Switched to section:', sectionId);
-        }
-        
+        });
+
+        // Toast notification function
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            toast.textContent = message;
-            
-            // Add color based on type
-            if (type === 'success') {
-                toast.style.backgroundColor = '#10b981';
-            } else if (type === 'error') {
-                toast.style.backgroundColor = '#ef4444';
-            } else if (type === 'warning') {
-                toast.style.backgroundColor = '#f59e0b';
-            }
-            
+            toast.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'info-circle'} mr-3"></i>
+                    <span>${message}</span>
+                </div>
+            `;
             document.body.appendChild(toast);
             
             setTimeout(() => {
-                toast.remove();
-            }, 4000);
+                toast.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
         }
-        
-        // Initialize platform
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Yogull Platform initialized');
-            
-            // Set current date
-            const now = new Date();
-            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-GB', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            
-            // Show dashboard by default
-            showSection('dashboard');
+
+        // Show signup form
+        function showSignup() {
+            // This would typically show a signup form
+            showToast('Signup functionality coming soon!', 'info');
+        }
+
+        // Check if user is already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User is logged in:', user);
+                // Redirect to dashboard if user is already logged in
+                window.location.href = '/dashboard';
+            }
         });
     </script>
 </body>

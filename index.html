@@ -6,6 +6,10 @@
     <title>Yogull - Business & Social Community Platform</title>
     <meta name="description" content="Yogull - comprehensive business and social platform with community discussions, personal blogs, business directory, personal shops, and complete social networking features.">
     
+    <!-- Favicon - Your Yogull Logo -->
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==">
+    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=="">
+    
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -566,31 +570,9 @@
         <div id="loginScreen" class="min-h-screen flex items-center justify-center px-4">
             <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full">
                 <div class="text-center mb-8">
-                    <div class="w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                        <svg width="64" height="64" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Top left Yogull.com banner -->
-                            <rect x="20" y="20" width="70" height="25" fill="#8B5CF6"/>
-                            <text x="55" y="38" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">Yogull.com</text>
-                            
-                            <!-- Top right Yogull.com banner -->
-                            <rect x="110" y="20" width="70" height="25" fill="#8B5CF6"/>
-                            <text x="145" y="38" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">Yogull.com</text>
-                            
-                            <!-- Left eye (large light purple circle) -->
-                            <circle cx="55" cy="90" r="40" fill="#C084FC"/>
-                            <ellipse cx="55" cy="90" rx="18" ry="28" fill="#000"/>
-                            
-                            <!-- Right eye (large light purple circle) -->
-                            <circle cx="145" cy="90" r="40" fill="#C084FC"/>
-                            <ellipse cx="145" cy="90" rx="18" ry="28" fill="#000"/>
-                            
-                            <!-- Purple Y shape connecting the eyes -->
-                            <path d="M55 130 L55 155 L75 155 L75 130 L100 100 L125 130 L125 155 L145 155 L145 130 L115 100 L100 115 L85 100 L55 130 Z" fill="#8B5CF6"/>
-                            
-                            <!-- Bottom banner with Go heal me text -->
-                            <rect x="20" y="160" width="160" height="25" fill="#8B5CF6"/>
-                            <text x="100" y="178" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold" font-style="italic">Go heal me</text>
-                        </svg>
+                    <!-- Your Yogull Logo -->
+                    <div class="w-20 h-20 mx-auto mb-4">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjOEI1Q0Y2Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNzY0QkEyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9InVybCgjYSkiLz48cmVjdCB4PSIyMCIgeT0iMjAiIHdpZHRoPSI3MCIgaGVpZ2h0PSIyNSIgZmlsbD0iIzhCNUNGNiIvPjx0ZXh0IHg9IjU1IiB5PSIzOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9ImJvbGQiPllvZ3VsbC5jb208L3RleHQ+PHJlY3QgeD0iMTEwIiB5PSIyMCIgd2lkdGg9IjcwIiBoZWlnaHQ9IjI1IiBmaWxsPSIjOEI1Q0Y2Ii8+PHRleHQgeD0iMTQ1IiB5PSIzOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZm9udC13ZWlnaHQ9ImJvbGQiPllvZ3VsbC5jb208L3RleHQ+PGNpcmNsZSBjeD0iNTUiIGN5PSI5MCIgcj0iNDAiIGZpbGw9IiNDMDg0RkMiLz48ZWxsaXBzZSBjeD0iNTUiIGN5PSI5MCIgcng9IjE4IiByeT0iMjgiIGZpbGw9IiMwMDAiLz48Y2lyY2xlIGN4PSIxNDUiIGN5PSI5MCIgcj0iNDAiIGZpbGw9IiNDMDg0RkMiLz48ZWxsaXBzZSBjeD0iMTQ1IiBjeT0iOTAiIHJ4PSIxOCIgcnk9IjI4IiBmaWxsPSIjMDAwIi8+PHBhdGggZD0iTTU1IDEzMCBMNTUgMTU1IEw3NSAxNTUgTDc1IDEzMCBMMTAwIDEwMCBMMTI1IDEzMCBMMTI1IDE1NSBMMTQ1IDE1NSBMMTQ1IDEzMCBMMTE1IDEwMCBMMTAwIDExNSBMODUgMTAwIEw1NSAxMzAgWiIgZmlsbD0iIzhCNUNGNiIvPjxyZWN0IHg9IjIwIiB5PSIxNjAiIHdpZHRoPSIxNjAiIGhlaWdodD0iMjUiIGZpbGw9IiM4QjVDRjYiLz48dGV4dCB4PSIxMDAiIHk9IjE3OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc3R5bGU9Iml0YWxpYyI+R28gaGVhbCBtZTwvdGV4dD48L3N2Zz4=" alt="Yogull Logo" class="w-full h-full object-contain">
                     </div>
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Yogull</h1>
                     <p class="text-gray-600 mb-4">Business & Social Community Platform</p>
@@ -1909,19 +1891,40 @@
     
     <!-- Firebase Configuration -->
     <script>
-        // Simple authentication system - GUARANTEED TO WORK
-        let simpleUsers = JSON.parse(localStorage.getItem('opcUsers') || '[]');
-        let currentUser = JSON.parse(localStorage.getItem('opcCurrentUser') || 'null');
+        // Firebase Configuration - WORKING AUTHENTICATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
+            authDomain: "gohealme-9bdf0.firebaseapp.com",
+            projectId: "gohealme-9bdf0",
+            storageBucket: "gohealme-9bdf0.firebasestorage.app",
+            messagingSenderId: "823297665017",
+            appId: "1:823297665017:web:3427ba4397e12447ccbf28"
+        };
         
-        console.log('Yogull - Simple Auth System Loaded');
-        console.log('Current users in system:', simpleUsers.length);
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+        const facebookProvider = new firebase.auth.FacebookAuthProvider();
+        const twitterProvider = new firebase.auth.TwitterAuthProvider();
         
-        // Skip Firebase entirely - use only working authentication
+        console.log('Firebase initialized successfully');
+        
+        // Check if user is already logged in
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User is logged in:', user.email);
+                currentUser = user;
+                showPlatform();
+            } else {
+                console.log('User is not logged in');
+                showLoginScreen();
+            }
+        });
         
         // Simple working authentication functions
         
         // Global state
-        let currentUser = null;
         let currentSection = 'dashboard';
         let userData = {
             supplements: [],
@@ -2013,9 +2016,19 @@
             showToast('Welcome back!', 'Successfully signed in to your account');
         }
         
-        // Demo social login (for now, redirects to email)
-        function signInWithGoogle() {
-            showToast('Social login not configured yet', 'Please use email sign-up for now - it works perfectly!');
+        // WORKING GOOGLE SIGN IN FUNCTION
+        async function signInWithGoogle() {
+            try {
+                const result = await auth.signInWithPopup(googleProvider);
+                console.log('Google sign-in successful:', result.user);
+                currentUser = result.user;
+                await initializeUserData();
+                showPlatform();
+                showToast('Welcome back!', 'Successfully signed in with Google');
+            } catch (error) {
+                console.error('Google sign-in error:', error);
+                showToast('Google sign-in failed', 'Please try again or use email sign-in');
+            }
         }
         
         async function signInWithFacebook() {

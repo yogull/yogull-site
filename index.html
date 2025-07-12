@@ -746,10 +746,10 @@
         
         <!-- Profile Actions -->
         <div class="profile-actions">
-            <button class="profile-btn" onclick="alert('Edit Profile clicked!')">
+            <button class="profile-btn" onclick="showEditProfile()">
                 ✏️ Edit Profile
             </button>
-            <button class="profile-btn" onclick="alert('Account Settings clicked!')">
+            <button class="profile-btn" onclick="showAccountSettings()">
                 ⚙️ Account Settings
             </button>
             <button class="photo-album-btn" onclick="handlePhotoAlbum()">
@@ -1238,12 +1238,32 @@
                             <div style="padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem;">
                                 <h4>Harmony Wellness Center</h4>
                                 <p>Complete wellness solutions including massage therapy, yoga classes, and nutritional counseling.</p>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
                                 <button style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Contact</button>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action">❤️ Like (12)</button>
+                                    <button class="post-action" onclick="showComments('harmony')">💬 Comment (5)</button>
+                                    <button class="post-action">🔗 Share</button>
+                                </div>
                             </div>
                             <div style="padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem;">
                                 <h4>Natural Health Clinic</h4>
                                 <p>Holistic health services with certified practitioners specializing in alternative medicine.</p>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
                                 <button style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Contact</button>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action">❤️ Like (8)</button>
+                                    <button class="post-action" onclick="showComments('natural')">💬 Comment (3)</button>
+                                    <button class="post-action">🔗 Share</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1254,12 +1274,32 @@
                             <div style="padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem;">
                                 <h4>PowerFit Gym</h4>
                                 <p>State-of-the-art equipment, personal training, and group fitness classes for all levels.</p>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
                                 <button style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Contact</button>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action">❤️ Like (22)</button>
+                                    <button class="post-action" onclick="showComments('powerfit')">💬 Comment (11)</button>
+                                    <button class="post-action">🔗 Share</button>
+                                </div>
                             </div>
                             <div style="padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem;">
                                 <h4>Yoga Studio Plus</h4>
                                 <p>Traditional and modern yoga practices in a peaceful, supportive environment.</p>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
                                 <button style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Contact</button>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action">❤️ Like (18)</button>
+                                    <button class="post-action" onclick="showComments('yoga')">💬 Comment (7)</button>
+                                    <button class="post-action">🔗 Share</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1285,27 +1325,57 @@
                             <h3>Premium Supplements</h3>
                             <p>High-quality vitamins and supplements for optimal health and wellness.</p>
                             <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin: 1rem 0;">$49.99</div>
+                            <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                            </div>
                             <button style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
                                 Add to Cart
                             </button>
+                            <div class="post-actions-bar" style="margin-top: 1rem;">
+                                <button class="post-action">❤️ Like (45)</button>
+                                <button class="post-action" onclick="showComments('supplements')">💬 Comment (23)</button>
+                                <button class="post-action">🔗 Share</button>
+                            </div>
                         </div>
                         
                         <div class="post-card">
                             <h3>Organic Protein Powder</h3>
                             <p>Plant-based protein powder made from organic ingredients for post-workout recovery.</p>
                             <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin: 1rem 0;">$39.99</div>
+                            <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                            </div>
                             <button style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
                                 Add to Cart
                             </button>
+                            <div class="post-actions-bar" style="margin-top: 1rem;">
+                                <button class="post-action">❤️ Like (32)</button>
+                                <button class="post-action" onclick="showComments('protein')">💬 Comment (18)</button>
+                                <button class="post-action">🔗 Share</button>
+                            </div>
                         </div>
                         
                         <div class="post-card">
                             <h3>Wellness Tea Collection</h3>
                             <p>Curated collection of herbal teas designed to promote relaxation and digestive health.</p>
                             <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin: 1rem 0;">$24.99</div>
+                            <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                            </div>
                             <button style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
                                 Add to Cart
                             </button>
+                            <div class="post-actions-bar" style="margin-top: 1rem;">
+                                <button class="post-action">❤️ Like (28)</button>
+                                <button class="post-action" onclick="showComments('tea')">💬 Comment (15)</button>
+                                <button class="post-action">🔗 Share</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1326,6 +1396,58 @@
                     link.classList.add('active');
                 }
             });
+        }
+
+        function showComments(itemId) {
+            const comments = {
+                'harmony': [
+                    'Sarah M: Amazing place! The massage therapy really helped with my back pain.',
+                    'Mike R: Best wellness center in town. Highly recommend their yoga classes.',
+                    'Lisa K: Great staff and peaceful environment. Perfect for relaxation.'
+                ],
+                'natural': [
+                    'John D: Dr. Smith is excellent. Natural healing approach really works.',
+                    'Emma W: Alternative medicine treatments have been life-changing for me.',
+                    'Tom B: Finally found a holistic approach that works. Thank you!'
+                ],
+                'powerfit': [
+                    'Alex P: Best gym equipment I\'ve ever used. Worth every penny.',
+                    'Maria S: Personal trainers are knowledgeable and motivating.',
+                    'Chris L: Love the group fitness classes. Great community atmosphere.',
+                    'Jennifer M: Lost 20 pounds here! Amazing results with their program.'
+                ],
+                'yoga': [
+                    'Rachel T: Peaceful studio with amazing instructors.',
+                    'David K: Yoga classes help me manage stress perfectly.',
+                    'Amanda J: Beginner-friendly environment. Love coming here!'
+                ],
+                'supplements': [
+                    'Health_Guru: These supplements improved my energy levels significantly.',
+                    'FitnessFan: Great quality vitamins. Notice difference in my workouts.',
+                    'WellnessWoman: Been using for 3 months, feeling much better.',
+                    'VitaminVoter: Excellent value for money. Highly recommend!'
+                ],
+                'protein': [
+                    'GymRat: Best protein powder I\'ve tried. Mixes well, tastes great.',
+                    'PlantBased: Love that it\'s organic. Perfect for my vegan lifestyle.',
+                    'MuscleBuilder: Great for recovery after intense workouts.'
+                ],
+                'tea': [
+                    'TeaLover: Relaxing blend helps me sleep better at night.',
+                    'HealthyLiving: Digestive benefits are noticeable. Great quality.',
+                    'WellnessMom: Perfect for my evening routine. Kids love it too!'
+                ]
+            };
+
+            const itemComments = comments[itemId] || ['No comments yet. Be the first to comment!'];
+            
+            const commentsHtml = itemComments.map(comment => `
+                <div style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; margin-bottom: 0.5rem;">
+                    <p style="margin: 0; font-size: 0.9rem;">${comment}</p>
+                </div>
+            `).join('');
+
+            alert(`Comments for ${itemId}:\n\n${itemComments.join('\n')}`);
         }
     </script>
 </body>

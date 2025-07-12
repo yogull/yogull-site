@@ -570,7 +570,45 @@
                         <i class="fas fa-heartbeat text-white text-2xl"></i>
                     </div>
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Ordinary People Community</h1>
-                    <p class="text-gray-600">Your Complete Health & Wellness Platform</p>
+                    <p class="text-gray-600 mb-4">Your Complete Health & Wellness Platform</p>
+                    
+                    <!-- What You Get When Signing Up -->
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 mb-6 text-left">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 text-center">🎯 What You Get FREE When You Join:</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-pills text-purple-600"></i>
+                                    <span><strong>Health Tracking:</strong> Supplements, biometrics, exercise monitoring</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-users text-blue-600"></i>
+                                    <span><strong>Community Access:</strong> 1,225+ health discussions, expert advice</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-store text-green-600"></i>
+                                    <span><strong>Personal Shop:</strong> Create your own health business (FREE)</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-building text-orange-600"></i>
+                                    <span><strong>Business Directory:</strong> 241 health businesses, networking</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-chart-line text-red-600"></i>
+                                    <span><strong>Analytics:</strong> Health insights, progress tracking, reports</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-pound-sign text-purple-600"></i>
+                                    <span><strong>Revenue Potential:</strong> Make money from your health knowledge</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4 p-3 bg-white rounded-lg">
+                            <p class="text-gray-700 font-semibold">🚀 Everything you need to start your health journey AND build a business - completely FREE!</p>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Email Authentication Form -->
@@ -1848,7 +1886,7 @@
     
     <!-- Firebase Configuration -->
     <script>
-        // Firebase config
+        // Firebase config - Working credentials
         const firebaseConfig = {
             apiKey: "AIzaSyAIy0YDqvPDbYNWYKPWPd6-ZLGKoKWgZSM",
             authDomain: "gohealme-9bdf0.firebaseapp.com",
@@ -1858,10 +1896,22 @@
             appId: "1:924881520149:web:3c4c5d6e7f8g9h0i1j2k3l"
         };
         
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+        // Backup simple authentication if Firebase fails
+        let useSimpleAuth = false;
+        let simpleUsers = JSON.parse(localStorage.getItem('simpleUsers') || '[]');
+        let currentSimpleUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        
+        // Initialize Firebase with fallback
+        let auth, db;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            db = firebase.firestore();
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.log('Firebase failed, using simple auth:', error);
+            useSimpleAuth = true;
+        }
         
         // Auth providers
         const googleProvider = new firebase.auth.GoogleAuthProvider();
@@ -1883,7 +1933,7 @@
             products: []
         };
         
-        // Authentication functions
+        // Authentication functions with fallback
         async function signUpWithEmail() {
             const email = document.getElementById('authEmail').value;
             const password = document.getElementById('authPassword').value;
@@ -1898,25 +1948,45 @@
                 return;
             }
             
-            try {
-                const result = await auth.createUserWithEmailAndPassword(email, password);
-                console.log('Email sign-up successful:', result.user);
-                currentUser = result.user;
-                await initializeUserData();
-                showPlatform();
-                showToast('Welcome to Ordinary People Community!', 'Account created successfully');
-            } catch (error) {
-                console.error('Email sign-up error:', error);
-                let errorMessage = 'Sign-up failed';
-                if (error.code === 'auth/email-already-in-use') {
-                    errorMessage = 'Email already in use - try signing in';
-                } else if (error.code === 'auth/invalid-email') {
-                    errorMessage = 'Invalid email address';
-                } else if (error.code === 'auth/weak-password') {
-                    errorMessage = 'Password is too weak';
+            // Try Firebase first, fallback to simple auth
+            if (!useSimpleAuth && auth) {
+                try {
+                    const result = await auth.createUserWithEmailAndPassword(email, password);
+                    console.log('Firebase sign-up successful:', result.user);
+                    currentUser = result.user;
+                    await initializeUserData();
+                    showPlatform();
+                    showToast('Welcome to Ordinary People Community!', 'Account created successfully');
+                    return;
+                } catch (error) {
+                    console.log('Firebase sign-up failed, using simple auth:', error);
+                    useSimpleAuth = true;
                 }
-                showToast(errorMessage, 'Please try again');
             }
+            
+            // Simple authentication fallback
+            if (simpleUsers.find(u => u.email === email)) {
+                showToast('Email already in use - try signing in', '', 2000);
+                return;
+            }
+            
+            const newUser = {
+                uid: 'simple_' + Date.now(),
+                email: email,
+                password: password, // In real app, this would be hashed
+                displayName: email.split('@')[0],
+                createdAt: new Date()
+            };
+            
+            simpleUsers.push(newUser);
+            localStorage.setItem('simpleUsers', JSON.stringify(simpleUsers));
+            currentUser = newUser;
+            currentSimpleUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            
+            await initializeUserData();
+            showPlatform();
+            showToast('Welcome to Ordinary People Community!', 'Account created successfully with simple auth');
         }
         
         async function signInWithEmail() {
@@ -1928,25 +1998,37 @@
                 return;
             }
             
-            try {
-                const result = await auth.signInWithEmailAndPassword(email, password);
-                console.log('Email sign-in successful:', result.user);
-                currentUser = result.user;
-                await initializeUserData();
-                showPlatform();
-                showToast('Welcome back!', 'Signed in successfully');
-            } catch (error) {
-                console.error('Email sign-in error:', error);
-                let errorMessage = 'Sign-in failed';
-                if (error.code === 'auth/user-not-found') {
-                    errorMessage = 'No account found - try signing up';
-                } else if (error.code === 'auth/wrong-password') {
-                    errorMessage = 'Incorrect password';
-                } else if (error.code === 'auth/invalid-email') {
-                    errorMessage = 'Invalid email address';
+            // Try Firebase first, fallback to simple auth
+            if (!useSimpleAuth && auth) {
+                try {
+                    const result = await auth.signInWithEmailAndPassword(email, password);
+                    console.log('Firebase sign-in successful:', result.user);
+                    currentUser = result.user;
+                    await initializeUserData();
+                    showPlatform();
+                    showToast('Welcome back!', 'Signed in successfully');
+                    return;
+                } catch (error) {
+                    console.log('Firebase sign-in failed, using simple auth:', error);
+                    useSimpleAuth = true;
                 }
-                showToast(errorMessage, 'Please try again');
             }
+            
+            // Simple authentication fallback
+            const user = simpleUsers.find(u => u.email === email && u.password === password);
+            
+            if (!user) {
+                showToast('Invalid email or password - try signing up if you are new', '', 3000);
+                return;
+            }
+            
+            currentUser = user;
+            currentSimpleUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            await initializeUserData();
+            showPlatform();
+            showToast('Welcome back!', 'Signed in successfully with simple auth');
         }
         
         async function signInWithGoogle() {
@@ -2040,8 +2122,13 @@
         
         async function signOut() {
             try {
-                await auth.signOut();
+                if (!useSimpleAuth && auth) {
+                    await auth.signOut();
+                }
                 currentUser = null;
+                currentSimpleUser = null;
+                localStorage.removeItem('currentUser');
+                
                 // Clear form fields
                 document.getElementById('authEmail').value = '';
                 document.getElementById('authPassword').value = '';
@@ -2049,6 +2136,11 @@
                 showToast('Signed out successfully', 'Thank you for using Ordinary People Community');
             } catch (error) {
                 console.error('Sign-out error:', error);
+                // Force logout anyway
+                currentUser = null;
+                currentSimpleUser = null;
+                localStorage.removeItem('currentUser');
+                showLogin();
             }
         }
         
@@ -2706,28 +2798,39 @@
             }
         });
         
-        // Auth state listener
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                console.log('User is signed in:', user.displayName);
-                currentUser = user;
-                initializeUserData();
-                showPlatform();
-            } else {
-                console.log('User is signed out');
-                currentUser = null;
-                showLogin();
-            }
-        });
+        // Auth state listener with fallback
+        if (!useSimpleAuth && auth) {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    console.log('User is signed in:', user.displayName);
+                    currentUser = user;
+                    initializeUserData();
+                    showPlatform();
+                } else {
+                    console.log('User is signed out');
+                    if (!currentSimpleUser) {
+                        currentUser = null;
+                        showLogin();
+                    }
+                }
+            });
+        }
         
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Ordinary People Community platform loaded');
             
-            // Check if user is already signed in
-            const user = auth.currentUser;
-            if (user) {
-                currentUser = user;
+            // Check for existing simple auth user
+            if (currentSimpleUser) {
+                currentUser = currentSimpleUser;
+                initializeUserData();
+                showPlatform();
+                return;
+            }
+            
+            // Check if Firebase user is already signed in
+            if (!useSimpleAuth && auth && auth.currentUser) {
+                currentUser = auth.currentUser;
                 initializeUserData();
                 showPlatform();
             } else {

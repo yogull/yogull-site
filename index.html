@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogull - Ordinary People Community</title>
-    <meta name="description" content="Yogull - Business & Social Community Platform">
+    <meta name="description" content="Yogull - Connect with people worldwide, discover local businesses, and build your community">
     
-    <!-- React, ReactDOM, and other dependencies from CDN -->
+    <!-- React and Firebase -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -33,58 +33,48 @@
         const facebookProvider = new FacebookAuthProvider();
         const twitterProvider = new TwitterAuthProvider();
 
-        console.log('Firebase Config Check:');
-        console.log('Project ID:', firebaseConfig.projectId);
-        console.log('Auth Domain:', firebaseConfig.authDomain);
-        console.log('API Key present:', !!firebaseConfig.apiKey);
-        console.log('App ID present:', !!firebaseConfig.appId);
-        console.log('Firebase Auth initialized successfully');
-
         window.firebaseAuth = {
             signInWithGoogle: async () => {
                 try {
                     const result = await signInWithPopup(auth, googleProvider);
-                    console.log('Google sign-in successful:', result.user);
-                    window.location.reload();
+                    return result.user;
                 } catch (error) {
                     console.error('Google sign-in error:', error);
-                    alert('Google sign-in failed. Please try again.');
+                    throw error;
                 }
             },
             signInWithFacebook: async () => {
                 try {
                     const result = await signInWithPopup(auth, facebookProvider);
-                    console.log('Facebook sign-in successful:', result.user);
-                    window.location.reload();
+                    return result.user;
                 } catch (error) {
                     console.error('Facebook sign-in error:', error);
-                    alert('Facebook sign-in failed. Please try again.');
+                    throw error;
                 }
             },
             signInWithTwitter: async () => {
                 try {
                     const result = await signInWithPopup(auth, twitterProvider);
-                    console.log('Twitter sign-in successful:', result.user);
-                    window.location.reload();
+                    return result.user;
                 } catch (error) {
                     console.error('Twitter sign-in error:', error);
-                    alert('Twitter sign-in failed. Please try again.');
+                    throw error;
                 }
             },
             logout: async () => {
                 try {
                     await signOut(auth);
-                    window.location.reload();
                 } catch (error) {
                     console.error('Logout error:', error);
+                    throw error;
                 }
             }
         };
 
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
-            if (window.App && window.App.setUser) {
-                window.App.setUser(user);
+            if (window.updateAuthState) {
+                window.updateAuthState(user);
             }
         });
     </script>
@@ -100,6 +90,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
             background: #f8fafc;
             color: #1f2937;
+            line-height: 1.6;
         }
 
         .container {
@@ -108,96 +99,7 @@
             padding: 0 1rem;
         }
 
-        /* Login Section */
-        .login-container {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        .login-card {
-            background: white;
-            padding: 3rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .logo {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 2rem;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-
-        .logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .login-title {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            color: #1f2937;
-        }
-
-        .login-subtitle {
-            color: #6b7280;
-            margin-bottom: 2rem;
-        }
-
-        .social-btn {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 0.5rem;
-            background: white;
-            color: #374151;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .social-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .social-btn.google:hover {
-            background: #ea4335;
-            color: white;
-            border-color: #ea4335;
-        }
-
-        .social-btn.facebook:hover {
-            background: #1877f2;
-            color: white;
-            border-color: #1877f2;
-        }
-
-        .social-btn.twitter:hover {
-            background: #1da1f2;
-            color: white;
-            border-color: #1da1f2;
-        }
-
-        /* Main App */
-        .main-app {
-            min-height: 100vh;
-        }
-
+        /* Header */
         .header {
             background: white;
             border-bottom: 1px solid #e5e7eb;
@@ -213,7 +115,7 @@
             align-items: center;
         }
 
-        .header-logo {
+        .logo {
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -222,7 +124,7 @@
             color: #8b5cf6;
         }
 
-        .header-logo img {
+        .logo img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -238,10 +140,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
         }
 
         .nav-link:hover, .nav-link.active {
             color: #8b5cf6;
+            background: #f3f4f6;
         }
 
         .logout-btn {
@@ -260,76 +165,9 @@
             transform: translateY(-2px);
         }
 
-        /* Dashboard */
-        .dashboard {
-            padding: 2rem 0;
-        }
-
-        .dashboard-header {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: white;
-            padding: 3rem;
-            border-radius: 1.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .dashboard-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .dashboard-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-
-        .dashboard-card .icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #8b5cf6;
-        }
-
-        .dashboard-card h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .dashboard-card p {
-            color: #6b7280;
-        }
-
-        /* Page Content */
-        .page-content {
-            display: none;
-            padding: 2rem 0;
-        }
-
-        .page-content.active {
-            display: block;
-        }
-
-        /* Profile */
+        /* Profile Header */
         .profile-header {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 3rem;
             border-radius: 1rem;
@@ -360,6 +198,7 @@
             opacity: 0.9;
         }
 
+        /* Post Composer */
         .post-composer {
             background: white;
             padding: 2rem;
@@ -406,7 +245,7 @@
             transform: translateY(-2px);
         }
 
-        .photo-btn, .video-btn {
+        .photo-btn, .video-btn, .share-btn {
             background: #f3f4f6;
             color: #374151;
             border: none;
@@ -414,24 +253,67 @@
             border-radius: 0.5rem;
             cursor: pointer;
             margin-right: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
-        /* Community */
-        .community-header {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        .photo-btn:hover, .video-btn:hover, .share-btn:hover {
+            background: #e5e7eb;
+            transform: translateY(-1px);
         }
 
-        .community-title {
-            font-size: 2rem;
-            font-weight: 800;
+        /* Multi-Share Buttons */
+        .multi-share-container {
+            display: flex;
+            gap: 0.5rem;
             margin-bottom: 1rem;
-            color: #8b5cf6;
         }
 
+        .multi-share-btn {
+            background: #f3f4f6;
+            color: #374151;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .multi-share-btn:hover {
+            background: #e5e7eb;
+            transform: translateY(-1px);
+        }
+
+        .multi-share-btn.opc {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .multi-share-btn.opc:hover {
+            background: #2563eb;
+        }
+
+        .multi-share-btn.media {
+            background: #10b981;
+            color: white;
+        }
+
+        .multi-share-btn.media:hover {
+            background: #059669;
+        }
+
+        .multi-share-btn.multi {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .multi-share-btn.multi:hover {
+            background: #d97706;
+        }
+
+        /* Post Cards */
         .post-card {
             background: white;
             padding: 1.5rem;
@@ -491,10 +373,96 @@
             align-items: center;
             gap: 0.5rem;
             transition: color 0.3s ease;
+            font-weight: 600;
         }
 
         .post-action:hover {
             color: #8b5cf6;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .login-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .login-subtitle {
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background: white;
+            color: #374151;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .social-btn.google:hover {
+            background: #ea4335;
+            color: white;
+            border-color: #ea4335;
+        }
+
+        .social-btn.facebook:hover {
+            background: #1877f2;
+            color: white;
+            border-color: #1877f2;
+        }
+
+        .social-btn.twitter:hover {
+            background: #1da1f2;
+            color: white;
+            border-color: #1da1f2;
         }
 
         @media (max-width: 768px) {
@@ -502,8 +470,9 @@
                 display: none;
             }
             
-            .dashboard-grid {
-                grid-template-columns: 1fr;
+            .post-actions {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
     </style>
@@ -516,44 +485,139 @@
         
         function App() {
             const [user, setUser] = useState(null);
-            const [currentPage, setCurrentPage] = useState('dashboard');
             const [postContent, setPostContent] = useState('');
+            const [loading, setLoading] = useState(true);
             
-            // Set up user state for Firebase
-            React.useEffect(() => {
-                window.App = { setUser };
-                if (window.currentUser) {
+            useEffect(() => {
+                window.updateAuthState = (user) => {
+                    setUser(user);
+                    setLoading(false);
+                };
+                
+                if (window.currentUser !== undefined) {
                     setUser(window.currentUser);
+                    setLoading(false);
                 }
-            }, []);
+                
+                const timer = setTimeout(() => {
+                    if (loading) setLoading(false);
+                }, 2000);
+                
+                return () => clearTimeout(timer);
+            }, [loading]);
 
-            const handleLogin = (provider) => {
-                if (window.firebaseAuth) {
-                    if (provider === 'google') window.firebaseAuth.signInWithGoogle();
-                    else if (provider === 'facebook') window.firebaseAuth.signInWithFacebook();
-                    else if (provider === 'twitter') window.firebaseAuth.signInWithTwitter();
+            const handleLogin = async (provider) => {
+                try {
+                    let result;
+                    if (provider === 'google') {
+                        result = await window.firebaseAuth.signInWithGoogle();
+                    } else if (provider === 'facebook') {
+                        result = await window.firebaseAuth.signInWithFacebook();
+                    } else if (provider === 'twitter') {
+                        result = await window.firebaseAuth.signInWithTwitter();
+                    }
+                    
+                    if (result) {
+                        setUser(result);
+                    }
+                } catch (error) {
+                    console.error(`${provider} login failed:`, error);
                 }
             };
 
-            const handleLogout = () => {
-                if (window.firebaseAuth) {
-                    window.firebaseAuth.logout();
+            const handleLogout = async () => {
+                try {
+                    await window.firebaseAuth.logout();
+                    setUser(null);
+                } catch (error) {
+                    console.error('Logout failed:', error);
                 }
             };
 
             const handlePost = () => {
                 if (!postContent.trim()) return;
                 
-                // Simple post handling
+                // Add to posts (simple implementation)
                 alert('Post created: ' + postContent);
                 setPostContent('');
             };
 
+            // Multi-share functions exactly as in preview
+            const handleOPCShare = () => {
+                // Navigate to community as in preview
+                window.location.href = '/community';
+            };
+
+            const handleMediaShare = () => {
+                // Share to 4 main social media platforms
+                const platforms = [
+                    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+                    `https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out this amazing platform!')}&url=${encodeURIComponent(window.location.href)}`,
+                    `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`,
+                    `https://wa.me/?text=${encodeURIComponent('Check out this amazing platform! ' + window.location.href)}`
+                ];
+                
+                platforms.forEach((url, index) => {
+                    setTimeout(() => {
+                        window.open(url, '_blank', 'width=600,height=400');
+                    }, index * 100);
+                });
+            };
+
+            const handleMultiShare = () => {
+                // Share to all 26 social media platforms
+                const allPlatforms = [
+                    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+                    `https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out this amazing platform!')}&url=${encodeURIComponent(window.location.href)}`,
+                    `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`,
+                    `https://wa.me/?text=${encodeURIComponent('Check out this amazing platform! ' + window.location.href)}`,
+                    `https://telegram.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent('Check out this amazing platform!')}`,
+                    `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&description=${encodeURIComponent('Check out this amazing platform!')}`,
+                    `https://reddit.com/submit?url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent('Check out this amazing platform!')}`,
+                    `https://tumblr.com/widgets/share/tool?canonicalUrl=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent('Check out this amazing platform!')}`,
+                    `https://discord.com/channels/@me`,
+                    `https://snapchat.com/scan`,
+                    `https://www.tiktok.com/`,
+                    `https://www.instagram.com/`,
+                    `https://www.youtube.com/`,
+                    `https://www.twitch.tv/`,
+                    `https://medium.com/`,
+                    `https://github.com/`,
+                    `https://spotify.com/`,
+                    `https://vimeo.com/`,
+                    `https://www.flickr.com/`,
+                    `https://skype.com/`,
+                    `https://soundcloud.com/`,
+                    `https://www.behance.net/`,
+                    `https://dribbble.com/`,
+                    `https://www.deviantart.com/`,
+                    `https://stackoverflow.com/`,
+                    `https://www.quora.com/`
+                ];
+                
+                allPlatforms.forEach((url, index) => {
+                    setTimeout(() => {
+                        window.open(url, '_blank', 'width=600,height=400');
+                    }, index * 100);
+                });
+            };
+
+            if (loading) {
+                return (
+                    <div className="login-screen">
+                        <div style={{textAlign: 'center', color: 'white'}}>
+                            <div style={{width: '40px', height: '40px', border: '4px solid transparent', borderTop: '4px solid white', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem'}}></div>
+                            <p>Loading...</p>
+                        </div>
+                    </div>
+                );
+            }
+
             if (!user) {
                 return (
-                    <div className="login-container">
+                    <div className="login-screen">
                         <div className="login-card">
-                            <div className="logo">
+                            <div className="login-logo">
                                 <img src="attached_assets/yogull Health_1752330896917.jpg" alt="Yogull" />
                             </div>
                             <h1 className="login-title">Welcome to Yogull</h1>
@@ -574,20 +638,20 @@
             }
 
             return (
-                <div className="main-app">
+                <div>
                     <div className="header">
                         <div className="container">
                             <div className="header-content">
-                                <div className="header-logo">
+                                <div className="logo">
                                     <img src="attached_assets/yogull Health_1752330896917.jpg" alt="Yogull" />
                                     <span>Yogull</span>
                                 </div>
                                 <nav className="nav-links">
-                                    <span className={`nav-link ${currentPage === 'dashboard' ? 'active' : ''}`} onClick={() => setCurrentPage('dashboard')}>Home</span>
-                                    <span className={`nav-link ${currentPage === 'community' ? 'active' : ''}`} onClick={() => setCurrentPage('community')}>Community</span>
-                                    <span className={`nav-link ${currentPage === 'business' ? 'active' : ''}`} onClick={() => setCurrentPage('business')}>Business</span>
-                                    <span className={`nav-link ${currentPage === 'shop' ? 'active' : ''}`} onClick={() => setCurrentPage('shop')}>Shop</span>
-                                    <span className={`nav-link ${currentPage === 'profile' ? 'active' : ''}`} onClick={() => setCurrentPage('profile')}>Login</span>
+                                    <span className="nav-link active">Home</span>
+                                    <span className="nav-link">Community</span>
+                                    <span className="nav-link">Business</span>
+                                    <span className="nav-link">Shop</span>
+                                    <span className="nav-link">Login</span>
                                 </nav>
                                 <button className="logout-btn" onClick={handleLogout}>
                                     🚪 Logout
@@ -596,246 +660,65 @@
                         </div>
                     </div>
 
-                    <div className="container">
-                        {/* Dashboard Page */}
-                        <div className={`page-content ${currentPage === 'dashboard' ? 'active' : ''}`}>
-                            <div className="dashboard">
-                                <div className="dashboard-header">
-                                    <h1 className="dashboard-title">Welcome to Your Dashboard</h1>
-                                    <p>Manage your health, connect with community, and grow your business</p>
+                    <div className="container" style={{padding: '2rem 1rem'}}>
+                        <div className="profile-header">
+                            <div className="profile-avatar">JP</div>
+                            <div className="profile-name">John Proctor</div>
+                            <div className="profile-bio">Going crazy</div>
+                        </div>
+                        
+                        <div className="post-composer">
+                            <textarea 
+                                className="post-input" 
+                                placeholder="What's on your mind?"
+                                value={postContent}
+                                onChange={(e) => setPostContent(e.target.value)}
+                            ></textarea>
+                            
+                            <div className="multi-share-container">
+                                <button className="multi-share-btn opc" onClick={handleOPCShare}>
+                                    OPC Share
+                                </button>
+                                <button className="multi-share-btn media" onClick={handleMediaShare}>
+                                    Media Share
+                                </button>
+                                <button className="multi-share-btn multi" onClick={handleMultiShare}>
+                                    Multi Share
+                                </button>
+                            </div>
+                            
+                            <div className="post-actions">
+                                <div>
+                                    <button className="photo-btn">📷 Photo</button>
+                                    <button className="video-btn">🎥 Video</button>
                                 </div>
-                                
-                                <div className="dashboard-grid">
-                                    <div className="dashboard-card" onClick={() => setCurrentPage('community')}>
-                                        <div className="icon">👥</div>
-                                        <h3>Community</h3>
-                                        <p>Join discussions and connect with others</p>
-                                    </div>
-                                    
-                                    <div className="dashboard-card" onClick={() => setCurrentPage('profile')}>
-                                        <div className="icon">👤</div>
-                                        <h3>Profile Wall</h3>
-                                        <p>Share updates and manage your profile</p>
-                                    </div>
-                                    
-                                    <div className="dashboard-card" onClick={() => setCurrentPage('business')}>
-                                        <div className="icon">💼</div>
-                                        <h3>Business Directory</h3>
-                                        <p>Find local businesses and services</p>
-                                    </div>
-                                    
-                                    <div className="dashboard-card" onClick={() => setCurrentPage('shop')}>
-                                        <div className="icon">🛒</div>
-                                        <h3>Personal Shop</h3>
-                                        <p>Browse and manage your shop</p>
-                                    </div>
-                                    
-                                    <div className="dashboard-card">
-                                        <div className="icon">💊</div>
-                                        <h3>Health Hub</h3>
-                                        <p>Track your health and supplements</p>
-                                    </div>
-                                    
-                                    <div className="dashboard-card">
-                                        <div className="icon">⚙️</div>
-                                        <h3>Admin Panel</h3>
-                                        <p>Platform management and settings</p>
-                                    </div>
-                                </div>
+                                <button className="post-btn" onClick={handlePost}>
+                                    Post
+                                </button>
                             </div>
                         </div>
-
-                        {/* Profile Page */}
-                        <div className={`page-content ${currentPage === 'profile' ? 'active' : ''}`}>
-                            <div className="profile-header">
-                                <div className="profile-avatar">JP</div>
-                                <div className="profile-name">John Proctor</div>
-                                <div className="profile-bio">Going crazy</div>
-                            </div>
-                            
-                            <div className="post-composer">
-                                <textarea 
-                                    className="post-input" 
-                                    placeholder="What's on your mind?"
-                                    value={postContent}
-                                    onChange={(e) => setPostContent(e.target.value)}
-                                ></textarea>
-                                <div className="post-actions">
-                                    <div>
-                                        <button className="photo-btn">📷 Photo</button>
-                                        <button className="video-btn">🎥 Video</button>
-                                    </div>
-                                    <button className="post-btn" onClick={handlePost}>
-                                        Post
-                                    </button>
+                        
+                        <div className="post-card">
+                            <div className="post-header">
+                                <div className="post-avatar">JP</div>
+                                <div className="post-meta">
+                                    <h4>John Proctor</h4>
+                                    <p>2 hours ago</p>
                                 </div>
                             </div>
-                            
-                            <div className="post-card">
-                                <div className="post-header">
-                                    <div className="post-avatar">JP</div>
-                                    <div className="post-meta">
-                                        <h4>John Proctor</h4>
-                                        <p>2 hours ago</p>
-                                    </div>
-                                </div>
-                                <div className="post-content">
-                                    <p>Just joined the Yogull community! Excited to connect with like-minded people and share my health journey.</p>
-                                </div>
-                                <div className="post-actions-bar">
-                                    <button className="post-action">
-                                        ❤️ Like
-                                    </button>
-                                    <button className="post-action">
-                                        💬 Comment
-                                    </button>
-                                    <button className="post-action">
-                                        🔗 Share
-                                    </button>
-                                </div>
+                            <div className="post-content">
+                                <p>Just joined the Yogull community! Excited to connect with like-minded people and share my health journey.</p>
                             </div>
-                        </div>
-
-                        {/* Community Page */}
-                        <div className={`page-content ${currentPage === 'community' ? 'active' : ''}`}>
-                            <div className="community-header">
-                                <h1 className="community-title">Ordinary People Community</h1>
-                                <p>Connect with others, share experiences, and join meaningful conversations</p>
-                            </div>
-                            
-                            <div className="post-card">
-                                <div className="post-header">
-                                    <div className="post-avatar">JD</div>
-                                    <div className="post-meta">
-                                        <h4>John Doe</h4>
-                                        <p>2 hours ago</p>
-                                    </div>
-                                </div>
-                                <div className="post-content">
-                                    <p>Looking for support and advice on managing anxiety and stress. Would love to hear from others who have similar experiences.</p>
-                                </div>
-                                <div className="post-actions-bar">
-                                    <button className="post-action">
-                                        👍 12 Likes
-                                    </button>
-                                    <button className="post-action">
-                                        💬 8 Comments
-                                    </button>
-                                    <button className="post-action">
-                                        🔗 Share
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div className="post-card">
-                                <div className="post-header">
-                                    <div className="post-avatar">SM</div>
-                                    <div className="post-meta">
-                                        <h4>Sarah Miller</h4>
-                                        <p>4 hours ago</p>
-                                    </div>
-                                </div>
-                                <div className="post-content">
-                                    <p>Can anyone recommend a good local nutritionist? Looking for someone who specializes in plant-based diets.</p>
-                                </div>
-                                <div className="post-actions-bar">
-                                    <button className="post-action">
-                                        👍 7 Likes
-                                    </button>
-                                    <button className="post-action">
-                                        💬 15 Comments
-                                    </button>
-                                    <button className="post-action">
-                                        🔗 Share
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Business Page */}
-                        <div className={`page-content ${currentPage === 'business' ? 'active' : ''}`}>
-                            <div className="community-header">
-                                <h1 className="community-title">Business Directory</h1>
-                                <p>Discover local businesses and services in your area</p>
-                            </div>
-                            
-                            <div className="post-card">
-                                <div className="post-header">
-                                    <div className="post-avatar">🏥</div>
-                                    <div className="post-meta">
-                                        <h4>Wellness Center</h4>
-                                        <p>Healthcare • Open Now</p>
-                                    </div>
-                                </div>
-                                <div className="post-content">
-                                    <p>Comprehensive wellness services including massage, acupuncture, and nutritional counseling. Book your appointment today!</p>
-                                </div>
-                                <div className="post-actions-bar">
-                                    <button className="post-action">
-                                        👁️ View Profile
-                                    </button>
-                                    <button className="post-action">
-                                        📞 Contact
-                                    </button>
-                                    <button className="post-action">
-                                        🗺️ Directions
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div className="post-card">
-                                <div className="post-header">
-                                    <div className="post-avatar">💪</div>
-                                    <div className="post-meta">
-                                        <h4>Fitness First Gym</h4>
-                                        <p>Fitness • 24/7</p>
-                                    </div>
-                                </div>
-                                <div className="post-content">
-                                    <p>Modern fitness facility with personal training, group classes, and state-of-the-art equipment. First session free!</p>
-                                </div>
-                                <div className="post-actions-bar">
-                                    <button className="post-action">
-                                        👁️ View Profile
-                                    </button>
-                                    <button className="post-action">
-                                        📞 Contact
-                                    </button>
-                                    <button className="post-action">
-                                        🗺️ Directions
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Shop Page */}
-                        <div className={`page-content ${currentPage === 'shop' ? 'active' : ''}`}>
-                            <div className="community-header">
-                                <h1 className="community-title">Personal Shop</h1>
-                                <p>Browse products from community members and local businesses</p>
-                            </div>
-                            
-                            <div className="dashboard-grid">
-                                <div className="dashboard-card">
-                                    <div className="icon">💊</div>
-                                    <h3>Vitamin D3</h3>
-                                    <p>High-quality supplements</p>
-                                    <div style={{marginTop: '1rem', fontSize: '1.5rem', fontWeight: 'bold', color: '#8b5cf6'}}>£15.99</div>
-                                </div>
-                                
-                                <div className="dashboard-card">
-                                    <div className="icon">🌱</div>
-                                    <h3>Protein Powder</h3>
-                                    <p>Organic plant-based</p>
-                                    <div style={{marginTop: '1rem', fontSize: '1.5rem', fontWeight: 'bold', color: '#8b5cf6'}}>£29.99</div>
-                                </div>
-                                
-                                <div className="dashboard-card">
-                                    <div className="icon">🐟</div>
-                                    <h3>Omega-3 Fish Oil</h3>
-                                    <p>Premium quality</p>
-                                    <div style={{marginTop: '1rem', fontSize: '1.5rem', fontWeight: 'bold', color: '#8b5cf6'}}>£22.50</div>
-                                </div>
+                            <div className="post-actions-bar">
+                                <button className="post-action">
+                                    ❤️ Like
+                                </button>
+                                <button className="post-action">
+                                    💬 Comment
+                                </button>
+                                <button className="post-action">
+                                    🔗 Share
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -845,5 +728,12 @@
 
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
+    
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </body>
 </html>

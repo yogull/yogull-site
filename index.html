@@ -1772,7 +1772,12 @@
                 avatar.style.backgroundImage = `url(${imageData})`;
                 avatar.style.backgroundSize = 'cover';
                 avatar.style.backgroundPosition = 'center';
-                avatar.innerHTML = ''; // Remove "JP" text when image is set
+                // Keep the camera icon but remove any text
+                const cameraIcon = avatar.querySelector('div');
+                avatar.innerHTML = '';
+                if (cameraIcon) {
+                    avatar.appendChild(cameraIcon);
+                }
             }
         }
         

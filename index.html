@@ -179,17 +179,11 @@
         .profile-avatar {
             width: 120px;
             height: 120px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            font-weight: 700;
             margin: 0 auto 1rem;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            border: 3px solid rgba(255,255,255,0.3);
+            background: transparent;
         }
 
         .profile-header .profile-name {
@@ -731,7 +725,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" alt="Yogull Logo" style="width: 50px; height: 50px;">
+                    <img src="attached_assets/yogull Health_1752620939083.jpg" alt="Yogull Logo" style="width: 80px; height: 80px; object-fit: contain;">
                 </div>
                 <nav class="nav-links">
                     <a href="#" class="nav-link active" onclick="showHome()">Home</a>
@@ -750,13 +744,12 @@
     </div>
 
     <div class="container" style="padding: 2rem 1rem;">
-        <div class="profile-header">
-            <div class="profile-avatar" onclick="uploadProfileImage()" style="cursor: pointer; position: relative; background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='); background-size: cover; background-position: center;">
-                <div style="position: absolute; bottom: -5px; right: -5px; background: #10b981; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">📷</div>
-            </div>
+        <div class="profile-header" onclick="uploadBannerImage()" style="cursor: pointer; position: relative; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+            <div style="position: absolute; top: 10px; right: 10px; background: #10b981; color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">📷</div>
+            <div style="color: rgba(255,255,255,0.7); font-size: 1.2rem; text-align: center;">Click to upload banner image</div>
         </div>
         
-        <!-- Profile Info Below Avatar -->
+        <!-- Profile Info Below Banner -->
         <div style="text-align: center; margin-bottom: 2rem;">
             <div class="profile-name" style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; color: #1f2937;">John Proctor</div>
             <div class="profile-bio" style="color: #6b7280; font-size: 1.1rem;">Going crazy</div>
@@ -1744,7 +1737,7 @@
             updateActiveNavLink('Dashboard');
         }
 
-        function uploadProfileImage() {
+        function uploadBannerImage() {
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = 'image/*';
@@ -1755,10 +1748,10 @@
                     reader.onload = (e) => {
                         const imageData = e.target.result;
                         // Store the image in localStorage for persistence
-                        localStorage.setItem('profileImage', imageData);
-                        // Update the profile avatar
-                        updateProfileAvatar(imageData);
-                        showTopNotification('Profile image updated successfully!', 'success');
+                        localStorage.setItem('bannerImage', imageData);
+                        // Update the banner
+                        updateBannerImage(imageData);
+                        showTopNotification('Banner image updated successfully!', 'success');
                     };
                     reader.readAsDataURL(file);
                 }
@@ -1766,30 +1759,29 @@
             input.click();
         }
         
-        function updateProfileAvatar(imageData) {
-            const avatar = document.querySelector('.profile-avatar');
-            if (avatar) {
-                avatar.style.backgroundImage = `url(${imageData})`;
-                avatar.style.backgroundSize = 'cover';
-                avatar.style.backgroundPosition = 'center';
-                // Keep the camera icon but remove any text
-                const cameraIcon = avatar.querySelector('div');
-                avatar.innerHTML = '';
-                if (cameraIcon) {
-                    avatar.appendChild(cameraIcon);
+        function updateBannerImage(imageData) {
+            const banner = document.querySelector('.profile-header');
+            if (banner) {
+                banner.style.backgroundImage = `url(${imageData})`;
+                banner.style.backgroundSize = 'cover';
+                banner.style.backgroundPosition = 'center';
+                // Hide the upload text when image is set
+                const uploadText = banner.querySelector('div:last-child');
+                if (uploadText) {
+                    uploadText.style.display = 'none';
                 }
             }
         }
         
-        function loadProfileImage() {
-            const savedImage = localStorage.getItem('profileImage');
+        function loadBannerImage() {
+            const savedImage = localStorage.getItem('bannerImage');
             if (savedImage) {
-                updateProfileAvatar(savedImage);
+                updateBannerImage(savedImage);
             }
         }
         
-        // Load profile image when page loads
-        window.addEventListener('load', loadProfileImage);
+        // Load banner image when page loads
+        window.addEventListener('load', loadBannerImage);
 
         function showLogin() {
             alert('Login functionality - Firebase authentication is already configured');

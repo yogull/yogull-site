@@ -1273,6 +1273,11 @@
                 showHome();
             }, 1000);
         }
+        
+        function showSocialConnect() {
+            // Show social media connection modal
+            showConnectionModal();
+        }
 
         function goBackToProfile() {
             location.reload(); // Reload the page to show profile again
@@ -1594,6 +1599,77 @@
 
         function sharePost(postId) {
             showTopNotification(`Shared post: ${postId}`, 'success');
+        }
+
+        function showDashboard() {
+            const dashboardContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>Dashboard</h1>
+                        <div style="display: flex; gap: 1rem;">
+                            <button onclick="showHome()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                Back to Profile
+                            </button>
+                            <button onclick="handleLogout()" style="background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div class="post-card">
+                            <h3>🏠 Community Connection</h3>
+                            <p>Connect with like-minded individuals in your area and build meaningful relationships.</p>
+                            <button onclick="showCommunity()" style="background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Access Community
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>💼 Business Directory</h3>
+                            <p>Discover local businesses and services in your area with direct contact options.</p>
+                            <button onclick="showBusiness()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Browse Businesses
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>🛍️ Personal Shop</h3>
+                            <p>Create and manage your personal affiliate shop with custom products and links.</p>
+                            <button onclick="showPersonalShop()" style="background: #f59e0b; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Manage Shop
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>🛒 Product Shop</h3>
+                            <p>Browse and purchase premium health and wellness products from our curated selection.</p>
+                            <button onclick="showShop()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Shop Products
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>📱 Social Media</h3>
+                            <p>Connect your social media accounts for seamless sharing and engagement.</p>
+                            <button onclick="showSocialConnect()" style="background: #ec4899; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Manage Social
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>👤 Profile Settings</h3>
+                            <p>Update your profile information, bio, and account settings.</p>
+                            <button onclick="showEditProfile()" style="background: #6366f1; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Edit Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = dashboardContent;
+            updateActiveNavLink('Dashboard');
         }
 
         function showLogin() {

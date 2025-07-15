@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogull - Ordinary People Community</title>
     <meta name="description" content="Yogull - Connect with people worldwide, discover local businesses, and build your community">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iMTYiIGZpbGw9IiM4YjVjZjYiLz4KPHRleHQgeD0iMTYiIHk9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCI+WTwvdGV4dD4KPC9zdmc+">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iMTYiIGZpbGw9IiM4YjVjZjYiLz4KPHRleHQgeD0iMTYiIHk9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCI+WTwvdGV4dD4KPC9zdmc+">
     
     <!-- Firebase -->
     <script type="module">
@@ -185,15 +187,18 @@
             font-size: 3rem;
             font-weight: 700;
             margin: 0 auto 1rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            border: 3px solid rgba(255,255,255,0.3);
         }
 
-        .profile-name {
+        .profile-header .profile-name {
             font-size: 2rem;
             font-weight: 800;
             margin-bottom: 0.5rem;
         }
 
-        .profile-bio {
+        .profile-header .profile-bio {
             opacity: 0.9;
         }
 
@@ -746,12 +751,15 @@
 
     <div class="container" style="padding: 2rem 1rem;">
         <div class="profile-header">
-            <div class="profile-avatar" onclick="uploadProfileImage()" style="cursor: pointer; position: relative;">
-                JP
+            <div class="profile-avatar" onclick="uploadProfileImage()" style="cursor: pointer; position: relative; background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='); background-size: cover; background-position: center;">
                 <div style="position: absolute; bottom: -5px; right: -5px; background: #10b981; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">📷</div>
             </div>
-            <div class="profile-name">John Proctor</div>
-            <div class="profile-bio">Going crazy</div>
+        </div>
+        
+        <!-- Profile Info Below Avatar -->
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <div class="profile-name" style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; color: #1f2937;">John Proctor</div>
+            <div class="profile-bio" style="color: #6b7280; font-size: 1.1rem;">Going crazy</div>
         </div>
         
         <!-- Profile Actions -->
@@ -1268,9 +1276,9 @@
             // Show logout confirmation
             showTopNotification('Logged out successfully!', 'success');
             
-            // Redirect to home/dashboard after short delay
+            // Redirect to dashboard after short delay
             setTimeout(() => {
-                showHome();
+                showDashboard();
             }, 1000);
         }
         
@@ -1285,7 +1293,71 @@
 
         // Navigation functions
         function showHome() {
-            location.reload(); // Reload to show home/profile
+            const homeContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h1>Welcome to Yogull</h1>
+                        <p>Your ordinary people community platform</p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div class="post-card">
+                            <h3>🏠 Your Profile</h3>
+                            <p>View and manage your profile, posts, and connections.</p>
+                            <button onclick="showProfile()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                View Profile
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>📊 Dashboard</h3>
+                            <p>Access your dashboard with all platform features and settings.</p>
+                            <button onclick="showDashboard()" style="background: #4f46e5; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Open Dashboard
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>🏢 Community</h3>
+                            <p>Connect with like-minded people and join discussions.</p>
+                            <button onclick="showCommunity()" style="background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Join Community
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>💼 Business Directory</h3>
+                            <p>Discover local businesses and services in your area.</p>
+                            <button onclick="showBusiness()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Browse Businesses
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>🛍️ Personal Shop</h3>
+                            <p>Create and manage your personal affiliate shop.</p>
+                            <button onclick="showPersonalShop()" style="background: #f59e0b; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Manage Shop
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>🔐 Login</h3>
+                            <p>Sign in to access your account and personalized features.</p>
+                            <button onclick="showLogin()" style="background: #059669; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Sign In
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = homeContent;
+            updateActiveNavLink('Home');
+        }
+        
+        function showProfile() {
+            location.reload(); // Reload to show profile page
         }
 
         function showCommunity() {
@@ -1671,6 +1743,48 @@
             document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = dashboardContent;
             updateActiveNavLink('Dashboard');
         }
+
+        function uploadProfileImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imageData = e.target.result;
+                        // Store the image in localStorage for persistence
+                        localStorage.setItem('profileImage', imageData);
+                        // Update the profile avatar
+                        updateProfileAvatar(imageData);
+                        showTopNotification('Profile image updated successfully!', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+        
+        function updateProfileAvatar(imageData) {
+            const avatar = document.querySelector('.profile-avatar');
+            if (avatar) {
+                avatar.style.backgroundImage = `url(${imageData})`;
+                avatar.style.backgroundSize = 'cover';
+                avatar.style.backgroundPosition = 'center';
+                avatar.innerHTML = ''; // Remove "JP" text when image is set
+            }
+        }
+        
+        function loadProfileImage() {
+            const savedImage = localStorage.getItem('profileImage');
+            if (savedImage) {
+                updateProfileAvatar(savedImage);
+            }
+        }
+        
+        // Load profile image when page loads
+        window.addEventListener('load', loadProfileImage);
 
         function showLogin() {
             alert('Login functionality - Firebase authentication is already configured');

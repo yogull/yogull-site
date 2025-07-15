@@ -730,9 +730,11 @@
                 </div>
                 <nav class="nav-links">
                     <a href="#" class="nav-link active" onclick="showHome()">Home</a>
+                    <a href="#" class="nav-link" onclick="showDashboard()">Dashboard</a>
                     <a href="#" class="nav-link" onclick="showCommunity()">Community</a>
                     <a href="#" class="nav-link" onclick="showBusiness()">Business</a>
                     <a href="#" class="nav-link" onclick="showShop()">Shop</a>
+                    <a href="#" class="nav-link" onclick="showPersonalShop()">Personal Shop</a>
                     <a href="#" class="nav-link" onclick="showLogin()">Login</a>
                 </nav>
                 <button class="logout-btn" onclick="handleLogout()">
@@ -1038,7 +1040,7 @@
             document.getElementById('postContent').value = '';
             
             // Show success message
-            alert('Post created successfully!');
+            showTopNotification('Post created successfully!', 'success');
         }
 
         function handleOPCShare() {
@@ -1064,9 +1066,9 @@
                             <p>Welcome to the Yogull Community! Share your thoughts, connect with others, and build meaningful relationships.</p>
                         </div>
                         <div class="post-actions-bar">
-                            <button class="post-action">❤️ Like (15)</button>
-                            <button class="post-action">💬 Comment (8)</button>
-                            <button class="post-action">🔗 Share</button>
+                            <button class="post-action" onclick="likePost('welcome')">❤️ Like (15)</button>
+                            <button class="post-action" onclick="showComments('welcome')">💬 Comment (8)</button>
+                            <button class="post-action" onclick="sharePost('welcome')">🔗 Share</button>
                         </div>
                     </div>
                     
@@ -1082,9 +1084,9 @@
                             <p>Amazing platform! Love how easy it is to connect with people who share similar interests.</p>
                         </div>
                         <div class="post-actions-bar">
-                            <button class="post-action">❤️ Like (23)</button>
-                            <button class="post-action">💬 Comment (12)</button>
-                            <button class="post-action">🔗 Share</button>
+                            <button class="post-action" onclick="likePost('mary')">❤️ Like (23)</button>
+                            <button class="post-action" onclick="showComments('mary')">💬 Comment (12)</button>
+                            <button class="post-action" onclick="sharePost('mary')">🔗 Share</button>
                         </div>
                     </div>
                     
@@ -1100,9 +1102,9 @@
                             <p>Just opened my new wellness center! Check it out in the business directory. Excited to serve our community!</p>
                         </div>
                         <div class="post-actions-bar">
-                            <button class="post-action">❤️ Like (31)</button>
-                            <button class="post-action">💬 Comment (18)</button>
-                            <button class="post-action">🔗 Share</button>
+                            <button class="post-action" onclick="likePost('david')">❤️ Like (31)</button>
+                            <button class="post-action" onclick="showComments('david')">💬 Comment (18)</button>
+                            <button class="post-action" onclick="sharePost('david')">🔗 Share</button>
                         </div>
                     </div>
                 </div>
@@ -1264,10 +1266,12 @@
             sessionStorage.clear();
             
             // Show logout confirmation
-            alert('Logged out successfully!');
+            showTopNotification('Logged out successfully!', 'success');
             
-            // Redirect to login page or refresh to show logged out state
-            window.location.href = '/login';
+            // Redirect to home/dashboard after short delay
+            setTimeout(() => {
+                showHome();
+            }, 1000);
         }
 
         function goBackToProfile() {
@@ -1444,6 +1448,152 @@
             
             document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = shopContent;
             updateActiveNavLink('Shop');
+        }
+
+        function showPersonalShop() {
+            const personalShopContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>My Personal Shop</h1>
+                        <div style="display: flex; gap: 1rem;">
+                            <button onclick="addNewProduct()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                + Add Product
+                            </button>
+                            <button onclick="showHome()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                Back to Home
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card" style="margin-bottom: 2rem;">
+                        <h3>Shop Settings</h3>
+                        <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Shop Name</label>
+                                <input type="text" id="shopName" value="John's Health Store" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Shop Description</label>
+                                <textarea id="shopDescription" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; height: 100px;">Premium health and wellness products for optimal living</textarea>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Default Affiliate Link</label>
+                                <input type="text" id="defaultAffiliate" placeholder="https://your-affiliate-program.com/ref=yourid" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <button onclick="saveShopSettings()" style="background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: fit-content;">
+                                Save Settings
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <h3>My Products</h3>
+                        <div id="personalProducts" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 1rem;">
+                            <div class="post-card">
+                                <h4>Sample Product 1</h4>
+                                <p>Add your product description here. This is where you describe the benefits and features.</p>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin: 1rem 0;">$29.99</div>
+                                <div style="margin: 1rem 0;">
+                                    <strong>Affiliate Link:</strong><br>
+                                    <input type="text" value="https://example.com/affiliate/product1" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.9rem;">
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="editProduct(1)" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Edit</button>
+                                    <button onclick="deleteProduct(1)" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Delete</button>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action" onclick="likeProduct(1)">❤️ Like (12)</button>
+                                    <button class="post-action" onclick="showComments('product1')">💬 Comment (4)</button>
+                                    <button class="post-action" onclick="shareProduct(1)">🔗 Share</button>
+                                </div>
+                            </div>
+                            
+                            <div class="post-card">
+                                <h4>Sample Product 2</h4>
+                                <p>Another product example. Click 'Add Product' to create your own products with affiliate links.</p>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin: 1rem 0;">$49.99</div>
+                                <div style="margin: 1rem 0;">
+                                    <strong>Affiliate Link:</strong><br>
+                                    <input type="text" value="https://example.com/affiliate/product2" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.9rem;">
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="editProduct(2)" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Edit</button>
+                                    <button onclick="deleteProduct(2)" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Delete</button>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action" onclick="likeProduct(2)">❤️ Like (8)</button>
+                                    <button class="post-action" onclick="showComments('product2')">💬 Comment (2)</button>
+                                    <button class="post-action" onclick="shareProduct(2)">🔗 Share</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = personalShopContent;
+            updateActiveNavLink('Personal Shop');
+        }
+
+        function addNewProduct() {
+            const productName = prompt('Enter product name:');
+            const productDescription = prompt('Enter product description:');
+            const productPrice = prompt('Enter product price (e.g., 29.99):');
+            const affiliateLink = prompt('Enter affiliate link:');
+            
+            if (productName && productDescription && productPrice && affiliateLink) {
+                showTopNotification('Product added successfully!', 'success');
+                // In a real app, this would save to database
+            }
+        }
+
+        function saveShopSettings() {
+            const shopName = document.getElementById('shopName').value;
+            const shopDescription = document.getElementById('shopDescription').value;
+            const defaultAffiliate = document.getElementById('defaultAffiliate').value;
+            
+            // Save to localStorage
+            localStorage.setItem('shopName', shopName);
+            localStorage.setItem('shopDescription', shopDescription);
+            localStorage.setItem('defaultAffiliate', defaultAffiliate);
+            
+            showTopNotification('Shop settings saved successfully!', 'success');
+        }
+
+        function editProduct(productId) {
+            showTopNotification(`Editing product ${productId}`, 'success');
+        }
+
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                showTopNotification(`Product ${productId} deleted`, 'success');
+            }
+        }
+
+        function likeProduct(productId) {
+            showTopNotification(`Liked product ${productId}`, 'success');
+        }
+
+        function shareProduct(productId) {
+            showTopNotification(`Shared product ${productId}`, 'success');
+        }
+
+        function likePost(postId) {
+            showTopNotification(`Liked post: ${postId}`, 'success');
+        }
+
+        function sharePost(postId) {
+            showTopNotification(`Shared post: ${postId}`, 'success');
         }
 
         function showLogin() {

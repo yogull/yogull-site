@@ -1206,7 +1206,15 @@
         }
 
         function handleLogout() {
-            alert('Logout clicked!');
+            // Clear any user session data
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Show logout confirmation
+            alert('Logged out successfully!');
+            
+            // Redirect to login page or refresh to show logged out state
+            window.location.href = '/login';
         }
 
         function goBackToProfile() {

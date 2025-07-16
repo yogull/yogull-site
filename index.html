@@ -3,632 +3,2136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yogull Platform - Complete Social Media & Business Solution</title>
+    <title>Yogull - Ordinary People Community</title>
+    <meta name="description" content="Yogull - Connect with people worldwide, discover local businesses, and build your community">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iMTYiIGZpbGw9IiM4YjVjZjYiLz4KPHRleHQgeD0iMTYiIHk9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCI+WTwvdGV4dD4KPC9zdmc+">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iMTYiIGZpbGw9IiM4YjVjZjYiLz4KPHRleHQgeD0iMTYiIHk9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCI+WTwvdGV4dD4KPC9zdmc+">
+    
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
+            authDomain: "gohealme-9bdf0.firebaseapp.com",
+            projectId: "gohealme-9bdf0",
+            storageBucket: "gohealme-9bdf0.firebasestorage.app",
+            messagingSenderId: "823297665017",
+            appId: "1:823297665017:web:3427ba4397e12447ccbf28",
+            measurementId: "G-WPZ6J8DSKE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        const googleProvider = new GoogleAuthProvider();
+        const facebookProvider = new FacebookAuthProvider();
+        const twitterProvider = new TwitterAuthProvider();
+
+        window.firebaseAuth = {
+            signInWithGoogle: async () => {
+                try {
+                    const result = await signInWithPopup(auth, googleProvider);
+                    return result.user;
+                } catch (error) {
+                    console.error('Google sign-in error:', error);
+                    throw error;
+                }
+            },
+            signInWithFacebook: async () => {
+                try {
+                    const result = await signInWithPopup(auth, facebookProvider);
+                    return result.user;
+                } catch (error) {
+                    console.error('Facebook sign-in error:', error);
+                    throw error;
+                }
+            },
+            signInWithTwitter: async () => {
+                try {
+                    const result = await signInWithPopup(auth, twitterProvider);
+                    return result.user;
+                } catch (error) {
+                    console.error('Twitter sign-in error:', error);
+                    throw error;
+                }
+            },
+            logout: async () => {
+                try {
+                    await signOut(auth);
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    throw error;
+                }
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            window.currentUser = user;
+        });
+    </script>
+    
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #f8fafc;
+            color: #1f2937;
             line-height: 1.6;
         }
-        
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #667eea;
-            text-decoration: none;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-        
-        .nav-links button {
-            background: none;
-            border: none;
-            color: #333;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-        
-        .nav-links button:hover, .nav-links button.active {
-            background: #667eea;
-            color: white;
-        }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 0 1rem;
         }
-        
-        .page {
-            display: none;
+
+        /* Header */
+        .header {
             background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #8b5cf6;
         }
         
-        .page.active {
-            display: block;
+        .logo img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
         }
-        
-        .hero {
-            text-align: center;
-            padding: 3rem 0;
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
         }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+        .nav-links {
+            display: flex;
             gap: 2rem;
-            margin: 3rem 0;
         }
-        
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            border: 1px solid #f0f0f0;
-        }
-        
-        .card h3 {
-            color: #333;
-            margin-bottom: 1rem;
-        }
-        
-        .card p {
-            color: #666;
-            margin-bottom: 1.5rem;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 0.8rem 2rem;
-            border: none;
-            border-radius: 5px;
+
+        .nav-link {
+            color: #6b7280;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
             text-decoration: none;
-            display: inline-block;
         }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+        .nav-link:hover, .nav-link.active {
+            color: #8b5cf6;
+            background: #f3f4f6;
         }
-        
-        .auth-section {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 10px;
-            margin: 2rem 0;
-            text-align: center;
-        }
-        
-        .auth-form {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-            text-align: left;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 500;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
-        }
-        
-        .dashboard-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-        
-        .stat-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+
+        .logout-btn {
+            background: #ef4444;
             color: white;
-            padding: 1.5rem;
-            border-radius: 10px;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
-        
-        .stat-number {
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            background: transparent;
+        }
+
+        .profile-header .profile-name {
             font-size: 2rem;
-            font-weight: bold;
+            font-weight: 800;
             margin-bottom: 0.5rem;
         }
-        
-        .logged-out {
-            display: block;
+
+        .profile-header .profile-bio {
+            opacity: 0.9;
         }
-        
-        .logged-in {
-            display: none;
-        }
-        
-        .user-info {
-            background: #e8f5e8;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-        }
-        
-        .success {
-            color: #155724;
-            background: #d4edda;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-            display: none;
-        }
-        
-        .community-post {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 4px solid #667eea;
-        }
-        
-        .business-card {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .business-card h4 {
-            color: #667eea;
-            margin-bottom: 0.5rem;
-        }
-        
-        .search-section {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
+
+        /* Profile Actions */
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
             margin-bottom: 2rem;
         }
-        
-        .search-section input, .search-section select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+
+        .profile-btn {
+            background: #f3f4f6;
+            color: #374151;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .profile-btn:hover {
+            background: #e5e7eb;
+            transform: translateY(-1px);
+        }
+
+        .photo-album-btn {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             margin-bottom: 1rem;
         }
-        
+
+        .photo-album-btn:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        /* Social Media Icons Section */
+        .social-connections {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .social-connections h3 {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .social-icons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .social-icon.facebook { background: #1877f2; }
+        .social-icon.twitter { background: #1da1f2; }
+        .social-icon.instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        .social-icon.linkedin { background: #0077b5; }
+        .social-icon.youtube { background: #ff0000; }
+        .social-icon.tiktok { background: #000000; }
+        .social-icon.snapchat { background: #fffc00; color: #000; }
+        .social-icon.discord { background: #7289da; }
+        .social-icon.reddit { background: #ff4500; }
+        .social-icon.pinterest { background: #bd081c; }
+        .social-icon.tumblr { background: #001935; }
+        .social-icon.twitch { background: #9146ff; }
+        .social-icon.spotify { background: #1db954; }
+        .social-icon.medium { background: #000000; }
+        .social-icon.github { background: #333333; }
+        .social-icon.vimeo { background: #1ab7ea; }
+        .social-icon.skype { background: #00aff0; }
+        .social-icon.flickr { background: #ff0084; }
+        .social-icon.soundcloud { background: #ff8800; }
+        .social-icon.behance { background: #1769ff; }
+        .social-icon.dribbble { background: #ea4c89; }
+        .social-icon.deviantart { background: #05cc47; }
+        .social-icon.stackoverflow { background: #f48024; }
+        .social-icon.quora { background: #b92b27; }
+        .social-icon.whatsapp { background: #25d366; }
+        .social-icon.telegram { background: #0088cc; }
+
+        .manage-connections-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .manage-connections-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        /* Post Composer */
+        .post-composer {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .post-input {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+            font-family: inherit;
+        }
+
+        .post-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post-btn {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .post-btn:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        .photo-btn, .video-btn, .share-btn {
+            background: #f3f4f6;
+            color: #374151;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .photo-btn:hover, .video-btn:hover, .share-btn:hover {
+            background: #e5e7eb;
+            transform: translateY(-1px);
+        }
+
+        /* Multi-Share Buttons */
+        .multi-share-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .multi-share-btn {
+            background: #f3f4f6;
+            color: #374151;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .multi-share-btn:hover {
+            background: #e5e7eb;
+            transform: translateY(-1px);
+        }
+
+        .multi-share-btn.opc {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .multi-share-btn.opc:hover {
+            background: #2563eb;
+        }
+
+        .multi-share-btn.media {
+            background: #10b981;
+            color: white;
+        }
+
+        .multi-share-btn.media:hover {
+            background: #059669;
+        }
+
+        .multi-share-btn.multi {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .multi-share-btn.multi:hover {
+            background: #d97706;
+        }
+
+        /* Post Cards */
+        .post-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #8b5cf6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .post-meta h4 {
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .post-meta p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .post-content {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .post-actions-bar {
+            display: flex;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .post-action {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+            font-weight: 600;
+        }
+
+        .post-action:hover {
+            color: #8b5cf6;
+        }
+
+        /* Connection Management Modal */
+        .connection-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .connection-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .close-modal:hover {
+            color: #ef4444;
+        }
+
+        .connection-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .connection-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .connection-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .connection-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .connection-status.connected {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .connection-status.disconnected {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .connection-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .connection-btn.connect {
+            background: #10b981;
+            color: white;
+        }
+
+        .connection-btn.connect:hover {
+            background: #059669;
+        }
+
+        .connection-btn.disconnect {
+            background: #ef4444;
+            color: white;
+        }
+
+        .connection-btn.disconnect:hover {
+            background: #dc2626;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .login-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .login-subtitle {
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background: white;
+            color: #374151;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .social-btn.google:hover {
+            background: #ea4335;
+            color: white;
+            border-color: #ea4335;
+        }
+
+        .social-btn.facebook:hover {
+            background: #1877f2;
+            color: white;
+            border-color: #1877f2;
+        }
+
+        .social-btn.twitter:hover {
+            background: #1da1f2;
+            color: white;
+            border-color: #1da1f2;
+        }
+
         @media (max-width: 768px) {
-            .nav {
+            .nav-links {
+                display: none;
+            }
+            
+            .post-actions {
                 flex-direction: column;
                 gap: 1rem;
-            }
-            
-            .nav-links {
-                flex-wrap: wrap;
-                gap: 1rem;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .cards {
-                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <nav class="nav">
-            <a href="#" class="logo">🌟 Yogull Platform</a>
-            <div class="nav-links">
-                <button onclick="showPage('home')" class="active">Home</button>
-                <button onclick="showPage('dashboard')">Dashboard</button>
-                <button onclick="showPage('community')">Community</button>
-                <button onclick="showPage('business')">Business</button>
-                <button onclick="showPage('shop')">Shop</button>
-                <button onclick="showPage('profile')">Profile</button>
+    <div class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="attached_assets/yogull Health_1752620939083.jpg" alt="Yogull Logo" style="width: 80px; height: 80px; object-fit: contain;">
+                </div>
+                <nav class="nav-links">
+                    <a href="#" class="nav-link active" onclick="showHome()">Home</a>
+                    <a href="#" class="nav-link" onclick="showDashboard()">Dashboard</a>
+                    <a href="#" class="nav-link" onclick="showCommunity()">Community</a>
+                    <a href="#" class="nav-link" onclick="showBusiness()">Business</a>
+                    <a href="#" class="nav-link" onclick="showShop()">Shop</a>
+                    <a href="#" class="nav-link" onclick="showPersonalShop()">Personal Shop</a>
+                    <a href="#" class="nav-link" onclick="showLogin()">Login</a>
+                </nav>
+                <button class="logout-btn" onclick="handleLogout()">
+                    🚪 Logout
+                </button>
             </div>
-        </nav>
-    </header>
-    
-    <div class="container">
-        <!-- Home Page -->
-        <div id="home" class="page active">
-            <div class="hero">
-                <h1>Welcome to Yogull Platform</h1>
-                <p>Your complete social media and business solution. Connect with people worldwide, discover local businesses, and create your own affiliate shop to start earning money.</p>
-            </div>
-            
-            <section class="cards">
-                <div class="card">
-                    <h3>🏘️ Community Hub</h3>
-                    <p>Join discussions and connect with people worldwide. Share ideas, get support, and build meaningful relationships.</p>
-                    <button class="btn" onclick="showPage('community')">Join Community</button>
-                </div>
-                <div class="card">
-                    <h3>🏢 Business Directory</h3>
-                    <p>Find local businesses and services in your area. Connect with business owners and discover opportunities.</p>
-                    <button class="btn" onclick="showPage('business')">Browse Businesses</button>
-                </div>
-                <div class="card">
-                    <h3>🛍️ Personal Shops</h3>
-                    <p>Create your own affiliate shop and start earning money. We provide everything you need to succeed.</p>
-                    <button class="btn" onclick="showPage('shop')">Start Earning</button>
-                </div>
-            </section>
-            
-            <section class="auth-section logged-out">
-                <h3>👤 Create Account or Sign In</h3>
-                <div class="auth-form">
-                    <div id="authSuccess" class="success"></div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" placeholder="Enter your email">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" placeholder="Enter your password">
-                    </div>
-                    <button class="btn" onclick="createAccount()">Create Account</button>
-                    <button class="btn" onclick="signIn()" style="margin-left: 1rem;">Sign In</button>
-                </div>
-            </section>
-            
-            <div class="auth-section logged-in">
-                <div class="user-info">
-                    <h3>✅ Welcome Back!</h3>
-                    <p>You are signed in and ready to use all platform features</p>
-                    <button class="btn" onclick="signOut()">Sign Out</button>
-                </div>
+        </div>
+    </div>
+
+    <div class="container" style="padding: 2rem 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1>Dashboard</h1>
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="showHome()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                    Back to Profile
+                </button>
+                <button onclick="handleLogout()" style="background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                    Logout
+                </button>
             </div>
         </div>
         
-        <!-- Dashboard Page -->
-        <div id="dashboard" class="page">
-            <h2>📊 Your Dashboard</h2>
-            
-            <div class="dashboard-stats">
-                <div class="stat-card">
-                    <div class="stat-number">25</div>
-                    <div>Community Posts</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">12</div>
-                    <div>Shop Products</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">£47</div>
-                    <div>Earnings This Month</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">8</div>
-                    <div>Business Connections</div>
-                </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div class="post-card">
+                <h3>🏠 Community Connection</h3>
+                <p>Connect with like-minded individuals in your area and build meaningful relationships.</p>
+                <button onclick="showCommunity()" style="background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Access Community
+                </button>
             </div>
             
-            <div class="cards">
-                <div class="card">
-                    <h3>💬 Recent Activity</h3>
-                    <p>Your latest posts and interactions across the platform</p>
-                    <button class="btn" onclick="showPage('community')">View Activity</button>
-                </div>
-                <div class="card">
-                    <h3>💰 Earning Opportunities</h3>
-                    <p>Discover new ways to monetize your presence on the platform</p>
-                    <button class="btn" onclick="showPage('shop')">Explore Earnings</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Community Page -->
-        <div id="community" class="page">
-            <h2>🏘️ Community Discussions</h2>
-            
-            <div class="search-section">
-                <input type="text" placeholder="Search discussions..." id="communitySearch">
-                <select id="communityCategory">
-                    <option value="">All Categories</option>
-                    <option value="general">General Discussion</option>
-                    <option value="business">Business & Entrepreneurship</option>
-                    <option value="health">Health & Wellness</option>
-                    <option value="technology">Technology</option>
-                </select>
+            <div class="post-card">
+                <h3>💼 Business Directory</h3>
+                <p>Discover local businesses and services in your area with direct contact options.</p>
+                <button onclick="showBusiness()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Browse Businesses
+                </button>
             </div>
             
-            <div class="community-post">
-                <h4>🚀 Welcome to Our Community!</h4>
-                <p>Share your thoughts, connect with others, and build meaningful relationships. This is your space to discuss anything that matters to you.</p>
-                <small>Posted by Admin • 2 hours ago</small>
+            <div class="post-card">
+                <h3>🛍️ Personal Shop</h3>
+                <p>Create and manage your personal affiliate shop with custom products and links.</p>
+                <button onclick="showPersonalShop()" style="background: #f59e0b; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Manage Shop
+                </button>
             </div>
             
-            <div class="community-post">
-                <h4>💼 Business Networking Tips</h4>
-                <p>Looking for advice on growing your network? Let's share strategies that have worked for building professional relationships.</p>
-                <small>Posted by Sarah Johnson • 4 hours ago</small>
+            <div class="post-card">
+                <h3>🛒 Product Shop</h3>
+                <p>Browse and purchase premium health and wellness products from our curated selection.</p>
+                <button onclick="showShop()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Shop Products
+                </button>
             </div>
             
-            <div class="community-post">
-                <h4>🌍 Local Business Recommendations</h4>
-                <p>What are some great local businesses in your area? Share your favorites and help others discover amazing services.</p>
-                <small>Posted by Mike Chen • 6 hours ago</small>
-            </div>
-        </div>
-        
-        <!-- Business Page -->
-        <div id="business" class="page">
-            <h2>🏢 Business Directory</h2>
-            
-            <div class="search-section">
-                <input type="text" placeholder="Search businesses..." id="businessSearch">
-                <select id="businessLocation">
-                    <option value="">All Locations</option>
-                    <option value="london">London</option>
-                    <option value="manchester">Manchester</option>
-                    <option value="birmingham">Birmingham</option>
-                    <option value="glasgow">Glasgow</option>
-                </select>
-                <select id="businessCategory">
-                    <option value="">All Categories</option>
-                    <option value="restaurant">Restaurants</option>
-                    <option value="retail">Retail</option>
-                    <option value="services">Services</option>
-                    <option value="healthcare">Healthcare</option>
-                </select>
+            <div class="post-card">
+                <h3>📱 Social Media</h3>
+                <p>Connect your social media accounts for seamless sharing and engagement.</p>
+                <button onclick="showSocialConnect()" style="background: #ec4899; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Manage Social
+                </button>
             </div>
             
-            <div class="business-card">
-                <h4>🍕 Tony's Pizza Palace</h4>
-                <p><strong>Location:</strong> Manchester City Centre</p>
-                <p><strong>Category:</strong> Restaurant</p>
-                <p>Authentic Italian pizza made with fresh ingredients. Family-owned for over 20 years.</p>
-                <p><strong>Contact:</strong> 0161 123 4567</p>
+            <div class="post-card">
+                <h3>⚙️ Admin Panel</h3>
+                <p>Access administrative controls and platform management tools.</p>
+                <button onclick="showAdmin()" style="background: #dc2626; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Admin Controls
+                </button>
             </div>
             
-            <div class="business-card">
-                <h4>🔧 Quick Fix Repairs</h4>
-                <p><strong>Location:</strong> Birmingham</p>
-                <p><strong>Category:</strong> Services</p>
-                <p>Professional repair services for electronics, appliances, and more. Same-day service available.</p>
-                <p><strong>Contact:</strong> 0121 987 6543</p>
-            </div>
-            
-            <div class="business-card">
-                <h4>🌿 Green Thumb Garden Centre</h4>
-                <p><strong>Location:</strong> London</p>
-                <p><strong>Category:</strong> Retail</p>
-                <p>Everything you need for your garden. Plants, tools, and expert advice.</p>
-                <p><strong>Contact:</strong> 020 7123 4567</p>
-            </div>
-        </div>
-        
-        <!-- Shop Page -->
-        <div id="shop" class="page">
-            <h2>🛍️ Personal Affiliate Shop</h2>
-            
-            <div class="cards">
-                <div class="card">
-                    <h3>💰 Start Earning Today</h3>
-                    <p>Create your personal affiliate shop and start earning commissions. We provide everything you need!</p>
-                    <ul style="text-align: left; margin: 1rem 0;">
-                        <li>£1 per affiliate link (first 20 products)</li>
-                        <li>£2/month for additional products</li>
-                        <li>Complete setup assistance</li>
-                        <li>Ready-made customer base</li>
-                    </ul>
-                    <button class="btn" onclick="showSuccess('Shop creation started! We will email you setup instructions.')">Create My Shop</button>
-                </div>
-                <div class="card">
-                    <h3>📊 Manage Products</h3>
-                    <p>Add products from Amazon, eBay, or other affiliate programs. Track your earnings and optimize your shop.</p>
-                    <button class="btn" onclick="showSuccess('Product management system launching...')">Manage Products</button>
-                </div>
-                <div class="card">
-                    <h3>📈 View Analytics</h3>
-                    <p>See how your shop is performing with detailed analytics and earnings reports.</p>
-                    <button class="btn" onclick="showSuccess('Analytics dashboard opening...')">View Analytics</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Profile Page -->
-        <div id="profile" class="page">
-            <h2>👤 Your Profile</h2>
-            
-            <div class="cards">
-                <div class="card">
-                    <h3>📝 Edit Profile</h3>
-                    <p>Update your profile information, avatar, and preferences.</p>
-                    <button class="btn" onclick="showSuccess('Profile editor opening...')">Edit Profile</button>
-                </div>
-                <div class="card">
-                    <h3>🔒 Privacy Settings</h3>
-                    <p>Manage your privacy settings and control who can see your information.</p>
-                    <button class="btn" onclick="showSuccess('Privacy settings opening...')">Privacy Settings</button>
-                </div>
-                <div class="card">
-                    <h3>💬 My Posts</h3>
-                    <p>View and manage all your posts and interactions across the platform.</p>
-                    <button class="btn" onclick="showSuccess('Your posts are loading...')">View Posts</button>
-                </div>
+            <div class="post-card">
+                <h3>💬 Health Hub</h3>
+                <p>Access health discussions, wellness tips, and community support resources.</p>
+                <button onclick="showHealthHub()" style="background: #059669; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                    Health Resources
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        let isLoggedIn = false;
-
-        function createAccount() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        // Dashboard Functions
+            <button class="profile-btn" onclick="showEditProfile()">
+                ✏️ Edit Profile
+            </button>
+            <button class="profile-btn" onclick="showAccountSettings()">
+                ⚙️ Account Settings
+            </button>
+            <button class="photo-album-btn" onclick="handlePhotoAlbum()">
+                📸 Photo Album
+            </button>
+        </div>
+        
+        <!-- Social Media Connections -->
+        <div class="social-connections">
+            <h3>
+                🔗 Connect All 
+                <span style="color: #6b7280; font-size: 1rem;">26</span>
+                Social Media Platforms
+            </h3>
             
-            if (!email || !password) {
-                showSuccess('Please enter both email and password');
-                return;
-            }
-
-            // Simulate account creation
-            showSuccess('Account created successfully! You are now signed in.');
-            isLoggedIn = true;
-            updateUI();
-            showPage('dashboard');
+            <div class="social-icons-grid">
+                <div class="social-icon facebook" onclick="handleSocialConnect('Facebook')">f</div>
+                <div class="social-icon twitter" onclick="handleSocialConnect('Twitter')">𝕏</div>
+                <div class="social-icon instagram" onclick="handleSocialConnect('Instagram')">📷</div>
+                <div class="social-icon linkedin" onclick="handleSocialConnect('LinkedIn')">in</div>
+                <div class="social-icon youtube" onclick="handleSocialConnect('YouTube')">▶️</div>
+                <div class="social-icon tiktok" onclick="handleSocialConnect('TikTok')">🎵</div>
+                <div class="social-icon snapchat" onclick="handleSocialConnect('Snapchat')">👻</div>
+                <div class="social-icon discord" onclick="handleSocialConnect('Discord')">🎮</div>
+                <div class="social-icon reddit" onclick="handleSocialConnect('Reddit')">🤖</div>
+                <div class="social-icon pinterest" onclick="handleSocialConnect('Pinterest')">📌</div>
+                <div class="social-icon tumblr" onclick="handleSocialConnect('Tumblr')">t</div>
+                <div class="social-icon twitch" onclick="handleSocialConnect('Twitch')">🎮</div>
+                <div class="social-icon spotify" onclick="handleSocialConnect('Spotify')">🎵</div>
+                <div class="social-icon medium" onclick="handleSocialConnect('Medium')">M</div>
+                <div class="social-icon github" onclick="handleSocialConnect('GitHub')">🐙</div>
+                <div class="social-icon vimeo" onclick="handleSocialConnect('Vimeo')">V</div>
+                <div class="social-icon skype" onclick="handleSocialConnect('Skype')">S</div>
+                <div class="social-icon flickr" onclick="handleSocialConnect('Flickr')">📸</div>
+                <div class="social-icon soundcloud" onclick="handleSocialConnect('SoundCloud')">🔊</div>
+                <div class="social-icon behance" onclick="handleSocialConnect('Behance')">B</div>
+                <div class="social-icon dribbble" onclick="handleSocialConnect('Dribbble')">⚪</div>
+                <div class="social-icon deviantart" onclick="handleSocialConnect('DeviantArt')">🎨</div>
+                <div class="social-icon stackoverflow" onclick="handleSocialConnect('StackOverflow')">SO</div>
+                <div class="social-icon quora" onclick="handleSocialConnect('Quora')">Q</div>
+                <div class="social-icon whatsapp" onclick="handleSocialConnect('WhatsApp')">📱</div>
+                <div class="social-icon telegram" onclick="handleSocialConnect('Telegram')">✈️</div>
+            </div>
             
-            // Clear form
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
+            <button class="manage-connections-btn" onclick="showConnectionModal()">
+                🔗 Manage Connections
+            </button>
+        </div>
+        
+        <div class="post-composer">
+            <textarea 
+                class="post-input" 
+                placeholder="What's on your mind?"
+                id="postContent"
+            ></textarea>
+            
+            <div class="multi-share-container">
+                <button class="multi-share-btn opc" onclick="handleOPCShare()">
+                    OPC Share
+                </button>
+                <button class="multi-share-btn media" onclick="handleMediaShare()">
+                    Media Share
+                </button>
+                <button class="multi-share-btn multi" onclick="handleMultiShare()">
+                    Multi Share
+                </button>
+            </div>
+            
+            <div class="post-actions">
+                <div>
+                    <button class="photo-btn" onclick="handlePhotoUpload()">📷 Photo</button>
+                    <button class="video-btn" onclick="handleVideoUpload()">🎥 Video</button>
+                </div>
+                <button class="post-btn" onclick="handlePost()">
+                    Post
+                </button>
+            </div>
+        </div>
+        
+        <div class="post-card">
+            <div class="post-header">
+                <div class="post-avatar">JP</div>
+                <div class="post-meta">
+                    <h4>John Proctor</h4>
+                    <p>2 hours ago</p>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>Just joined the Yogull community! Excited to connect with like-minded people and share my health journey.</p>
+            </div>
+            <div class="post-actions-bar">
+                <button class="post-action" onclick="alert('Like clicked!')">
+                    ❤️ Like
+                </button>
+                <button class="post-action" onclick="alert('Comment clicked!')">
+                    💬 Comment
+                </button>
+                <button class="post-action" onclick="alert('Share clicked!')">
+                    🔗 Share
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Connection Management Modal -->
+    <div id="connectionModal" class="connection-modal">
+        <div class="connection-modal-content">
+            <button class="close-modal" onclick="closeConnectionModal()">×</button>
+            <h2 style="margin-bottom: 1.5rem;">Manage Social Media Connections</h2>
+            
+            <div id="connectionList">
+                <!-- Connection items will be populated by JavaScript -->
+            </div>
+            
+            <div style="margin-top: 2rem; text-align: center;">
+                <button class="connection-btn connect" onclick="connectAllPlatforms()">
+                    Connect All Platforms
+                </button>
+                <button class="connection-btn disconnect" onclick="disconnectAllPlatforms()" style="margin-left: 1rem;">
+                    Disconnect All
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Social media platforms data
+        const socialPlatforms = [
+            { name: 'Facebook', icon: 'f', color: '#1877f2', connected: false },
+            { name: 'Twitter', icon: '𝕏', color: '#1da1f2', connected: true },
+            { name: 'Instagram', icon: '📷', color: '#e6683c', connected: false },
+            { name: 'LinkedIn', icon: 'in', color: '#0077b5', connected: true },
+            { name: 'YouTube', icon: '▶️', color: '#ff0000', connected: false },
+            { name: 'TikTok', icon: '🎵', color: '#000000', connected: false },
+            { name: 'Snapchat', icon: '👻', color: '#fffc00', connected: false },
+            { name: 'Discord', icon: '🎮', color: '#7289da', connected: true },
+            { name: 'Reddit', icon: '🤖', color: '#ff4500', connected: false },
+            { name: 'Pinterest', icon: '📌', color: '#bd081c', connected: false },
+            { name: 'Tumblr', icon: 't', color: '#001935', connected: false },
+            { name: 'Twitch', icon: '🎮', color: '#9146ff', connected: false },
+            { name: 'Spotify', icon: '🎵', color: '#1db954', connected: true },
+            { name: 'Medium', icon: 'M', color: '#000000', connected: false },
+            { name: 'GitHub', icon: '🐙', color: '#333333', connected: true },
+            { name: 'Vimeo', icon: 'V', color: '#1ab7ea', connected: false },
+            { name: 'Skype', icon: 'S', color: '#00aff0', connected: false },
+            { name: 'Flickr', icon: '📸', color: '#ff0084', connected: false },
+            { name: 'SoundCloud', icon: '🔊', color: '#ff8800', connected: false },
+            { name: 'Behance', icon: 'B', color: '#1769ff', connected: false },
+            { name: 'Dribbble', icon: '⚪', color: '#ea4c89', connected: false },
+            { name: 'DeviantArt', icon: '🎨', color: '#05cc47', connected: false },
+            { name: 'StackOverflow', icon: 'SO', color: '#f48024', connected: false },
+            { name: 'Quora', icon: 'Q', color: '#b92b27', connected: false },
+            { name: 'WhatsApp', icon: '📱', color: '#25d366', connected: true },
+            { name: 'Telegram', icon: '✈️', color: '#0088cc', connected: false }
+        ];
+
+        // Show connection management modal
+        function showConnectionModal() {
+            const modal = document.getElementById('connectionModal');
+            const connectionList = document.getElementById('connectionList');
+            
+            // Clear existing content
+            connectionList.innerHTML = '';
+            
+            // Add each platform
+            socialPlatforms.forEach((platform, index) => {
+                const connectionItem = document.createElement('div');
+                connectionItem.className = 'connection-item';
+                connectionItem.innerHTML = `
+                    <div class="connection-info">
+                        <div class="connection-icon" style="background: ${platform.color}; color: ${platform.name === 'Snapchat' ? '#000' : '#fff'};">
+                            ${platform.icon}
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; font-size: 1rem;">${platform.name}</h4>
+                            <span class="connection-status ${platform.connected ? 'connected' : 'disconnected'}">
+                                ${platform.connected ? 'Connected' : 'Disconnected'}
+                            </span>
+                        </div>
+                    </div>
+                    <button class="connection-btn ${platform.connected ? 'disconnect' : 'connect'}" 
+                            onclick="toggleConnection(${index})">
+                        ${platform.connected ? 'Disconnect' : 'Connect'}
+                    </button>
+                `;
+                connectionList.appendChild(connectionItem);
+            });
+            
+            modal.style.display = 'flex';
         }
 
-        function signIn() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            if (!email || !password) {
-                showSuccess('Please enter both email and password');
-                return;
-            }
-
-            // Simulate sign in
-            showSuccess('Signed in successfully! Welcome to your dashboard.');
-            isLoggedIn = true;
-            updateUI();
-            showPage('dashboard');
-            
-            // Clear form
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
+        // Close connection modal
+        function closeConnectionModal() {
+            document.getElementById('connectionModal').style.display = 'none';
         }
 
-        function signOut() {
-            isLoggedIn = false;
-            updateUI();
-            showSuccess('Signed out successfully!');
-            showPage('home');
-        }
-
-        function updateUI() {
-            const loggedIn = document.querySelectorAll('.logged-in');
-            const loggedOut = document.querySelectorAll('.logged-out');
+        // Toggle individual connection
+        function toggleConnection(index) {
+            socialPlatforms[index].connected = !socialPlatforms[index].connected;
+            const platform = socialPlatforms[index];
             
-            if (isLoggedIn) {
-                loggedIn.forEach(el => el.style.display = 'block');
-                loggedOut.forEach(el => el.style.display = 'none');
+            if (platform.connected) {
+                alert(`Successfully connected to ${platform.name}!`);
             } else {
-                loggedIn.forEach(el => el.style.display = 'none');
-                loggedOut.forEach(el => el.style.display = 'block');
+                alert(`Disconnected from ${platform.name}`);
+            }
+            
+            // Refresh the modal
+            showConnectionModal();
+        }
+
+        // Connect all platforms
+        function connectAllPlatforms() {
+            socialPlatforms.forEach(platform => {
+                platform.connected = true;
+            });
+            alert('All platforms connected successfully!');
+            showConnectionModal();
+        }
+
+        // Disconnect all platforms
+        function disconnectAllPlatforms() {
+            socialPlatforms.forEach(platform => {
+                platform.connected = false;
+            });
+            alert('All platforms disconnected');
+            showConnectionModal();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('connectionModal');
+            if (event.target === modal) {
+                closeConnectionModal();
             }
         }
 
-        function showSuccess(message) {
-            const successDiv = document.getElementById('authSuccess');
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
-            setTimeout(() => {
-                successDiv.style.display = 'none';
-            }, 4000);
+        // Working JavaScript functions
+        function handlePost() {
+            const postContent = document.getElementById('postContent').value;
+            if (!postContent.trim()) {
+                alert('Please enter some content to post!');
+                return;
+            }
+            
+            // Create new post element
+            const newPost = document.createElement('div');
+            newPost.className = 'post-card';
+            newPost.innerHTML = `
+                <div class="post-header">
+                    <div class="post-avatar">JP</div>
+                    <div class="post-meta">
+                        <h4>John Proctor</h4>
+                        <p>Just now</p>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>${postContent}</p>
+                </div>
+                <div class="post-actions-bar">
+                    <button class="post-action" onclick="alert('Like clicked!')">
+                        ❤️ Like
+                    </button>
+                    <button class="post-action" onclick="alert('Comment clicked!')">
+                        💬 Comment
+                    </button>
+                    <button class="post-action" onclick="alert('Share clicked!')">
+                        🔗 Share
+                    </button>
+                </div>
+            `;
+            
+            // Add new post after the composer
+            const composer = document.querySelector('.post-composer');
+            composer.parentNode.insertBefore(newPost, composer.nextSibling);
+            
+            // Clear the input
+            document.getElementById('postContent').value = '';
+            
+            // Show success message
+            showTopNotification('Post created successfully!', 'success');
         }
 
-        function showPage(pageName) {
-            // Hide all pages
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => page.classList.remove('active'));
+        function handleOPCShare() {
+            // Create Community page content
+            const communityContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>Community Discussions</h1>
+                        <button onclick="goBackToProfile()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                            Back to Profile
+                        </button>
+                    </div>
+                    
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-avatar">JP</div>
+                            <div class="post-meta">
+                                <h4>John Proctor</h4>
+                                <p>5 minutes ago</p>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>Welcome to the Yogull Community! Share your thoughts, connect with others, and build meaningful relationships.</p>
+                        </div>
+                        <div class="post-actions-bar">
+                            <button class="post-action" onclick="likePost('welcome')">❤️ Like (15)</button>
+                            <button class="post-action" onclick="showComments('welcome')">💬 Comment (8)</button>
+                            <button class="post-action" onclick="sharePost('welcome')">🔗 Share</button>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-avatar" style="background: #10b981;">MJ</div>
+                            <div class="post-meta">
+                                <h4>Mary Johnson</h4>
+                                <p>1 hour ago</p>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>Amazing platform! Love how easy it is to connect with people who share similar interests.</p>
+                        </div>
+                        <div class="post-actions-bar">
+                            <button class="post-action" onclick="likePost('mary')">❤️ Like (23)</button>
+                            <button class="post-action" onclick="showComments('mary')">💬 Comment (12)</button>
+                            <button class="post-action" onclick="sharePost('mary')">🔗 Share</button>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-avatar" style="background: #f59e0b;">DS</div>
+                            <div class="post-meta">
+                                <h4>David Smith</h4>
+                                <p>2 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>Just opened my new wellness center! Check it out in the business directory. Excited to serve our community!</p>
+                        </div>
+                        <div class="post-actions-bar">
+                            <button class="post-action" onclick="likePost('david')">❤️ Like (31)</button>
+                            <button class="post-action" onclick="showComments('david')">💬 Comment (18)</button>
+                            <button class="post-action" onclick="sharePost('david')">🔗 Share</button>
+                        </div>
+                    </div>
+                </div>
+            `;
             
-            // Show selected page
-            document.getElementById(pageName).classList.add('active');
+            // Replace current content with community content
+            const mainContent = document.querySelector('.container[style*="padding: 2rem 1rem"]');
+            mainContent.innerHTML = communityContent;
             
             // Update navigation
-            const navButtons = document.querySelectorAll('.nav-links button');
-            navButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelector('.nav-link[href="#"]:nth-child(2)').classList.add('active'); // Community link
+        }
+
+        function handleMediaShare() {
+            alert('Media Share activated - Sharing to 4 platforms');
+            const platforms = [
+                `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+                `https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out this amazing platform!')}&url=${encodeURIComponent(window.location.href)}`,
+                `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`,
+                `https://wa.me/?text=${encodeURIComponent('Check out this amazing platform! ' + window.location.href)}`
+            ];
             
-            // Find and activate the correct button
-            navButtons.forEach(btn => {
-                if (btn.textContent.toLowerCase() === pageName.toLowerCase() || 
-                    (pageName === 'home' && btn.textContent === 'Home')) {
-                    btn.classList.add('active');
+            platforms.forEach((url, index) => {
+                setTimeout(() => {
+                    window.open(url, '_blank', 'width=600,height=400');
+                }, index * 100);
+            });
+        }
+
+        function handleMultiShare() {
+            // Get connected platforms from localStorage
+            const connectedPlatforms = [];
+            const platformMappings = {
+                'Facebook': `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+                'Twitter': `https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out this amazing platform!')}&url=${encodeURIComponent(window.location.href)}`,
+                'LinkedIn': `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`,
+                'Instagram': `https://www.instagram.com/`,
+                'YouTube': `https://www.youtube.com/`,
+                'TikTok': `https://www.tiktok.com/`
+            };
+            
+            // Check which platforms are connected
+            Object.keys(platformMappings).forEach(platform => {
+                if (localStorage.getItem(`connected_${platform}`) === 'true') {
+                    connectedPlatforms.push({
+                        name: platform,
+                        url: platformMappings[platform]
+                    });
+                }
+            });
+            
+            if (connectedPlatforms.length === 0) {
+                showTopNotification('No social media accounts connected. Please connect accounts in Manage Social first.', 'warning');
+                return;
+            }
+            
+            // Share to connected platforms automatically
+            connectedPlatforms.forEach((platform, index) => {
+                setTimeout(() => {
+                    // For platforms that support direct sharing, open share URL
+                    if (platform.name === 'Facebook' || platform.name === 'Twitter' || platform.name === 'LinkedIn') {
+                        window.open(platform.url, '_blank', 'width=600,height=400');
+                    } else {
+                        // For other platforms, simulate posting
+                        console.log(`Sharing to ${platform.name}...`);
+                    }
+                }, index * 500);
+            });
+            
+            showTopNotification(`Post shared to ${connectedPlatforms.length} connected platforms: ${connectedPlatforms.map(p => p.name).join(', ')}`, 'success');
+        }
+
+        function handlePhotoAlbum() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.multiple = true;
+            input.onchange = (e) => {
+                const files = Array.from(e.target.files);
+                alert(`Selected ${files.length} photos for album upload`);
+            };
+            input.click();
+        }
+
+        function handlePhotoUpload() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    alert(`Selected photo: ${file.name}`);
+                }
+            };
+            input.click();
+        }
+
+        function handleVideoUpload() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'video/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    alert(`Selected video: ${file.name}`);
+                }
+            };
+            input.click();
+        }
+
+        function handleSocialConnect(platform) {
+            // Save connection state to localStorage
+            localStorage.setItem(`connected_${platform}`, 'true');
+            
+            // Show connection success
+            alert(`Connected to ${platform} successfully!`);
+            
+            // Update connection display
+            updateConnectionDisplay(platform, true);
+        }
+        
+        function updateConnectionDisplay(platform, connected) {
+            // Update connection status in the connection modal
+            const connectionElements = document.querySelectorAll(`[data-platform="${platform}"]`);
+            connectionElements.forEach(element => {
+                if (connected) {
+                    element.classList.add('connected');
+                    element.classList.remove('disconnected');
+                } else {
+                    element.classList.add('disconnected');
+                    element.classList.remove('connected');
+                }
+            });
+        }
+        
+        function loadSocialConnections() {
+            // Load saved connections from localStorage
+            const platforms = ['Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'YouTube', 'TikTok'];
+            platforms.forEach(platform => {
+                const connected = localStorage.getItem(`connected_${platform}`) === 'true';
+                updateConnectionDisplay(platform, connected);
+            });
+        }
+        
+        function disconnectSocial(platform) {
+            // Remove connection from localStorage
+            localStorage.removeItem(`connected_${platform}`);
+            
+            // Update display
+            updateConnectionDisplay(platform, false);
+            
+            alert(`Disconnected from ${platform}`);
+        }
+
+        function handleLogout() {
+            // Clear any user session data
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Show logout confirmation
+            showTopNotification('Logged out successfully!', 'success');
+            
+            // Redirect to dashboard after short delay
+            setTimeout(() => {
+                showDashboard();
+            }, 1000);
+        }
+        
+        function showSocialConnect() {
+            // Show social media connection modal
+            showConnectionModal();
+        }
+
+        function goBackToProfile() {
+            location.reload(); // Reload the page to show profile again
+        }
+
+        // Navigation functions
+        function showHome() {
+            const homeContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h1>Welcome to Yogull</h1>
+                        <p>Your ordinary people community platform</p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div class="post-card">
+                            <h3>🏠 Your Profile</h3>
+                            <p>View and manage your profile, posts, and connections.</p>
+                            <button onclick="showProfile()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                View Profile
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>📊 Dashboard</h3>
+                            <p>Access your dashboard with all platform features and settings.</p>
+                            <button onclick="showDashboard()" style="background: #4f46e5; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Open Dashboard
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>🏢 Community</h3>
+                            <p>Connect with like-minded people and join discussions.</p>
+                            <button onclick="showCommunity()" style="background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Join Community
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>💼 Business Directory</h3>
+                            <p>Discover local businesses and services in your area.</p>
+                            <button onclick="showBusiness()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Browse Businesses
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>🛍️ Personal Shop</h3>
+                            <p>Create and manage your personal affiliate shop.</p>
+                            <button onclick="showPersonalShop()" style="background: #f59e0b; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Manage Shop
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>🔐 Login</h3>
+                            <p>Sign in to access your account and personalized features.</p>
+                            <button onclick="showLogin()" style="background: #059669; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Sign In
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = homeContent;
+            updateActiveNavLink('Home');
+        }
+        
+        function showProfile() {
+            location.reload(); // Reload to show profile page
+        }
+
+        function showCommunity() {
+            handleOPCShare(); // Use existing community function
+        }
+
+        function showBusiness() {
+            const businessContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>Business Directory</h1>
+                        <button onclick="showHome()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                            Back to Home
+                        </button>
+                    </div>
+                    
+                    <div class="post-card">
+                        <h3>Wellness Centers</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                            <div style="padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem;">
+                                <h4>Harmony Wellness Center</h4>
+                                <p>Complete wellness solutions including massage therapy, yoga classes, and nutritional counseling.</p>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
+                                <button style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Contact</button>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action">❤️ Like (12)</button>
+                                    <button class="post-action" onclick="showComments('harmony')">💬 Comment (5)</button>
+                                    <button class="post-action">🔗 Share</button>
+                                </div>
+                            </div>
+                            <div style="padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem;">
+                                <h4>Natural Health Clinic</h4>
+                                <p>Holistic health services with certified practitioners specializing in alternative medicine.</p>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
+                                <button style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Contact</button>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action">❤️ Like (8)</button>
+                                    <button class="post-action" onclick="showComments('natural')">💬 Comment (3)</button>
+                                    <button class="post-action">🔗 Share</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <h3>Fitness Centers</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                            <div style="padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem;">
+                                <h4>PowerFit Gym</h4>
+                                <p>State-of-the-art equipment, personal training, and group fitness classes for all levels.</p>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
+                                <button style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Contact</button>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action">❤️ Like (22)</button>
+                                    <button class="post-action" onclick="showComments('powerfit')">💬 Comment (11)</button>
+                                    <button class="post-action">🔗 Share</button>
+                                </div>
+                            </div>
+                            <div style="padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem;">
+                                <h4>Yoga Studio Plus</h4>
+                                <p>Traditional and modern yoga practices in a peaceful, supportive environment.</p>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
+                                <button style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Contact</button>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action">❤️ Like (18)</button>
+                                    <button class="post-action" onclick="showComments('yoga')">💬 Comment (7)</button>
+                                    <button class="post-action">🔗 Share</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = businessContent;
+            updateActiveNavLink('Business');
+        }
+
+        function showShop() {
+            const shopContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>Personal Shop</h1>
+                        <button onclick="showHome()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                            Back to Home
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div class="post-card">
+                            <h3>Premium Supplements</h3>
+                            <p>High-quality vitamins and supplements for optimal health and wellness.</p>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin: 1rem 0;">$49.99</div>
+                            <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                            </div>
+                            <button style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Add to Cart
+                            </button>
+                            <div class="post-actions-bar" style="margin-top: 1rem;">
+                                <button class="post-action">❤️ Like (45)</button>
+                                <button class="post-action" onclick="showComments('supplements')">💬 Comment (23)</button>
+                                <button class="post-action">🔗 Share</button>
+                            </div>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>Organic Protein Powder</h3>
+                            <p>Plant-based protein powder made from organic ingredients for post-workout recovery.</p>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin: 1rem 0;">$39.99</div>
+                            <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                            </div>
+                            <button style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Add to Cart
+                            </button>
+                            <div class="post-actions-bar" style="margin-top: 1rem;">
+                                <button class="post-action">❤️ Like (32)</button>
+                                <button class="post-action" onclick="showComments('protein')">💬 Comment (18)</button>
+                                <button class="post-action">🔗 Share</button>
+                            </div>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>Wellness Tea Collection</h3>
+                            <p>Curated collection of herbal teas designed to promote relaxation and digestive health.</p>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin: 1rem 0;">$24.99</div>
+                            <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                            </div>
+                            <button style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Add to Cart
+                            </button>
+                            <div class="post-actions-bar" style="margin-top: 1rem;">
+                                <button class="post-action">❤️ Like (28)</button>
+                                <button class="post-action" onclick="showComments('tea')">💬 Comment (15)</button>
+                                <button class="post-action">🔗 Share</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = shopContent;
+            updateActiveNavLink('Shop');
+        }
+
+        function showPersonalShop() {
+            const personalShopContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>My Personal Shop</h1>
+                        <div style="display: flex; gap: 1rem;">
+                            <button onclick="addNewProduct()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                + Add Product
+                            </button>
+                            <button onclick="showHome()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                Back to Home
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card" style="margin-bottom: 2rem;">
+                        <h3>Shop Settings</h3>
+                        <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Shop Name</label>
+                                <input type="text" id="shopName" value="John's Health Store" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Shop Description</label>
+                                <textarea id="shopDescription" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; height: 100px;">Premium health and wellness products for optimal living</textarea>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Default Affiliate Link</label>
+                                <input type="text" id="defaultAffiliate" placeholder="https://your-affiliate-program.com/ref=yourid" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <button onclick="saveShopSettings()" style="background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: fit-content;">
+                                Save Settings
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <h3>My Products</h3>
+                        <div id="personalProducts" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 1rem;">
+                            <div class="post-card">
+                                <h4>Sample Product 1</h4>
+                                <p>Add your product description here. This is where you describe the benefits and features.</p>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin: 1rem 0;">$29.99</div>
+                                <div style="margin: 1rem 0;">
+                                    <strong>Affiliate Link:</strong><br>
+                                    <input type="text" value="https://example.com/affiliate/product1" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.9rem;">
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="editProduct(1)" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Edit</button>
+                                    <button onclick="deleteProduct(1)" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Delete</button>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action" onclick="likeProduct(1)">❤️ Like (12)</button>
+                                    <button class="post-action" onclick="showComments('product1')">💬 Comment (4)</button>
+                                    <button class="post-action" onclick="shareProduct(1)">🔗 Share</button>
+                                </div>
+                            </div>
+                            
+                            <div class="post-card">
+                                <h4>Sample Product 2</h4>
+                                <p>Another product example. Click 'Add Product' to create your own products with affiliate links.</p>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin: 1rem 0;">$49.99</div>
+                                <div style="margin: 1rem 0;">
+                                    <strong>Affiliate Link:</strong><br>
+                                    <input type="text" value="https://example.com/affiliate/product2" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.9rem;">
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="editProduct(2)" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Edit</button>
+                                    <button onclick="deleteProduct(2)" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Delete</button>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                                    <button onclick="handleOPCShare()" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">OPC Share</button>
+                                    <button onclick="handleMediaShare()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Media Share</button>
+                                    <button onclick="handleMultiShare()" style="background: #f59e0b; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Multi Share</button>
+                                </div>
+                                <div class="post-actions-bar" style="margin-top: 1rem;">
+                                    <button class="post-action" onclick="likeProduct(2)">❤️ Like (8)</button>
+                                    <button class="post-action" onclick="showComments('product2')">💬 Comment (2)</button>
+                                    <button class="post-action" onclick="shareProduct(2)">🔗 Share</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = personalShopContent;
+            updateActiveNavLink('Personal Shop');
+        }
+
+        function addNewProduct() {
+            const productName = prompt('Enter product name:');
+            const productDescription = prompt('Enter product description:');
+            const productPrice = prompt('Enter product price (e.g., 29.99):');
+            const affiliateLink = prompt('Enter affiliate link:');
+            
+            if (productName && productDescription && productPrice && affiliateLink) {
+                showTopNotification('Product added successfully!', 'success');
+                // In a real app, this would save to database
+            }
+        }
+
+        function saveShopSettings() {
+            const shopName = document.getElementById('shopName').value;
+            const shopDescription = document.getElementById('shopDescription').value;
+            const defaultAffiliate = document.getElementById('defaultAffiliate').value;
+            
+            // Save to localStorage
+            localStorage.setItem('shopName', shopName);
+            localStorage.setItem('shopDescription', shopDescription);
+            localStorage.setItem('defaultAffiliate', defaultAffiliate);
+            
+            showTopNotification('Shop settings saved successfully!', 'success');
+        }
+
+        function editProduct(productId) {
+            showTopNotification(`Editing product ${productId}`, 'success');
+        }
+
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                showTopNotification(`Product ${productId} deleted`, 'success');
+            }
+        }
+
+        function likeProduct(productId) {
+            showTopNotification(`Liked product ${productId}`, 'success');
+        }
+
+        function shareProduct(productId) {
+            showTopNotification(`Shared product ${productId}`, 'success');
+        }
+
+        function likePost(postId) {
+            showTopNotification(`Liked post: ${postId}`, 'success');
+        }
+
+        function sharePost(postId) {
+            showTopNotification(`Shared post: ${postId}`, 'success');
+        }
+
+        function showDashboard() {
+            const dashboardContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>Dashboard</h1>
+                        <div style="display: flex; gap: 1rem;">
+                            <button onclick="showHome()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                Back to Profile
+                            </button>
+                            <button onclick="handleLogout()" style="background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div class="post-card">
+                            <h3>🏠 Community Connection</h3>
+                            <p>Connect with like-minded individuals in your area and build meaningful relationships.</p>
+                            <button onclick="showCommunity()" style="background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Access Community
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>💼 Business Directory</h3>
+                            <p>Discover local businesses and services in your area with direct contact options.</p>
+                            <button onclick="showBusiness()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Browse Businesses
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>🛍️ Personal Shop</h3>
+                            <p>Create and manage your personal affiliate shop with custom products and links.</p>
+                            <button onclick="showPersonalShop()" style="background: #f59e0b; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Manage Shop
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>🛒 Product Shop</h3>
+                            <p>Browse and purchase premium health and wellness products from our curated selection.</p>
+                            <button onclick="showShop()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Shop Products
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>📱 Social Media</h3>
+                            <p>Connect your social media accounts for seamless sharing and engagement.</p>
+                            <button onclick="showSocialConnect()" style="background: #ec4899; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Manage Social
+                            </button>
+                        </div>
+                        
+                        <div class="post-card">
+                            <h3>👤 Profile Settings</h3>
+                            <p>Update your profile information, bio, and account settings.</p>
+                            <button onclick="showEditProfile()" style="background: #6366f1; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; width: 100%;">
+                                Edit Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = dashboardContent;
+            updateActiveNavLink('Dashboard');
+        }
+
+        function uploadBannerImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imageData = e.target.result;
+                        // Store the image in localStorage for persistence
+                        localStorage.setItem('bannerImage', imageData);
+                        // Update the banner
+                        updateBannerImage(imageData);
+                        showTopNotification('Banner image updated successfully!', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+        
+        function updateBannerImage(imageData) {
+            const banner = document.querySelector('.profile-header');
+            if (banner) {
+                banner.style.backgroundImage = `url(${imageData})`;
+                banner.style.backgroundSize = 'cover';
+                banner.style.backgroundPosition = 'center';
+                // Hide the upload text when image is set
+                const uploadText = banner.querySelector('div:last-child');
+                if (uploadText) {
+                    uploadText.style.display = 'none';
+                }
+            }
+        }
+        
+        function loadBannerImage() {
+            const savedImage = localStorage.getItem('bannerImage');
+            if (savedImage) {
+                updateBannerImage(savedImage);
+            }
+        }
+        
+        // Load banner image when page loads
+        window.addEventListener('load', loadBannerImage);
+
+        function showLogin() {
+            alert('Login functionality - Firebase authentication is already configured');
+        }
+
+        function updateActiveNavLink(activeSection) {
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.textContent === activeSection) {
+                    link.classList.add('active');
                 }
             });
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            updateUI();
+        function showComments(itemId) {
+            const comments = {
+                'harmony': [
+                    'Sarah M: Amazing place! The massage therapy really helped with my back pain.',
+                    'Mike R: Best wellness center in town. Highly recommend their yoga classes.',
+                    'Lisa K: Great staff and peaceful environment. Perfect for relaxation.'
+                ],
+                'natural': [
+                    'John D: Dr. Smith is excellent. Natural healing approach really works.',
+                    'Emma W: Alternative medicine treatments have been life-changing for me.',
+                    'Tom B: Finally found a holistic approach that works. Thank you!'
+                ],
+                'powerfit': [
+                    'Alex P: Best gym equipment I\'ve ever used. Worth every penny.',
+                    'Maria S: Personal trainers are knowledgeable and motivating.',
+                    'Chris L: Love the group fitness classes. Great community atmosphere.',
+                    'Jennifer M: Lost 20 pounds here! Amazing results with their program.'
+                ],
+                'yoga': [
+                    'Rachel T: Peaceful studio with amazing instructors.',
+                    'David K: Yoga classes help me manage stress perfectly.',
+                    'Amanda J: Beginner-friendly environment. Love coming here!'
+                ],
+                'supplements': [
+                    'Health_Guru: These supplements improved my energy levels significantly.',
+                    'FitnessFan: Great quality vitamins. Notice difference in my workouts.',
+                    'WellnessWoman: Been using for 3 months, feeling much better.',
+                    'VitaminVoter: Excellent value for money. Highly recommend!'
+                ],
+                'protein': [
+                    'GymRat: Best protein powder I\'ve tried. Mixes well, tastes great.',
+                    'PlantBased: Love that it\'s organic. Perfect for my vegan lifestyle.',
+                    'MuscleBuilder: Great for recovery after intense workouts.'
+                ],
+                'tea': [
+                    'TeaLover: Relaxing blend helps me sleep better at night.',
+                    'HealthyLiving: Digestive benefits are noticeable. Great quality.',
+                    'WellnessMom: Perfect for my evening routine. Kids love it too!'
+                ]
+            };
+
+            const itemComments = comments[itemId] || ['No comments yet. Be the first to comment!'];
+            
+            const commentsHtml = itemComments.map(comment => `
+                <div style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; margin-bottom: 0.5rem;">
+                    <p style="margin: 0; font-size: 0.9rem;">${comment}</p>
+                </div>
+            `).join('');
+
+            // Create a proper comment dialog
+            const commentsDialog = `
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;" onclick="closeComments()">
+                    <div style="background: white; padding: 2rem; border-radius: 1rem; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;" onclick="event.stopPropagation()">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3 style="margin: 0;">Comments</h3>
+                            <button onclick="closeComments()" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Close</button>
+                        </div>
+                        <div style="max-height: 300px; overflow-y: auto; margin-bottom: 1rem;">
+                            ${commentsHtml}
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="newComment" placeholder="Add a comment..." style="flex: 1; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            <button onclick="addComment('${itemId}')" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">Post</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', commentsDialog);
+        }
+        
+        function closeComments() {
+            const dialog = document.querySelector('[style*="position: fixed"]');
+            if (dialog) dialog.remove();
+        }
+        
+        function addComment(itemId) {
+            const input = document.getElementById('newComment');
+            const comment = input.value.trim();
+            
+            if (comment) {
+                const commentDiv = document.createElement('div');
+                commentDiv.style.cssText = 'padding: 0.5rem; border-bottom: 1px solid #e5e7eb; margin-bottom: 0.5rem;';
+                commentDiv.innerHTML = `<p style="margin: 0; font-size: 0.9rem;"><strong>You:</strong> ${comment}</p>`;
+                
+                const commentsContainer = document.querySelector('[style*="max-height: 300px"]');
+                commentsContainer.appendChild(commentDiv);
+                
+                input.value = '';
+                
+                // Show success message
+                alert('Comment posted successfully!');
+            }
+        }
+        
+        function uploadProfileImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const profileAvatar = document.querySelector('.profile-avatar');
+                        profileAvatar.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+                        
+                        // Save image to localStorage
+                        localStorage.setItem('profileImage', e.target.result);
+                        
+                        alert('Profile image updated successfully!');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+        
+        function loadProfileImage() {
+            const savedImage = localStorage.getItem('profileImage');
+            if (savedImage) {
+                const profileAvatar = document.querySelector('.profile-avatar');
+                profileAvatar.innerHTML = `<img src="${savedImage}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+            }
+        }
+        
+        // Top notification system
+        function showTopNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#ef4444'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 0.5rem;
+                z-index: 9999;
+                font-weight: 600;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+
+        // Initialize page when loaded
+        window.addEventListener('load', function() {
+            loadSocialConnections();
+            loadProfileImage();
         });
+
+        function showEditProfile() {
+            const editProfileContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>Edit Profile</h1>
+                        <button onclick="showHome()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                            Back to Profile
+                        </button>
+                    </div>
+                    
+                    <div class="post-card">
+                        <h3>Profile Information</h3>
+                        <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Full Name</label>
+                                <input type="text" value="John Proctor" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Bio</label>
+                                <textarea style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; height: 100px;">Going crazy</textarea>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Location</label>
+                                <input type="text" value="United Kingdom" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Website</label>
+                                <input type="text" value="yogull.com" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Interests</label>
+                                <input type="text" value="Health, Wellness, Community, Business" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                                <button onclick="saveProfile()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                    Save Changes
+                                </button>
+                                <button onclick="showHome()" style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = editProfileContent;
+        }
+
+        function showAccountSettings() {
+            const accountSettingsContent = `
+                <div class="container" style="padding: 2rem 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h1>Account Settings</h1>
+                        <button onclick="showHome()" style="background: #8b5cf6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                            Back to Profile
+                        </button>
+                    </div>
+                    
+                    <div class="post-card">
+                        <h3>Privacy Settings</h3>
+                        <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Profile Visibility</span>
+                                <select style="padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                                    <option selected>Public</option>
+                                    <option>Friends Only</option>
+                                    <option>Private</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Show Online Status</span>
+                                <input type="checkbox" checked style="width: 1.5rem; height: 1.5rem;">
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Email Notifications</span>
+                                <input type="checkbox" checked style="width: 1.5rem; height: 1.5rem;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <h3>Security</h3>
+                        <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Change Password</label>
+                                <input type="password" placeholder="Current Password" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                                <input type="password" placeholder="New Password" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                                <input type="password" placeholder="Confirm New Password" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;">
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Two-Factor Authentication</span>
+                                <button style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.5rem; cursor: pointer;">
+                                    Enable
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button onclick="saveSettings()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                            Save Settings
+                        </button>
+                        <button onclick="showHome()" style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.container[style*="padding: 2rem 1rem"]').innerHTML = accountSettingsContent;
+        }
+
+        function saveProfile() {
+            alert('Profile updated successfully!');
+            showHome();
+        }
+
+        function saveSettings() {
+            alert('Settings saved successfully!');
+            showHome();
+        }
     </script>
 </body>
 </html>

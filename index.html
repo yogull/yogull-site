@@ -532,7 +532,7 @@
 
             <!-- Additional Action Buttons -->
             <div class="action-buttons">
-                <button class="btn purple" onclick="advertiseBusinesss()">
+                <button class="btn purple" onclick="advertiseBusiness()">
                     <i class="fas fa-ad"></i>
                     Advertise Your Business - £24.00 per Ad Card/Year
                 </button>
@@ -614,12 +614,14 @@
         function navigateToProfile() {
             console.log('Navigating to Profile Wall');
             showNotification('Opening Profile Wall...', 'info');
+            // Brain system solution: Direct navigation using window.location.assign()
             window.location.assign('/profile-wall');
         }
 
         function navigateToCommunity() {
             console.log('Navigating to Community');
             showNotification('Opening Community...', 'info');
+            // Brain system solution: Direct navigation using window.location.assign()
             window.location.assign('/community');
         }
 
@@ -664,7 +666,7 @@
             alert(instructions);
         }
 
-        function advertiseBusinesss() {
+        function advertiseBusiness() {
             console.log('Advertise Business');
             showNotification('Opening Business Advertising...', 'info');
             const adInfo = `

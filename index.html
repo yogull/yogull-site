@@ -1,178 +1,370 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogull Community Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Firebase v9 SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
     <style>
-        :root {
-            --primary: #764ba2;
-            --secondary: #667eea;
-            --accent: #9b5de5;
-            --light: #f8f9fa;
-            --dark: #212529;
-        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
         }
+
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            color: var(--dark);
-            line-height: 1.6;
         }
+
         .container {
             max-width: 1200px;
             width: 100%;
         }
-        .platform-card {
+
+        .signup-form {
             background: white;
             border-radius: 16px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
         }
+
+        /* Header */
         .header {
-            padding: 2rem;
             text-align: center;
+            padding: 40px 20px;
+            background: white;
         }
+
         .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-        .tagline {
-            color: #666;
-            margin-bottom: 1.5rem;
-        }
-        .main-title {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-        .subtitle {
-            color: #666;
-            margin-bottom: 2rem;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        .login-btn {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .login-btn:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
-        }
-        .signup-link {
-            text-align: center;
-            margin-top: 1rem;
-            color: #666;
-        }
-        .signup-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .social-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        .social-btn {
-            padding: 0.75rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #764ba2;
+        }
+
+        .eye {
+            width: 32px;
+            height: 32px;
+            background: #764ba2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pupil {
+            width: 12px;
+            height: 8px;
+            background: black;
+            border-radius: 50%;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .main-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin: 30px 0 15px 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Login Form */
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #764ba2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #5d3a8a;
+        }
+
+        /* Social Login Buttons */
+        .social-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .social-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
         .google-btn {
-            background: #4285F4;
+            background: #db4437;
             color: white;
         }
+
         .facebook-btn {
-            background: #4267B2;
+            background: #3b5998;
             color: white;
         }
+
+        .twitter-btn {
+            background: #1da1f2;
+            color: white;
+        }
+
         .social-btn:hover {
+            opacity: 0.9;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px 20px;
+            background: white;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .feature-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .feature-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .feature-tag {
+            font-size: 11px;
+            background: #f5f5f5;
+            color: #666;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .feature-highlight {
+            color: #28a745;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Affiliate Section */
+        .affiliate-cta {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .affiliate-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .add-link-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .affiliate-stats {
+            margin-top: 10px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* About Us Section */
         .about-section {
-            padding: 2rem;
-            border-top: 1px solid #eee;
-        }
-        .about-title {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        .footer {
-            padding: 1.5rem 2rem;
+            padding: 40px 20px;
             background: #f9f9f9;
             text-align: center;
-            color: #666;
         }
+
+        .about-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
         .legal-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 0.5rem;
+            margin-top: 15px;
         }
+
         .legal-links a {
-            color: #666;
+            color: #aaa;
+            margin: 0 10px;
             text-decoration: none;
         }
+
         .legal-links a:hover {
-            color: var(--primary);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .social-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .social-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="platform-card">
+        <div class="signup-form">
+            <!-- Header -->
             <div class="header">
-                <div class="logo">Yogull.com</div>
+                <div class="logo">
+                    <span class="logo-text">Yogull.com</span>
+                    <div class="eye">
+                        <div class="pupil"></div>
+                    </div>
+                    <div class="eye">
+                        <div class="pupil"></div>
+                    </div>
+                </div>
                 <div class="tagline">Go heal me</div>
-                
+
                 <h1 class="main-title">Yogull Community Platform</h1>
-                <p class="subtitle">Join members from around the world...</p>
-                
+                <p class="subtitle">Join members from around the world and discover the ultimate social platform with revolutionary features you won't find anywhere else.</p>
+
+                <!-- Login Form -->
                 <div class="login-form">
                     <div class="form-group">
                         <label for="email">Email</label>
@@ -183,119 +375,329 @@
                         <input type="password" id="password" placeholder="Enter your password">
                     </div>
                     <button class="login-btn" onclick="signInWithEmail()">Sign In</button>
-                    <p class="signup-link">Don't have an account? <a href="#" onclick="showSignUp()">Sign Up</a></p>
+                    <p style="margin-top: 15px; color: #666;">Don't have an account? <a href="#" onclick="showSignUp()" style="color: #764ba2;">Sign Up</a></p>
                 </div>
-                
+
+                <!-- Social Login Buttons -->
                 <div class="social-buttons">
                     <button class="social-btn google-btn" onclick="signInWithGoogle()">
-                        <i class="fab fa-google"></i> Continue with Google
+                        <i class="fab fa-google"></i>
+                        Continue with Google
                     </button>
                     <button class="social-btn facebook-btn" onclick="signInWithFacebook()">
-                        <i class="fab fa-facebook-f"></i> Continue with Facebook
+                        <i class="fab fa-facebook-f"></i>
+                        Continue with Facebook
+                    </button>
+                    <button class="social-btn twitter-btn" onclick="signInWithTwitter()">
+                        <i class="fab fa-twitter"></i>
+                        Continue with Twitter
                     </button>
                 </div>
             </div>
-            
+
+            <!-- About Us Section -->
             <div class="about-section">
                 <h2 class="about-title">About Yogull</h2>
                 <div class="about-content">
-                    <p>Yogull is a revolutionary social platform...</p>
+                    <p>Yogull is a revolutionary social platform designed to connect people worldwide while providing powerful tools for content sharing, affiliate marketing, and personal development.</p>
+                    <p>Our mission is to create a seamless experience where users can share content across multiple platforms, monetize their influence, and access AI-powered tools to enhance their digital life.</p>
+                    <p>Founded in 2023, Yogull brings together the best features of social networking with innovative monetization and automation tools you won't find anywhere else.</p>
                 </div>
             </div>
-            
+
+            <!-- Features Grid -->
+            <div class="features-grid">
+                <!-- Multi-Platform Sharing -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-share-alt green"></i>
+                        <div>
+                            <div class="feature-title">Multi-Platform Sharing</div>
+                            <div class="feature-badge green-bg">REVOLUTIONARY</div>
+                        </div>
+                    </div>
+                    <div class="feature-description">
+                        Share to multiple social platforms simultaneously: Facebook, Twitter, Instagram, LinkedIn, TikTok, Snapchat, Discord, Reddit, Pinterest, Tumblr, Twitch, Spotify, Medium, GitHub, and more.
+                    </div>
+                    <div class="feature-tags">
+                        <span class="feature-tag">Facebook</span>
+                        <span class="feature-tag">Twitter</span>
+                        <span class="feature-tag">Instagram</span>
+                        <span class="feature-tag">LinkedIn</span>
+                        <span class="feature-tag">TikTok</span>
+                        <span class="feature-tag">+ More</span>
+                    </div>
+                </div>
+
+                <!-- Affiliate Shops -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-pound-sign yellow"></i>
+                        <div>
+                            <div class="feature-title">Affiliate Shops</div>
+                            <div class="feature-badge yellow-bg">MONEY MAKER</div>
+                        </div>
+                    </div>
+                    <div class="feature-description">
+                        Create personal affiliate shops and earn £1 per affiliate link for the first 20 links, then £2/month maintenance for additional links. Connect Amazon, eBay, and other affiliate programs.
+                    </div>
+                    <div class="affiliate-cta">
+                        <input type="text" placeholder="Paste affiliate link" class="affiliate-input">
+                        <button class="add-link-btn" onclick="addAffiliateLink()">Add Link (£1)</button>
+                        <div class="affiliate-stats">
+                            <span>Your links: <strong id="link-count">0</strong></span>
+                            <span>Earnings: <strong id="earnings">£0</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Universal AI Assistant -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-robot blue"></i>
+                        <div>
+                            <div class="feature-title">Universal AI Assistant</div>
+                            <div class="feature-badge blue-bg">GPT-4 POWERED</div>
+                        </div>
+                    </div>
+                    <div class="feature-description">
+                        Ask AI anything on every page - health advice, science questions, general knowledge like "How far is the Moon?". Comprehensive responses with medical disclaimers for health topics.
+                    </div>
+                    <div class="feature-highlight blue">
+                        Available on every page across the platform
+                    </div>
+                </div>
+
+                <!-- Worldwide RSS Feeds -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-rss purple"></i>
+                        <div>
+                            <div class="feature-title">Worldwide RSS Feeds</div>
+                            <div class="feature-badge purple-bg">GLOBAL NEWS</div>
+                        </div>
+                    </div>
+                    <div class="feature-description">
+                        Automated news posting from international sources: BBC, CNN, Al Jazeera, Xinhua, NHK World, Le Monde, Der Spiegel, Times of India, and sources from every continent.
+                    </div>
+                    <div class="feature-tags">
+                        <span class="feature-tag">Multiple Sources</span>
+                        <span class="feature-tag">Global Coverage</span>
+                        <span class="feature-tag">Auto-Posted</span>
+                    </div>
+                </div>
+
+                <!-- Exercise Tracking -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-dumbbell red"></i>
+                        <div>
+                            <div class="feature-title">Exercise Tracking</div>
+                            <div class="feature-badge red-bg">HEALTH FOCUS</div>
+                        </div>
+                    </div>
+                    <div class="feature-description">
+                        Comprehensive fitness tracking with supplement logging, biometric data, step counting, sleep tracking, weight management, and health metric visualization with charts.
+                    </div>
+                    <div class="feature-highlight red">
+                        <i class="fas fa-heart"></i>
+                        Complete Health Dashboard
+                    </div>
+                </div>
+
+                <!-- Auto Social Invites -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-users indigo"></i>
+                        <div>
+                            <div class="feature-title">Auto Social Invites</div>
+                            <div class="feature-badge indigo-bg">GROWTH ENGINE</div>
+                        </div>
+                    </div>
+                    <div class="feature-description">
+                        Automated friend invitations across Instagram, LinkedIn, Telegram, Facebook, and Twitter. System sends personalized invites to grow your network automatically.
+                    </div>
+                    <div class="feature-highlight indigo">
+                        <i class="fas fa-bolt"></i>
+                        Automated Network Growth
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
             <div class="footer">
-                <p>&copy; 2023 Yogull.com</p>
+                <p>&copy; 2023 Yogull.com. All rights reserved.</p>
                 <div class="legal-links">
-                    <a href="/terms">Terms</a>
-                    <a href="/privacy">Privacy</a>
-                    <a href="/contact">Contact</a>
+                    <a href="/terms">Terms of Service</a>
+                    <a href="/privacy">Privacy Policy</a>
+                    <a href="/cookies">Cookie Policy</a>
+                    <a href="/contact">Contact Us</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
     <script>
-        // Firebase Initialization
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
             authDomain: "gohealme-9bdf0.firebaseapp.com",
             projectId: "gohealme-9bdf0",
-            storageBucket: "gohealme-9bdf0.appspot.com",
+            storageBucket: "gohealme-9bdf0.appspot.com", 
             messagingSenderId: "823297665017",
             appId: "1:823297665017:web:3427ba4397e12447ccbf28"
         };
-        const app = firebase.initializeApp(firebaseConfig);
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Auth State Handler
+        // Track authentication state
         auth.onAuthStateChanged((user) => {
             if (user) {
-                window.location.href = 'dashboard.html';
+                // User is signed in, redirect to dashboard
+                window.location.href = '/dashboard.html';
             }
         });
 
-        // Email Auth
+        // Email/Password Authentication
         async function signInWithEmail() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             const button = document.querySelector('.login-btn');
-            const originalHtml = button.innerHTML;
+
             try {
                 button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
                 button.disabled = true;
-                await auth.signInWithEmailAndPassword(
-                    document.getElementById('email').value,
-                    document.getElementById('password').value
-                );
+
+                await auth.signInWithEmailAndPassword(email, password);
+
+                // Will redirect via onAuthStateChanged
             } catch (error) {
                 alert(`Sign in failed: ${error.message}`);
-            } finally {
-                button.innerHTML = originalHtml;
+                console.error('Sign in error:', error);
+
+                button.innerHTML = 'Sign In';
                 button.disabled = false;
             }
         }
 
-        // Social Auth (Google)
+        function showSignUp() {
+            // In a complete implementation, this would show a sign-up form
+            alert('Sign up functionality will be implemented in the next version');
+        }
+
+        // Social Authentication
         async function signInWithGoogle() {
-            const button = document.querySelector('.google-btn');
-            const originalHtml = button.innerHTML;
             try {
-                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                const button = document.querySelector('.google-btn');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
                 button.disabled = true;
-                await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+
+                const provider = new firebase.auth.GoogleAuthProvider();
+                provider.addScope('email');
+                provider.addScope('profile');
+
+                await auth.signInWithPopup(provider);
+
+                // Will redirect via onAuthStateChanged
             } catch (error) {
                 alert(`Google sign-in failed: ${error.message}`);
-            } finally {
-                button.innerHTML = originalHtml;
+                console.error('Google sign-in error:', error);
+
+                const button = document.querySelector('.google-btn');
+                button.innerHTML = '<i class="fab fa-google"></i> Continue with Google';
                 button.disabled = false;
             }
         }
 
-        // Social Auth (Facebook)
         async function signInWithFacebook() {
-            const button = document.querySelector('.facebook-btn');
-            const originalHtml = button.innerHTML;
             try {
-                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                const button = document.querySelector('.facebook-btn');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
                 button.disabled = true;
-                await auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+
+                const provider = new firebase.auth.FacebookAuthProvider();
+                provider.addScope('email');
+
+                await auth.signInWithPopup(provider);
+
+                // Will redirect via onAuthStateChanged
             } catch (error) {
                 alert(`Facebook sign-in failed: ${error.message}`);
-            } finally {
-                button.innerHTML = originalHtml;
+                console.error('Facebook sign-in error:', error);
+
+                const button = document.querySelector('.facebook-btn');
+                button.innerHTML = '<i class="fab fa-facebook-f"></i> Continue with Facebook';
                 button.disabled = false;
             }
         }
 
-        // Show Sign Up Form (placeholder)
-        function showSignUp() {
-            alert('Sign up form will appear here!');
-            // In a real implementation, you would show a sign up form
+        async function signInWithTwitter() {
+            try {
+                const button = document.querySelector('.twitter-btn');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+                button.disabled = true;
+
+                const provider = new firebase.auth.TwitterAuthProvider();
+
+                await auth.signInWithPopup(provider);
+
+                // Will redirect via onAuthStateChanged
+            } catch (error) {
+                alert(`Twitter sign-in failed: ${error.message}`);
+                console.error('Twitter sign-in error:', error);
+
+                const button = document.querySelector('.twitter-btn');
+                button.innerHTML = '<i class="fab fa-twitter"></i> Continue with Twitter';
+                button.disabled = false;
+            }
         }
+
+        // Affiliate System
+        async function addAffiliateLink() {
+            const input = document.querySelector('.affiliate-input');
+            const link = input.value.trim();
+
+            if (!link) {
+                alert('Please enter a valid affiliate link');
+                return;
+            }
+
+            try {
+                // In a complete implementation, this would save to Firestore
+                // and process payment
+                alert('Affiliate link functionality will be fully implemented in the backend');
+
+                // Simulate adding a link
+                const linkCount = document.getElementById('link-count');
+                const earnings = document.getElementById('earnings');
+
+                const currentCount = parseInt(linkCount.textContent);
+                const newCount = currentCount + 1;
+
+                linkCount.textContent = newCount;
+
+                // Calculate earnings - £1 per link for first 20, then £2
+                const newEarnings = newCount <= 20 ? newCount : 20 + ((newCount - 20) * 2);
+                earnings.textContent = `£${newEarnings}`;
+
+                input.value = '';
+            } catch (error) {
+                alert(`Failed to add affiliate link: ${error.message}`);
+                console.error('Affiliate error:', error);
+            }
+        }
+
+        // Handle redirect results for fallback authentication
+        auth.getRedirectResult().then((result) => {
+            if (result.user) {
+                console.log('Redirect authentication successful:', result.user.email || result.user.displayName);
+            }
+        }).catch((error) => {
+            console.error('Redirect authentication error:', error);
+        });
     </script>
 </body>
 </html>

@@ -10,51 +10,51 @@
 <body class="bg-white">
 
 <!-- Landing/Signup Section -->
-<div id="landing" class="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
-    <div class="container mx-auto px-4 py-8">
+<div id="landing" class="min-h-screen bg-white">
+    <div class="container mx-auto px-4 py-16">
         <!-- Header -->
-        <div class="text-center mb-8">
+        <div class="text-center mb-12">
             <h1 class="text-4xl font-bold text-purple-600 mb-2">Yogull</h1>
-            <p class="text-gray-600">Connect. Share. Grow Together.</p>
+            <p class="text-gray-600 text-lg">Connect. Share. Grow Together.</p>
         </div>
 
-        <!-- Social Sign-in Buttons -->
+        <!-- Join Community Section -->
         <div class="max-w-md mx-auto mb-8">
-            <p class="text-center text-gray-500 mb-4">Join the Community</p>
+            <p class="text-center text-gray-600 mb-6 text-lg">Join the Community</p>
             
-            <div class="space-y-3">
-                <button onclick="showDashboard()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2">
-                    <i class="fab fa-google text-lg"></i>
+            <div class="space-y-4">
+                <button onclick="showDashboard()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg flex items-center justify-center gap-3 text-lg font-medium">
+                    <i class="fab fa-google text-xl"></i>
                     Continue with Google
                 </button>
                 
-                <button onclick="showDashboard()" class="w-full bg-blue-800 hover:bg-blue-900 text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2">
-                    <i class="fab fa-facebook text-lg"></i>
+                <button onclick="showDashboard()" class="w-full bg-blue-800 hover:bg-blue-900 text-white py-4 px-6 rounded-lg flex items-center justify-center gap-3 text-lg font-medium">
+                    <i class="fab fa-facebook text-xl"></i>
                     Continue with Facebook
                 </button>
                 
-                <button onclick="showDashboard()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2">
-                    <i class="fab fa-twitter text-lg"></i>
+                <button onclick="showDashboard()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-lg flex items-center justify-center gap-3 text-lg font-medium">
+                    <i class="fab fa-twitter text-xl"></i>
                     Continue with Twitter
                 </button>
             </div>
         </div>
 
         <!-- Features -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <i class="fas fa-users text-purple-500 text-2xl mb-3"></i>
-                <h3 class="font-bold mb-2">Global Community</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
+            <div class="bg-white p-6 rounded-lg border text-center">
+                <i class="fas fa-users text-purple-500 text-3xl mb-4"></i>
+                <h3 class="font-bold mb-2 text-lg">Global Community</h3>
                 <p class="text-gray-600">Connect with 25+ members worldwide</p>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <i class="fas fa-store text-green-500 text-2xl mb-3"></i>
-                <h3 class="font-bold mb-2">Personal Shop</h3>
+            <div class="bg-white p-6 rounded-lg border text-center">
+                <i class="fas fa-store text-green-500 text-3xl mb-4"></i>
+                <h3 class="font-bold mb-2 text-lg">Personal Shop</h3>
                 <p class="text-gray-600">Create your online business</p>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <i class="fas fa-heart text-red-500 text-2xl mb-3"></i>
-                <h3 class="font-bold mb-2">Health Hub</h3>
+            <div class="bg-white p-6 rounded-lg border text-center">
+                <i class="fas fa-heart text-red-500 text-3xl mb-4"></i>
+                <h3 class="font-bold mb-2 text-lg">Health Hub</h3>
                 <p class="text-gray-600">Track your wellness journey</p>
             </div>
         </div>
@@ -209,21 +209,96 @@
         </div>
     </div>
 
-    <!-- Other Pages -->
+    <!-- Personal Shop Page -->
     <div id="shop-page" class="hidden container mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold">Personal Shop</h2>
             <button onclick="showPage('dashboard')" class="bg-gray-500 text-white px-4 py-2 rounded">Back</button>
         </div>
-        <p class="text-gray-600">Create and manage your online store...</p>
+        
+        <!-- Shop Banner -->
+        <div class="bg-gradient-to-r from-purple-500 to-blue-500 text-white p-6 rounded-lg mb-6">
+            <h3 class="text-xl font-bold mb-2">Create Your Online Business</h3>
+            <p class="mb-4">Build your shop, reach customers, earn revenue - everything provided free!</p>
+            <button class="bg-white text-purple-500 px-4 py-2 rounded hover:bg-gray-100">Start Your Shop</button>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="border rounded-lg p-4">
+                <div class="bg-gray-200 h-32 rounded mb-3 flex items-center justify-center">
+                    <i class="fas fa-plus text-gray-400 text-2xl"></i>
+                </div>
+                <h4 class="font-bold">Add Product</h4>
+                <p class="text-gray-600 text-sm">Create your first product</p>
+                <p class="text-green-600 font-bold mt-2">£0.00</p>
+            </div>
+        </div>
     </div>
 
+    <!-- Business Directory Page -->
     <div id="business-page" class="hidden container mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold">Business Directory</h2>
             <button onclick="showPage('dashboard')" class="bg-gray-500 text-white px-4 py-2 rounded">Back</button>
         </div>
-        <p class="text-gray-600">Discover local businesses in your area...</p>
+
+        <!-- Advertise Your Business Banner -->
+        <div class="bg-gradient-to-r from-green-500 to-blue-500 text-white p-6 rounded-lg mb-6">
+            <h3 class="text-xl font-bold mb-2">💼 Advertise Your Business - £24/Year</h3>
+            <p class="mb-4">Complete business package: Carousel ads, dedicated storefront, location targeting, Stripe payments</p>
+            <button class="bg-white text-green-500 px-4 py-2 rounded hover:bg-gray-100">Start Advertising</button>
+        </div>
+
+        <!-- Business Search -->
+        <div class="mb-6">
+            <input type="text" placeholder="Search local businesses..." class="w-full p-3 border rounded-lg">
+        </div>
+
+        <!-- Business Categories -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-blue-50 p-4 rounded-lg text-center">
+                <i class="fas fa-dumbbell text-blue-500 text-2xl mb-2"></i>
+                <p class="font-semibold">Gyms</p>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg text-center">
+                <i class="fas fa-leaf text-green-500 text-2xl mb-2"></i>
+                <p class="font-semibold">Wellness</p>
+            </div>
+            <div class="bg-orange-50 p-4 rounded-lg text-center">
+                <i class="fas fa-coffee text-orange-500 text-2xl mb-2"></i>
+                <p class="font-semibold">Cafes</p>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-lg text-center">
+                <i class="fas fa-laptop text-purple-500 text-2xl mb-2"></i>
+                <p class="font-semibold">Tech</p>
+            </div>
+        </div>
+
+        <!-- Business Listings -->
+        <div class="space-y-4">
+            <div class="border rounded-lg p-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h4 class="font-bold">FitLife Gym</h4>
+                        <p class="text-gray-600">Professional fitness center with modern equipment</p>
+                        <p class="text-sm text-gray-500">📍 Manchester City Centre</p>
+                    </div>
+                    <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Contact</button>
+                </div>
+            </div>
+            
+            <div class="border rounded-lg p-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h4 class="font-bold">Organic Market</h4>
+                        <p class="text-gray-600">Fresh organic produce and health foods</p>
+                        <p class="text-sm text-gray-500">📍 London Borough</p>
+                    </div>
+                    <button class="bg-green-500 text-white px-3 py-1 rounded text-sm">Contact</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="health-page" class="hidden container mx-auto px-4 py-8">

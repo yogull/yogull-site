@@ -3,380 +3,416 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Yogull - Revolutionary Social Platform</title>
-    <meta name="description" content="Join Yogull Community Platform - Multi-platform sharing, affiliate shops, AI assistance, global RSS feeds, and comprehensive business directory. Real people, real discussions.">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome -->
+    <title>Join Yogull Community Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Firebase SDK v8 (stable for auth) -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <!-- Firebase v9 SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     
     <style>
-        .yogull-title {
-            background: linear-gradient(135deg, #8B5CF6, #A855F7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 1.2rem;
-            font-weight: bold;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        .signup-container {
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
         }
         
         .signup-form {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #764ba2;
+        }
+        
+        .eye {
+            width: 32px;
+            height: 32px;
+            background: #764ba2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pupil {
+            width: 12px;
+            height: 8px;
+            background: black;
+            border-radius: 50%;
+        }
+        
+        .tagline {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .main-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin: 30px 0 15px 0;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        /* Social Login Buttons */
+        .social-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
         
         .social-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
-            border-radius: 12px;
-            font-weight: 500;
-            padding: 12px 16px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .google-btn {
+            background: #db4437;
+            color: white;
+        }
+        
+        .facebook-btn {
+            background: #3b5998;
+            color: white;
+        }
+        
+        .twitter-btn {
+            background: #1da1f2;
+            color: white;
         }
         
         .social-btn:hover {
+            opacity: 0.9;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .guest-section {
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+        }
+        
+        .guest-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px 20px;
+            background: white;
         }
         
         .feature-card {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 16px;
-            transition: all 0.3s ease;
-            border: 2px solid;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .feature-icon {
+            font-size: 24px;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .feature-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        
+        .feature-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .feature-tag {
+            font-size: 11px;
+            background: #f5f5f5;
+            color: #666;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .feature-highlight {
+            color: #28a745;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* Colors for different features */
+        .green { color: #28a745; }
+        .green-bg { background: #d4edda; color: #155724; }
+        .yellow { color: #ffc107; }
+        .yellow-bg { background: #fff3cd; color: #856404; }
+        .blue { color: #007bff; }
+        .blue-bg { background: #cce7ff; color: #004085; }
+        .purple { color: #6f42c1; }
+        .purple-bg { background: #e2d9f3; color: #3d1a78; }
+        .red { color: #dc3545; }
+        .red-bg { background: #f8d7da; color: #721c24; }
+        .indigo { color: #6610f2; }
+        .indigo-bg { background: #e0cffc; color: #3d0a91; }
+        
+        @media (max-width: 768px) {
+            .social-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .social-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
         }
     </style>
 </head>
-<body class="signup-container">
-    
-    <div class="min-h-screen flex items-center justify-center p-4">
-        <div class="max-w-6xl w-full">
-            
-            <!-- Header Section with Logo -->
-            <div class="signup-form p-8 mb-8 text-center">
-                <!-- Yogull Logo -->
-                <div class="mb-6">
-                    <div class="text-purple-600 text-3xl font-bold mb-2">
-                        Yogull.com
+<body>
+    <div class="container">
+        <div class="signup-form">
+            <!-- Header -->
+            <div class="header">
+                <div class="logo">
+                    <span class="logo-text">Yogull.com</span>
+                    <div class="eye">
+                        <div class="pupil"></div>
                     </div>
-                    <div class="flex justify-center items-center gap-3 mb-2">
-                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
-                            <div class="w-3 h-5 bg-black rounded-full"></div>
-                        </div>
-                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
-                            <div class="w-3 h-5 bg-black rounded-full"></div>
-                        </div>
+                    <div class="eye">
+                        <div class="pupil"></div>
                     </div>
-                    <div class="text-gray-600 text-lg">Go heal me</div>
                 </div>
+                <div class="tagline">Go heal me</div>
                 
-                <h1 class="text-4xl font-bold text-gray-900 mb-4">Join Yogull Community Platform</h1>
-                <p class="text-lg text-gray-600 mb-6">
-                    Join members from around the world and discover the ultimate social platform<br>
-                    with revolutionary features you won't find anywhere else.
-                </p>
+                <h1 class="main-title">Join Yogull Community Platform</h1>
+                <p class="subtitle">Join members from around the world and discover the ultimate social platform with revolutionary features you won't find anywhere else.</p>
                 
-                <!-- Sign Up Buttons -->
-                <div class="flex justify-center space-x-4 mb-8">
-                    <button onclick="signInWithGoogle()" class="social-btn bg-red-600 hover:bg-red-700 text-white flex items-center space-x-3 px-6 py-3">
-                        <i class="fab fa-google text-lg"></i>
-                        <span>Continue with Google</span>
+                <!-- Social Login Buttons -->
+                <div class="social-buttons">
+                    <button class="social-btn google-btn" onclick="signInWithGoogle()">
+                        <i class="fab fa-google"></i>
+                        Continue with Google
                     </button>
-                    
-                    <button onclick="signInWithFacebook()" class="social-btn bg-blue-800 hover:bg-blue-900 text-white flex items-center space-x-3 px-6 py-3">
-                        <i class="fab fa-facebook text-lg"></i>
-                        <span>Continue with Facebook</span>
+                    <button class="social-btn facebook-btn" onclick="signInWithFacebook()">
+                        <i class="fab fa-facebook-f"></i>
+                        Continue with Facebook
                     </button>
-                    
-                    <button onclick="signInWithTwitter()" class="social-btn bg-blue-500 hover:bg-blue-600 text-white flex items-center space-x-3 px-6 py-3">
-                        <i class="fab fa-twitter text-lg"></i>
-                        <span>Continue with Twitter</span>
+                    <button class="social-btn twitter-btn" onclick="signInWithTwitter()">
+                        <i class="fab fa-twitter"></i>
+                        Continue with Twitter
                     </button>
                 </div>
                 
-                <p class="text-sm text-gray-500 mb-4">Or enter as guest to explore</p>
-                <button onclick="enterAsGuest()" class="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-                    Continue as Guest
-                </button>
+                <div class="guest-section">
+                    <p>Or enter as guest to explore</p>
+                    <button class="guest-btn" onclick="window.location.href='/'">Continue as Guest</button>
+                </div>
             </div>
-
-            <!-- Revolutionary Features Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            
+            <!-- Features Grid -->
+            <div class="features-grid">
                 <!-- Multi-Platform Sharing -->
-                <div class="feature-card border-green-200 hover:border-green-400 p-6">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i class="fas fa-share-alt text-2xl text-green-600"></i>
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-share-alt green"></i>
                         <div>
-                            <h3 class="text-lg font-bold">Multi-Platform Sharing</h3>
-                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">REVOLUTIONARY</span>
+                            <div class="feature-title">Multi-Platform Sharing</div>
+                            <div class="feature-badge green-bg">REVOLUTIONARY</div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 mb-3">
+                    <div class="feature-description">
                         Share to 20+ social platforms simultaneously: Facebook, Twitter, Instagram, LinkedIn, TikTok, Snapchat, Discord, Reddit, Pinterest, Tumblr, Twitch, Spotify, Medium, GitHub, and more.
-                    </p>
-                    <div class="flex flex-wrap gap-1">
-                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">Facebook</span>
-                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">Twitter</span>
-                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">Instagram</span>
-                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">LinkedIn</span>
-                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">TikTok</span>
-                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">+15 More</span>
+                    </div>
+                    <div class="feature-tags">
+                        <span class="feature-tag">Facebook</span>
+                        <span class="feature-tag">Twitter</span>
+                        <span class="feature-tag">Instagram</span>
+                        <span class="feature-tag">LinkedIn</span>
+                        <span class="feature-tag">TikTok</span>
+                        <span class="feature-tag">+15 More</span>
                     </div>
                 </div>
 
-                <!-- Personal Affiliate Shops -->
-                <div class="feature-card border-yellow-200 hover:border-yellow-400 p-6">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i class="fas fa-pound-sign text-2xl text-yellow-600"></i>
+                <!-- Affiliate Shops -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-pound-sign yellow"></i>
                         <div>
-                            <h3 class="text-lg font-bold">Affiliate Shops</h3>
-                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">MONEY MAKER</span>
+                            <div class="feature-title">Affiliate Shops</div>
+                            <div class="feature-badge yellow-bg">MONEY MAKER</div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 mb-3">
+                    <div class="feature-description">
                         Create personal affiliate shops and earn £1 per affiliate link for the first 20 links, then £2/month maintenance for additional links. Connect Amazon, eBay, and other affiliate programs.
-                    </p>
-                    <div class="flex items-center gap-2 text-green-600 font-semibold">
+                    </div>
+                    <div class="feature-highlight">
                         <i class="fas fa-star"></i>
-                        <span>£1 per link • £2/month after 20</span>
+                        £1 per link • £2/month after 20
                     </div>
                 </div>
 
-                <!-- AI Assistant -->
-                <div class="feature-card border-blue-200 hover:border-blue-400 p-6">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i class="fas fa-robot text-2xl text-blue-600"></i>
+                <!-- Universal AI Assistant -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-robot blue"></i>
                         <div>
-                            <h3 class="text-lg font-bold">Universal AI Assistant</h3>
-                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">GPT-4 POWERED</span>
+                            <div class="feature-title">Universal AI Assistant</div>
+                            <div class="feature-badge blue-bg">GPT-4 POWERED</div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 mb-3">
+                    <div class="feature-description">
                         Ask AI anything on every page - health advice, science questions, general knowledge like "How far is the Moon?". Comprehensive responses with medical disclaimers for health topics.
-                    </p>
-                    <div class="text-blue-600 font-medium text-sm">
+                    </div>
+                    <div class="feature-highlight blue">
                         Available on every page across the platform
                     </div>
                 </div>
 
-                <!-- RSS Feeds -->
-                <div class="feature-card border-purple-200 hover:border-purple-400 p-6">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i class="fas fa-rss text-2xl text-purple-600"></i>
+                <!-- Worldwide RSS Feeds -->
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-rss purple"></i>
                         <div>
-                            <h3 class="text-lg font-bold">Worldwide RSS Feeds</h3>
-                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">GLOBAL NEWS</span>
+                            <div class="feature-title">Worldwide RSS Feeds</div>
+                            <div class="feature-badge purple-bg">GLOBAL NEWS</div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 mb-3">
+                    <div class="feature-description">
                         Automated news posting from 60+ international sources: BBC, CNN, Al Jazeera, Xinhua, NHK World, Le Monde, Der Spiegel, Times of India, and sources from every continent.
-                    </p>
-                    <div class="flex flex-wrap gap-1">
-                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">60+ Sources</span>
-                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">Global Coverage</span>
-                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">Auto-Posted</span>
+                    </div>
+                    <div class="feature-tags">
+                        <span class="feature-tag">60+ Sources</span>
+                        <span class="feature-tag">Global Coverage</span>
+                        <span class="feature-tag">Auto-Posted</span>
                     </div>
                 </div>
 
                 <!-- Exercise Tracking -->
-                <div class="feature-card border-red-200 hover:border-red-400 p-6">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i class="fas fa-dumbbell text-2xl text-red-600"></i>
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-dumbbell red"></i>
                         <div>
-                            <h3 class="text-lg font-bold">Exercise Tracking</h3>
-                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">HEALTH FOCUS</span>
+                            <div class="feature-title">Exercise Tracking</div>
+                            <div class="feature-badge red-bg">HEALTH FOCUS</div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 mb-3">
+                    <div class="feature-description">
                         Comprehensive fitness tracking with supplement logging, biometric data, step counting, sleep tracking, weight management, and health metric visualization with charts.
-                    </p>
-                    <div class="flex items-center gap-2 text-red-600 font-medium">
+                    </div>
+                    <div class="feature-highlight red">
                         <i class="fas fa-heart"></i>
-                        <span>Complete Health Dashboard</span>
+                        Complete Health Dashboard
                     </div>
                 </div>
 
                 <!-- Auto Social Invites -->
-                <div class="feature-card border-indigo-200 hover:border-indigo-400 p-6">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i class="fas fa-users text-2xl text-indigo-600"></i>
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <i class="feature-icon fas fa-users indigo"></i>
                         <div>
-                            <h3 class="text-lg font-bold">Auto Social Invites</h3>
-                            <span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded">GROWTH ENGINE</span>
+                            <div class="feature-title">Auto Social Invites</div>
+                            <div class="feature-badge indigo-bg">GROWTH ENGINE</div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 mb-3">
+                    <div class="feature-description">
                         Automated friend invitations across Instagram, LinkedIn, Telegram, Facebook, and Twitter. System sends personalized invites to grow your network automatically.
-                    </p>
-                    <div class="flex items-center gap-2 text-indigo-600 font-medium">
+                    </div>
+                    <div class="feature-highlight indigo">
                         <i class="fas fa-bolt"></i>
-                        <span>Automated Network Growth</span>
+                        Automated Network Growth
                     </div>
-                </div>
-            </div>
-
-            <!-- Core Platform Features - Matching About Us Layout -->
-            <div class="grid md:grid-cols-2 gap-6 mb-8">
-                <!-- Global Community -->
-                <div class="feature-card border-blue-200 p-6 text-center">
-                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-users text-blue-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Global Community</h3>
-                    <p class="text-gray-600 mb-4">Connect with members from around the world</p>
-                    <p class="text-sm text-gray-500">
-                        Join discussions across 8 countries with multi-language support and real-time chat.
-                    </p>
-                </div>
-
-                <!-- Active Discussions -->
-                <div class="feature-card border-green-200 p-6 text-center">
-                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-comments text-green-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Active Discussions</h3>
-                    <p class="text-gray-600 mb-4">1,225+ community discussions</p>
-                    <p class="text-sm text-gray-500">
-                        Participate in health, community, technology, and lifestyle discussions.
-                    </p>
-                </div>
-
-                <!-- Business Directory -->
-                <div class="feature-card border-red-200 p-6 text-center">
-                    <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-map-marker-alt text-red-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Business Directory</h3>
-                    <p class="text-gray-600 mb-4">241+ local businesses</p>
-                    <p class="text-sm text-gray-500">
-                        Discover and connect with local businesses in your area.
-                    </p>
-                </div>
-
-                <!-- Personal Shop -->
-                <div class="feature-card border-purple-200 p-6 text-center">
-                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-store text-purple-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Personal Shop</h3>
-                    <p class="text-gray-600 mb-4">Earn £5,784+ annually</p>
-                    <p class="text-sm text-gray-500">
-                        Create your own shop and start earning with our integrated business tools.
-                    </p>
-                </div>
-
-                <!-- Health & Wellness -->
-                <div class="feature-card border-pink-200 p-6 text-center">
-                    <div class="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-heartbeat text-pink-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Health & Wellness</h3>
-                    <p class="text-gray-600 mb-4">Complete health tracking</p>
-                    <p class="text-sm text-gray-500">
-                        Track supplements, biometrics, and your wellness journey with AI assistance.
-                    </p>
-                </div>
-
-                <!-- Social Network -->
-                <div class="feature-card border-indigo-200 p-6 text-center">
-                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-globe text-indigo-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Social Network</h3>
-                    <p class="text-gray-600 mb-4">Profile walls & galleries</p>
-                    <p class="text-sm text-gray-500">
-                        Share photos, create posts, and build your social network with friends.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Platform Statistics - Matching About Us -->
-            <div class="signup-form p-8 mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-                <div class="grid md:grid-cols-3 gap-8 mb-8">
-                    <div>
-                        <div class="text-4xl font-bold mb-2">Global</div>
-                        <div class="text-lg">Community Members</div>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-bold mb-2">1,225+</div>
-                        <div class="text-lg">Community Discussions</div>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-bold mb-2">241+</div>
-                        <div class="text-lg">Local Businesses</div>
-                    </div>
-                </div>
-                
-                <div class="text-3xl font-bold mb-4">£5,784+</div>
-                <div class="text-lg mb-8">Annual Revenue Potential</div>
-                
-                <h2 class="text-3xl font-bold mb-4">Ready to Join Our Community?</h2>
-                <p class="text-lg mb-6">Sign up today and start connecting with people worldwide. It's completely free!</p>
-                
-                <div class="flex justify-center gap-4 mb-6">
-                    <button onclick="signInWithGoogle()" class="bg-white text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                        Create Free Account
-                    </button>
-                    <button onclick="signInWithGoogle()" class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-800 transition-colors">
-                        Join Now
-                    </button>
-                </div>
-            </div>
-
-            <!-- Marketing CTA -->
-            <div class="signup-form p-8 text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">
-                    🎯 Perfect for Marketing & Business Growth
-                </h2>
-                <p class="text-lg text-gray-600 mb-6">
-                    Everything you need to build your online presence and monetize your content
-                </p>
-                
-                <div class="grid md:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-white p-4 rounded-lg shadow border">
-                        <i class="fas fa-chart-line text-2xl text-green-600 mb-2"></i>
-                        <h4 class="font-semibold mb-2">Grow Your Network</h4>
-                        <p class="text-sm text-gray-600">Automated invitations across all platforms</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg shadow border">
-                        <i class="fas fa-pound-sign text-2xl text-yellow-600 mb-2"></i>
-                        <h4 class="font-semibold mb-2">Monetize Content</h4>
-                        <p class="text-sm text-gray-600">Affiliate shops with £1 per link earnings</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg shadow border">
-                        <i class="fas fa-globe text-2xl text-blue-600 mb-2"></i>
-                        <h4 class="font-semibold mb-2">Global Reach</h4>
-                        <p class="text-sm text-gray-600">Share to 20+ platforms simultaneously</p>
-                    </div>
-                </div>
-                
-
-
-            <!-- Footer Section - Matching About Us -->
-            <div class="signup-form p-8 text-center bg-gray-800 text-white">
-                <h2 class="text-3xl font-bold mb-4">Yogull</h2>
-                <p class="text-lg mb-6">Connecting communities worldwide since 2025</p>
-                
-                <div class="flex justify-center gap-8 mb-6">
-                    <a href="#" class="text-gray-300 hover:text-white">About</a>
-                    <a href="#" class="text-gray-300 hover:text-white">Privacy</a>
-                    <a href="#" class="text-gray-300 hover:text-white">Terms</a>
-                    <a href="#" class="text-gray-300 hover:text-white">Contact</a>
                 </div>
             </div>
         </div>
@@ -427,9 +463,11 @@
                 const result = await firebase.auth().signInWithPopup(provider);
                 console.log('✅ Facebook sign-in successful:', result.user.email);
                 
+                // Redirect to dashboard after successful authentication
                 window.location.href = '/';
             } catch (error) {
                 console.error('❌ Facebook sign-in error:', error);
+                // Fallback to redirect sign-in if popup fails
                 const provider = new firebase.auth.FacebookAuthProvider();
                 firebase.auth().signInWithRedirect(provider);
             }
@@ -443,32 +481,25 @@
                 const result = await firebase.auth().signInWithPopup(provider);
                 console.log('✅ Twitter sign-in successful:', result.user.displayName);
                 
+                // Redirect to dashboard after successful authentication
                 window.location.href = '/';
             } catch (error) {
                 console.error('❌ Twitter sign-in error:', error);
+                // Fallback to redirect sign-in if popup fails
                 const provider = new firebase.auth.TwitterAuthProvider();
                 firebase.auth().signInWithRedirect(provider);
             }
         }
 
-        // Guest access
-        function enterAsGuest() {
-            console.log('🔄 Entering as guest...');
-            window.location.href = '/';
-        }
-
-        // Handle redirect results (for popup fallback)
-        auth.getRedirectResult()
-            .then((result) => {
-                if (result.user) {
-                    console.log('✅ Redirect sign-in successful:', result.user.email);
-                    window.location.href = '/';
-                }
-            })
-            .catch((error) => {
-                console.error('❌ Redirect sign-in error:', error);
-                alert('Sign-in failed: ' + error.message);
-            });
+        // Handle redirect results for fallback authentication
+        firebase.auth().getRedirectResult().then((result) => {
+            if (result.user) {
+                console.log('✅ Redirect authentication successful:', result.user.email || result.user.displayName);
+                window.location.href = '/';
+            }
+        }).catch((error) => {
+            console.error('❌ Redirect authentication error:', error);
+        });
     </script>
 </body>
 </html>

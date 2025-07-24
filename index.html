@@ -12,9 +12,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Firebase SDK v8 (more stable for auth) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     
     <style>
         .yogull-title {
@@ -238,96 +238,125 @@
         console.log('App ID present:', !!firebaseConfig.appId);
         console.log('Firebase Auth initialized successfully');
 
-        // Google Sign In
+        // Google Sign In - Fixed for Firebase v8
         function signInWithGoogle() {
             console.log('🔵 Starting Google sign-in...');
+            
+            // Create Google provider
             const provider = new firebase.auth.GoogleAuthProvider();
             provider.addScope('email');
             provider.addScope('profile');
             
-            // Try popup first, then redirect as fallback
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    console.log('✅ Google sign-in successful:', result.user.email);
-                    const user = result.user;
-                    showSuccess(`Welcome ${user.displayName || user.email}! Redirecting to platform...`);
-                    
-                    // Redirect to main platform or dashboard
-                    setTimeout(() => {
-                        window.location.href = window.location.origin;
-                    }, 1500);
-                })
-                .catch((error) => {
-                    console.error('❌ Google sign-in error:', error.code, error.message);
-                    
-                    if (error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-user') {
-                        // Try redirect method as fallback
-                        console.log('🔄 Popup blocked, trying redirect...');
-                        auth.signInWithRedirect(provider);
-                    } else {
+            // Clear any previous auth state
+            firebase.auth().signOut().then(() => {
+                console.log('🔄 Cleared previous auth state');
+                
+                // Try popup authentication
+                firebase.auth().signInWithPopup(provider)
+                    .then((result) => {
+                        console.log('✅ Google sign-in successful:', result.user.email);
+                        const user = result.user;
+                        showSuccess(`Welcome ${user.displayName || user.email}! Signed in successfully.`);
+                        
+                        // Create user in backend
+                        fetch('/api/auth/firebase-user', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                firebaseUid: user.uid,
+                                email: user.email,
+                                name: user.displayName,
+                                photoURL: user.photoURL
+                            })
+                        }).then(() => {
+                            window.location.href = '/';
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('❌ Google sign-in error:', error.code, error.message);
                         showError(`Google sign-in failed: ${error.message}`);
-                    }
-                });
+                    });
+            });
         }
 
-        // Facebook Sign In
+        // Facebook Sign In - Fixed for Firebase v8
         function signInWithFacebook() {
             console.log('🔵 Starting Facebook sign-in...');
+            
             const provider = new firebase.auth.FacebookAuthProvider();
             provider.addScope('email');
             provider.addScope('public_profile');
             
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    console.log('✅ Facebook sign-in successful:', result.user.email);
-                    const user = result.user;
-                    showSuccess(`Welcome ${user.displayName || user.email}! Redirecting to platform...`);
-                    
-                    setTimeout(() => {
-                        window.location.href = window.location.origin;
-                    }, 1500);
-                })
-                .catch((error) => {
-                    console.error('❌ Facebook sign-in error:', error.code, error.message);
-                    
-                    if (error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-user') {
-                        console.log('🔄 Popup blocked, trying redirect...');
-                        auth.signInWithRedirect(provider);
-                    } else if (error.code === 'auth/account-exists-with-different-credential') {
-                        showError('Account exists with different sign-in method. Try Google or email sign-in.');
-                    } else {
-                        showError(`Facebook sign-in failed: ${error.message}`);
-                    }
-                });
+            firebase.auth().signOut().then(() => {
+                firebase.auth().signInWithPopup(provider)
+                    .then((result) => {
+                        console.log('✅ Facebook sign-in successful:', result.user.email);
+                        const user = result.user;
+                        showSuccess(`Welcome ${user.displayName || user.email}! Signed in successfully.`);
+                        
+                        // Create user in backend
+                        fetch('/api/auth/firebase-user', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                firebaseUid: user.uid,
+                                email: user.email,
+                                name: user.displayName,
+                                photoURL: user.photoURL
+                            })
+                        }).then(() => {
+                            window.location.href = '/';
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('❌ Facebook sign-in error:', error.code, error.message);
+                        
+                        if (error.code === 'auth/account-exists-with-different-credential') {
+                            showError('Account exists with different sign-in method. Try Google or email sign-in.');
+                        } else {
+                            showError(`Facebook sign-in failed: ${error.message}`);
+                        }
+                    });
+            });
         }
 
-        // Twitter Sign In  
+        // Twitter Sign In - Fixed for Firebase v8  
         function signInWithTwitter() {
             console.log('🔵 Starting Twitter sign-in...');
+            
             const provider = new firebase.auth.TwitterAuthProvider();
             
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    console.log('✅ Twitter sign-in successful:', result.user.email || result.user.displayName);
-                    const user = result.user;
-                    showSuccess(`Welcome ${user.displayName || user.email || 'Twitter User'}! Redirecting to platform...`);
-                    
-                    setTimeout(() => {
-                        window.location.href = window.location.origin;
-                    }, 1500);
-                })
-                .catch((error) => {
-                    console.error('❌ Twitter sign-in error:', error.code, error.message);
-                    
-                    if (error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-user') {
-                        console.log('🔄 Popup blocked, trying redirect...');
-                        auth.signInWithRedirect(provider);
-                    } else if (error.code === 'auth/account-exists-with-different-credential') {
-                        showError('Account exists with different sign-in method. Try Google or email sign-in.');
-                    } else {
-                        showError(`Twitter sign-in failed: ${error.message}`);
-                    }
-                });
+            firebase.auth().signOut().then(() => {
+                firebase.auth().signInWithPopup(provider)
+                    .then((result) => {
+                        console.log('✅ Twitter sign-in successful:', result.user.email || result.user.displayName);
+                        const user = result.user;
+                        showSuccess(`Welcome ${user.displayName || user.email || 'Twitter User'}! Signed in successfully.`);
+                        
+                        // Create user in backend
+                        fetch('/api/auth/firebase-user', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                firebaseUid: user.uid,
+                                email: user.email,
+                                name: user.displayName,
+                                photoURL: user.photoURL
+                            })
+                        }).then(() => {
+                            window.location.href = '/';
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('❌ Twitter sign-in error:', error.code, error.message);
+                        
+                        if (error.code === 'auth/account-exists-with-different-credential') {
+                            showError('Account exists with different sign-in method. Try Google or email sign-in.');
+                        } else {
+                            showError(`Twitter sign-in failed: ${error.message}`);
+                        }
+                    });
+            });
         }
 
         // Handle redirect results (for popup fallback)
@@ -346,7 +375,7 @@
                 showError(`Sign-in failed: ${error.message}`);
             });
 
-        // Email/Password Sign Up
+        // Email/Password Sign Up - Fixed for Firebase v8
         function emailSignUp() {
             const email = document.getElementById('emailInput').value.trim();
             const password = document.getElementById('passwordInput').value;
@@ -369,19 +398,29 @@
             button.textContent = 'Creating Account...';
             button.disabled = true;
             
-            auth.createUserWithEmailAndPassword(email, password)
+            firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then((result) => {
                     console.log('✅ Email sign-up successful:', result.user.email);
                     const user = result.user;
                     
-                    // Send email verification (optional)
+                    // Send email verification
                     user.sendEmailVerification().catch(e => console.log('Email verification error:', e));
                     
-                    showSuccess(`Welcome ${user.email}! Account created successfully. Redirecting to platform...`);
+                    showSuccess(`Welcome ${user.email}! Account created successfully.`);
                     
-                    setTimeout(() => {
-                        window.location.href = window.location.origin;
-                    }, 1500);
+                    // Create user in backend
+                    fetch('/api/auth/firebase-user', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            firebaseUid: user.uid,
+                            email: user.email,
+                            name: user.displayName || email.split('@')[0],
+                            photoURL: user.photoURL
+                        })
+                    }).then(() => {
+                        window.location.href = '/';
+                    });
                 })
                 .catch((error) => {
                     console.error('❌ Email sign-up error:', error.code, error.message);

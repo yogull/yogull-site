@@ -282,49 +282,25 @@
         };
 
         // Emergency Direct Access - Bypasses Firebase Issues  
-        async function signInWithGoogle() {
-            console.log('🔵 Emergency Access: Bypassing authentication...');
-            showSuccess('Welcome! Redirecting now...');
+        function signInWithGoogle() {
+            console.log('🔵 Google sign-in clicked - redirecting now');
+            console.log('🔄 Current location:', window.location.href);
+            console.log('🔄 Redirecting to:', window.location.origin + '/');
             
-            // Multiple redirect methods to ensure it works
-            console.log('🔄 Redirecting to main platform...');
-            
-            // Try multiple redirect approaches
-            try {
-                window.location.replace('/');
-            } catch (e) {
-                try {
-                    window.location.assign('/');
-                } catch (e2) {
-                    window.location.href = '/';
-                }
-            }
+            // Force immediate redirect
+            window.location.href = window.location.origin + '/';
         }
 
         // Emergency Direct Access - Facebook
-        async function signInWithFacebook() {
-            console.log('🔵 Emergency Access: Facebook bypass active...');
-            showSuccess('Welcome! Redirecting now...');
-            
-            console.log('🔄 Redirecting to main platform...');
-            try {
-                window.location.replace('/');
-            } catch (e) {
-                window.location.href = '/';
-            }
+        function signInWithFacebook() {
+            console.log('🔵 Facebook sign-in clicked - redirecting now');
+            window.location.href = window.location.origin + '/';
         }
 
         // Emergency Direct Access - Twitter  
-        async function signInWithTwitter() {
-            console.log('🔵 Emergency Access: Twitter bypass active...');
-            showSuccess('Welcome! Redirecting now...');
-            
-            console.log('🔄 Redirecting to main platform...');
-            try {
-                window.location.replace('/');
-            } catch (e) {
-                window.location.href = '/';
-            }
+        function signInWithTwitter() {
+            console.log('🔵 Twitter sign-in clicked - redirecting now');
+            window.location.href = window.location.origin + '/';
         }
 
         // Handle redirect results (for popup fallback)
@@ -355,11 +331,8 @@
                 return;
             }
             
-            showSuccess(`Welcome ${email}! Emergency access granted. Redirecting...`);
-            
-            console.log('🔄 Redirecting to main platform...');
+            console.log('🔄 Redirecting immediately to main platform...');
             window.location.href = '/';
-            button.textContent = 'Creating Account...';
             button.disabled = true;
             
             firebase.auth().createUserWithEmailAndPassword(email, password)

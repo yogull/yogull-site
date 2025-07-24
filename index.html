@@ -281,26 +281,58 @@
             });
         };
 
-        // Emergency Direct Access - Bypasses Firebase Issues  
-        function signInWithGoogle() {
-            console.log('🔵 Google sign-in clicked - redirecting now');
-            console.log('🔄 Current location:', window.location.href);
-            console.log('🔄 Redirecting to:', window.location.origin + '/');
-            
-            // Force immediate redirect
-            window.location.href = window.location.origin + '/';
+        // Real Firebase Social Authentication
+        async function signInWithGoogle() {
+            try {
+                console.log('🔵 Starting Google authentication...');
+                const provider = new firebase.auth.GoogleAuthProvider();
+                provider.addScope('email');
+                provider.addScope('profile');
+                
+                const result = await firebase.auth().signInWithPopup(provider);
+                console.log('✅ Google sign-in successful:', result.user.email);
+                
+                // Redirect to main platform after successful authentication
+                window.location.href = '/';
+            } catch (error) {
+                console.error('❌ Google sign-in error:', error);
+                // Fallback to redirect sign-in if popup fails
+                const provider = new firebase.auth.GoogleAuthProvider();
+                firebase.auth().signInWithRedirect(provider);
+            }
         }
 
-        // Emergency Direct Access - Facebook
-        function signInWithFacebook() {
-            console.log('🔵 Facebook sign-in clicked - redirecting now');
-            window.location.href = window.location.origin + '/';
+        async function signInWithFacebook() {
+            try {
+                console.log('🔵 Starting Facebook authentication...');
+                const provider = new firebase.auth.FacebookAuthProvider();
+                provider.addScope('email');
+                
+                const result = await firebase.auth().signInWithPopup(provider);
+                console.log('✅ Facebook sign-in successful:', result.user.email);
+                
+                window.location.href = '/';
+            } catch (error) {
+                console.error('❌ Facebook sign-in error:', error);
+                const provider = new firebase.auth.FacebookAuthProvider();
+                firebase.auth().signInWithRedirect(provider);
+            }
         }
 
-        // Emergency Direct Access - Twitter  
-        function signInWithTwitter() {
-            console.log('🔵 Twitter sign-in clicked - redirecting now');
-            window.location.href = window.location.origin + '/';
+        async function signInWithTwitter() {
+            try {
+                console.log('🔵 Starting Twitter authentication...');
+                const provider = new firebase.auth.TwitterAuthProvider();
+                
+                const result = await firebase.auth().signInWithPopup(provider);
+                console.log('✅ Twitter sign-in successful:', result.user.displayName);
+                
+                window.location.href = '/';
+            } catch (error) {
+                console.error('❌ Twitter sign-in error:', error);
+                const provider = new firebase.auth.TwitterAuthProvider();
+                firebase.auth().signInWithRedirect(provider);
+            }
         }
 
         // Handle redirect results (for popup fallback)

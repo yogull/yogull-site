@@ -216,30 +216,57 @@
     </div>
 
     <script>
-        // Firebase Configuration - Using environment variables
-        const firebaseConfig = {
-            apiKey: "AIzaSyBTiEYhwYaH_r0ECqG2eHqsKbNXGPPP8s8",
-            authDomain: "gohealme-9bdf0.firebaseapp.com",
-            projectId: "gohealme-9bdf0",
-            storageBucket: "gohealme-9bdf0.firebasestorage.app",
-            messagingSenderId: "531345712733",
-            appId: "1:531345712733:web:88c3b9a10f0b3f5e8f2a84"
+        // Fetch Firebase configuration from server
+        let firebaseConfig = {};
+        
+        // Get Firebase config from environment
+        fetch('/api/config/firebase')
+            .then(response => response.json())
+            .then(config => {
+                firebaseConfig = config;
+                console.log('📱 Firebase config loaded:', config.projectId);
+                
+                // Initialize Firebase with fresh config
+                firebase.initializeApp(firebaseConfig);
+                const auth = firebase.auth();
+                console.log('🔥 Firebase initialized with fresh credentials');
+            })
+            .catch(error => {
+                console.error('❌ Failed to load Firebase config, using fallback:', error);
+                // Fallback configuration
+                firebaseConfig = {
+                    apiKey: "AIzaSyBTiEYhwYaH_r0ECqG2eHqsKbNXGPPP8s8",
+                    authDomain: "gohealme-9bdf0.firebaseapp.com", 
+                    projectId: "gohealme-9bdf0",
+                    storageBucket: "gohealme-9bdf0.appspot.com",
+                    messagingSenderId: "531345712733",
+                    appId: "1:531345712733:web:88c3b9a10f0b3f5e8f2a84"
+                };
+                firebase.initializeApp(firebaseConfig);
+                const auth = firebase.auth();
+            });
+
+        // Firebase will be initialized after config is loaded above
+        let auth = null;
+        
+        // Wait for Firebase to be ready
+        const waitForFirebase = () => {
+            return new Promise((resolve) => {
+                const checkReady = () => {
+                    if (window.firebase && window.firebase.apps.length > 0) {
+                        auth = firebase.auth();
+                        resolve(auth);
+                    } else {
+                        setTimeout(checkReady, 100);
+                    }
+                };
+                checkReady();
+            });
         };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        
-        // Log Firebase initialization
-        console.log('Firebase Config Check:');
-        console.log('Project ID:', firebaseConfig.projectId);
-        console.log('Auth Domain:', firebaseConfig.authDomain);
-        console.log('API Key present:', !!firebaseConfig.apiKey);
-        console.log('App ID present:', !!firebaseConfig.appId);
-        console.log('Firebase Auth initialized successfully');
-
         // Google Sign In - Fixed for Firebase v8
-        function signInWithGoogle() {
+        async function signInWithGoogle() {
+            await waitForFirebase();
             console.log('🔵 Starting Google sign-in...');
             
             // Create Google provider
@@ -280,7 +307,8 @@
         }
 
         // Facebook Sign In - Fixed for Firebase v8
-        function signInWithFacebook() {
+        async function signInWithFacebook() {
+            await waitForFirebase();
             console.log('🔵 Starting Facebook sign-in...');
             
             const provider = new firebase.auth.FacebookAuthProvider();
@@ -321,7 +349,8 @@
         }
 
         // Twitter Sign In - Fixed for Firebase v8  
-        function signInWithTwitter() {
+        async function signInWithTwitter() {
+            await waitForFirebase();
             console.log('🔵 Starting Twitter sign-in...');
             
             const provider = new firebase.auth.TwitterAuthProvider();

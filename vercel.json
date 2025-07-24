@@ -1,13 +1,17 @@
 {
-  "routes": [
-    {
-      "src": "/(.*)", 
-      "dest": "/index.html",
-      "headers": {
-        "Cache-Control": "no-store, no-cache",
-        "X-Frame-Options": "DENY"
-      }
-    }
+  "version": 2,
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
-  "cleanUrls": false
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache" },
+        { "key": "X-Frame-Options", "value": "DENY" }
+      ]
+    }
+  ]
 }

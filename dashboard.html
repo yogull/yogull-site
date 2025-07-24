@@ -3,27 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yogull - Dashboard</title>
+    <title>Yogull Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #764ba2;
-            --secondary-color: #667eea;
-            --text-color: #333;
-            --light-bg: #f9f9ff;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --primary: #764ba2;
+            --secondary: #667eea;
+            --accent: #9b5de5;
+            --light: #f8f9fa;
+            --dark: #212529;
         }
         body {
-            background: linear-gradient(to right bottom, #f5f7fa, #e4e8f0);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             min-height: 100vh;
-            color: var(--text-color);
+            margin: 0;
+            color: var(--dark);
+            line-height: 1.6;
         }
-        .dashboard-container {
+        .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
@@ -33,84 +31,96 @@
             justify-content: space-between;
             align-items: center;
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
             margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
         .logo {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--primary);
+            text-decoration: none;
         }
-        .signout-btn {
-            background: var(--primary-color);
+        .btn-signout {
+            background: var(--primary);
             color: white;
             border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 30px;
-            cursor: pointer;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
             font-weight: 600;
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             transition: all 0.3s ease;
         }
-        .signout-btn:hover {
-            background: var(--secondary-color);
+        .btn-signout:hover {
+            background: var(--accent);
             transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        .welcome-section {
+        .dashboard-hero {
             text-align: center;
-            padding: 3rem 0;
+            padding: 4rem 2rem;
             background: white;
-            border-radius: 15px;
+            border-radius: 16px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             margin-bottom: 2rem;
         }
-        .welcome-section h1 {
-            font-size: 2.2rem;
-            color: var(--primary-color);
+        .dashboard-hero h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
             margin-bottom: 1rem;
         }
-        .welcome-section p {
-            font-size: 1.1rem;
-            color: #666;
-            max-width: 600px;
-            margin: 0 auto;
+        .dashboard-hero p {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto 2rem;
         }
-        .features-notice {
+        .feature-notice {
             text-align: center;
-            padding: 1.5rem;
-            background: var(--light-bg);
-            border-radius: 10px;
             font-style: italic;
             color: #666;
+            padding: 1.5rem;
+            background: rgba(118, 75, 162, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            .dashboard-hero {
+                padding: 3rem 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
+    <div class="container">
         <header>
-            <div class="logo">Yogull</div>
-            <button class="signout-btn" onclick="logout()">
+            <a href="#" class="logo">Yogull</a>
+            <button class="btn-signout" onclick="logout()">
                 <i class="fas fa-sign-out-alt"></i> Sign Out
             </button>
         </header>
-        
-        <section class="welcome-section">
-            <h1>Welcome to Your Dashboard</h1>
-            <p>This is your member area. More features coming soon!</p>
-        </section>
 
-        <div class="features-notice">
-            <p>We're working hard to bring you new features. Check back soon!</p>
-        </div>
+        <main>
+            <section class="dashboard-hero">
+                <h1>Welcome to Your Dashboard</h1>
+                <p>This is your member area. More features coming soon!</p>
+                <div class="feature-notice">
+                    <p>We're working hard to bring you new features. Check back soon!</p>
+                </div>
+            </section>
+        </main>
     </div>
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script>
-        // Initialize Firebase (must match your index.html)
+        // Initialize Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
             authDomain: "gohealme-9bdf0.firebaseapp.com",
@@ -121,20 +131,22 @@
         };
         firebase.initializeApp(firebaseConfig);
 
-        function logout() {
-            firebase.auth().signOut().then(() => {
-                window.location.href = 'index.html';
-            }).catch((error) => {
-                console.error('Logout error:', error);
-            });
-        }
-
-        // Check authentication state
+        // Authentication state listener
         firebase.auth().onAuthStateChanged((user) => {
             if (!user) {
                 window.location.href = 'index.html';
             }
         });
+
+        // Logout function
+        function logout() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = 'index.html';
+            }).catch((error) => {
+                console.error('Logout error:', error);
+                alert('Error signing out. Please try again.');
+            });
+        }
     </script>
 </body>
 </html>

@@ -2,34 +2,64 @@
 <html>
 <head>
     <title>Yogull Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
         }
-        button {
-            background: white;
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .signout-btn {
+            background: #764ba2;
+            color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
+            font-weight: bold;
+        }
+        .welcome-message {
+            margin: 40px 0;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to Your Dashboard</h1>
-    <p>This is your member area.</p>
-    <button onclick="logout()">Sign Out</button>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>Yogull</h1>
+            <button class="signout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Sign Out
+            </button>
+        </div>
+        
+        <div class="welcome-message">
+            <h2>Welcome to Your Dashboard</h2>
+            <p>This is your member area. More features coming soon!</p>
+        </div>
 
-    <!-- Add Firebase SDK -->
+        <!-- You can add more sections here later -->
+    </div>
+
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script>
-        // Initialize Firebase (same as in index.html)
+        // Initialize Firebase (must match your index.html)
         const firebaseConfig = {
             apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
             authDomain: "gohealme-9bdf0.firebaseapp.com",

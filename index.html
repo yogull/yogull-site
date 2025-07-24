@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogull Community Platform</title>
-    <base href="/">
+    <!-- Removed base href to prevent path conflicts -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -101,7 +101,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
     <script>
-        // 1. Firebase Initialization (Fixed)
+        // 1. Firebase Initialization
         const firebaseConfig = {
             apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
             authDomain: "gohealme-9bdf0.firebaseapp.com",
@@ -114,19 +114,22 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 2. Auth State Handler (Fixed redirects)
+        // 2. Fixed Auth State Handler (simplified redirect logic)
         auth.onAuthStateChanged((user) => {
-            const path = window.location.pathname;
-            if (user && !path.includes('dashboard.html')) {
-                sessionStorage.setItem('loggedIn', 'true');
-                window.location.href = '/dashboard.html';
-            } else if (!user && path !== '/' && !path.includes('index.html')) {
-                sessionStorage.removeItem('loggedIn');
-                window.location.href = '/';
+            const currentPage = window.location.pathname.split('/').pop();
+            
+            if (user) {
+                if (currentPage !== 'dashboard.html') {
+                    window.location.href = 'dashboard.html';
+                }
+            } else {
+                if (currentPage !== 'index.html' && currentPage !== '') {
+                    window.location.href = 'index.html';
+                }
             }
         });
 
-        // 3. Email Auth (With loading states)
+        // 3. Email Auth
         async function signInWithEmail() {
             const button = document.querySelector('.login-btn');
             const originalHtml = button.innerHTML;
@@ -161,16 +164,12 @@
             }
         }
 
-        // 5. Error Handling (Prevents white screens)
+        // 5. Error Handling
         window.addEventListener('error', (e) => {
             console.error('Error:', e.message);
-            document.body.innerHTML = `
-                <div style="text-align:center;padding:50px;color:white">
-                    <h1>Loading Yogull...</h1>
-                    <button onclick="window.location.reload()">Refresh</button>
-                </div>
-            `;
-            return true;
+            if (e.message.includes('dashboard.html')) {
+                alert("Dashboard page is loading... Please check if dashboard.html exists in your folder.");
+            }
         });
     </script>
 </body>

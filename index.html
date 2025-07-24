@@ -10,110 +10,88 @@
 <body class="bg-white">
 
 <!-- Landing/Signup Section -->
-<div id="landing" class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+<div id="landing" class="min-h-screen bg-gray-100">
     <div class="min-h-screen flex items-center justify-center p-4">
-        <div class="max-w-6xl w-full grid lg:grid-cols-2 gap-8 items-center">
+        <div class="max-w-4xl w-full">
             
-            <!-- Left side - Platform benefits (About Us Information) -->
-            <div class="space-y-6">
-                <div class="text-center lg:text-left">
-                    <h1 class="text-4xl font-bold text-gray-900 mb-4">Join Yogull Community</h1>
-                    <p class="text-xl text-gray-600 mb-8">Connect with people worldwide, discover local businesses, and build your community</p>
-                </div>
-
-                <div class="grid gap-4">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-users text-blue-600 text-2xl w-8"></i>
-                        <div>
-                            <h3 class="font-semibold text-gray-900">Community Connection</h3>
-                            <p class="text-gray-600">Connect with active members worldwide</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-comments text-green-600 text-2xl w-8"></i>
-                        <div>
-                            <h3 class="font-semibold text-gray-900">Discussion Forums</h3>
-                            <p class="text-gray-600">Join 1,225+ active discussions on health, community, and more</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-map-marker-alt text-red-600 text-2xl w-8"></i>
-                        <div>
-                            <h3 class="font-semibold text-gray-900">Local Business Directory</h3>
-                            <p class="text-gray-600">Discover local businesses in your area</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-shopping-bag text-purple-600 text-2xl w-8"></i>
-                        <div>
-                            <h3 class="font-semibold text-gray-900">Personal Shop</h3>
-                            <p class="text-gray-600">Create and manage your online store</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-heart text-pink-600 text-2xl w-8"></i>
-                        <div>
-                            <h3 class="font-semibold text-gray-900">Health & Wellness</h3>
-                            <p class="text-gray-600">Track your wellness journey and connect with health professionals</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-share-alt text-orange-600 text-2xl w-8"></i>
-                        <div>
-                            <h3 class="font-semibold text-gray-900">One-Click Social Sharing</h3>
-                            <p class="text-gray-600">Share across 26+ social media platforms instantly</p>
-                        </div>
-                    </div>
+            <!-- Main Header Section -->
+            <div class="bg-white rounded-lg p-8 mb-8 text-center">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">Join Yogull Community Platform</h1>
+                <p class="text-lg text-gray-600 mb-8">
+                    Connect with people worldwide, discover local businesses, track your health journey,<br>
+                    and build meaningful communities. Join 25+ active members from 8 countries.
+                </p>
+                
+                <div class="flex justify-center space-x-4 mb-6">
+                    <button onclick="showDashboard()" class="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-lg font-semibold">
+                        Sign Up Free
+                    </button>
+                    <button onclick="showDashboard()" class="bg-white hover:bg-gray-50 text-gray-700 border-2 border-gray-300 px-8 py-3 rounded-lg font-semibold">
+                        Sign In
+                    </button>
                 </div>
             </div>
 
-            <!-- Right side - Sign in/up box -->
-            <div className="flex justify-center lg:justify-end">
-                <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-                    <div class="text-center mb-6">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-2">Join the Community</h2>
-                        <p class="text-gray-600">Sign up or sign in to get started</p>
-                    </div>
-
-                    <!-- Social Login Buttons -->
-                    <div class="space-y-3 mb-6">
-                        <button onclick="showDashboard()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-medium">
-                            <i class="fab fa-google text-lg"></i>
-                            Continue with Google
-                        </button>
-                        
-                        <button onclick="showDashboard()" class="w-full bg-blue-800 hover:bg-blue-900 text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-medium">
-                            <i class="fab fa-facebook text-lg"></i>
-                            Continue with Facebook
-                        </button>
-                        
-                        <button onclick="showDashboard()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2 font-medium">
-                            <i class="fab fa-twitter text-lg"></i>
-                            Continue with Twitter
-                        </button>
-                    </div>
-
-                    <!-- Email/Password Form -->
-                    <div class="border-t pt-6">
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                <input type="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                                <input type="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <button onclick="showDashboard()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-md font-medium">
-                                Sign Up / Sign In
-                            </button>
+            <!-- Why Join Yogull Section -->
+            <div class="bg-white rounded-lg p-8">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Why Join Yogull?</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Global Community -->
+                    <div class="text-center p-6 border border-gray-200 rounded-lg">
+                        <div class="bg-blue-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-users text-white text-2xl"></i>
                         </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Global Community</h3>
+                        <p class="text-gray-600 mb-4">Connect with 25+ active members worldwide</p>
+                        <p class="text-sm text-gray-500">
+                            Join discussions across 8 countries with multi-language support and real-time chat.
+                        </p>
                     </div>
+
+                    <!-- Active Discussions -->
+                    <div class="text-center p-6 border border-gray-200 rounded-lg">
+                        <div class="bg-green-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fab fa-whatsapp text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Active Discussions</h3>
+                        <p class="text-gray-600 mb-4">1,225+ community discussions</p>
+                        <p class="text-sm text-gray-500">
+                            Participate in health, community, technology, and lifestyle discussions.
+                        </p>
+                    </div>
+
+                    <!-- Local Business Directory -->
+                    <div class="text-center p-6 border border-gray-200 rounded-lg">
+                        <div class="bg-red-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-map-marker-alt text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Business Directory</h3>
+                        <p class="text-gray-600 mb-4">Discover 241+ local businesses</p>
+                        <p class="text-sm text-gray-500">
+                            Find gyms, cafes, wellness centers, and tech services in your area.
+                        </p>
+                    </div>
+
+                    <!-- Health & Wellness -->
+                    <div class="text-center p-6 border border-gray-200 rounded-lg">
+                        <div class="bg-purple-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-heartbeat text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Health & Wellness</h3>
+                        <p class="text-gray-600 mb-4">Track your wellness journey</p>
+                        <p class="text-sm text-gray-500">
+                            Personal health tracking, supplement management, and wellness community support.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Call to Action -->
+                <div class="mt-8 text-center">
+                    <button onclick="showDashboard()" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-semibold">
+                        Join Yogull Today - It's Free!
+                    </button>
+                    <p class="text-sm text-gray-500 mt-2">No credit card required • Join 25+ members worldwide</p>
                 </div>
             </div>
         </div>

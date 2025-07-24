@@ -4,48 +4,175 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogull Community Platform</title>
-    <!-- Removed base href to prevent path conflicts -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #764ba2;
+            --secondary: #667eea;
+            --accent: #9b5de5;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            color: var(--dark);
+            line-height: 1.6;
         }
-        .container { max-width: 1200px; width: 100%; }
-        .signup-form {
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        .platform-card {
             background: white;
             border-radius: 16px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
         }
-        /* [Keep all your existing CSS styles] */
+        .header {
+            padding: 2rem;
+            text-align: center;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .tagline {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        .main-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .login-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+        .signup-link {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+        }
+        .signup-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .social-btn {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .google-btn {
+            background: #4285F4;
+            color: white;
+        }
+        .facebook-btn {
+            background: #4267B2;
+            color: white;
+        }
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .about-section {
+            padding: 2rem;
+            border-top: 1px solid #eee;
+        }
+        .about-title {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .footer {
+            padding: 1.5rem 2rem;
+            background: #f9f9f9;
+            text-align: center;
+            color: #666;
+        }
+        .legal-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .legal-links a {
+            color: #666;
+            text-decoration: none;
+        }
+        .legal-links a:hover {
+            color: var(--primary);
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="signup-form">
-            <!-- Header -->
+        <div class="platform-card">
             <div class="header">
-                <div class="logo">
-                    <span class="logo-text">Yogull.com</span>
-                    <div class="eye"><div class="pupil"></div></div>
-                    <div class="eye"><div class="pupil"></div></div>
-                </div>
+                <div class="logo">Yogull.com</div>
                 <div class="tagline">Go heal me</div>
                 
                 <h1 class="main-title">Yogull Community Platform</h1>
                 <p class="subtitle">Join members from around the world...</p>
                 
-                <!-- Login Form -->
                 <div class="login-form">
                     <div class="form-group">
                         <label for="email">Email</label>
@@ -56,10 +183,9 @@
                         <input type="password" id="password" placeholder="Enter your password">
                     </div>
                     <button class="login-btn" onclick="signInWithEmail()">Sign In</button>
-                    <p style="margin-top:15px;color:#666">Don't have an account? <a href="#" onclick="showSignUp()" style="color:#764ba2">Sign Up</a></p>
+                    <p class="signup-link">Don't have an account? <a href="#" onclick="showSignUp()">Sign Up</a></p>
                 </div>
                 
-                <!-- Social Login Buttons -->
                 <div class="social-buttons">
                     <button class="social-btn google-btn" onclick="signInWithGoogle()">
                         <i class="fab fa-google"></i> Continue with Google
@@ -70,7 +196,6 @@
                 </div>
             </div>
             
-            <!-- About Us Section -->
             <div class="about-section">
                 <h2 class="about-title">About Yogull</h2>
                 <div class="about-content">
@@ -78,12 +203,6 @@
                 </div>
             </div>
             
-            <!-- Features Grid -->
-            <div class="features-grid">
-                <!-- [Keep all your feature cards] -->
-            </div>
-            
-            <!-- Footer -->
             <div class="footer">
                 <p>&copy; 2023 Yogull.com</p>
                 <div class="legal-links">
@@ -101,7 +220,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
     <script>
-        // 1. Firebase Initialization
+        // Firebase Initialization
         const firebaseConfig = {
             apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
             authDomain: "gohealme-9bdf0.firebaseapp.com",
@@ -114,22 +233,14 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 2. Fixed Auth State Handler (simplified redirect logic)
+        // Auth State Handler
         auth.onAuthStateChanged((user) => {
-            const currentPage = window.location.pathname.split('/').pop();
-            
             if (user) {
-                if (currentPage !== 'dashboard.html') {
-                    window.location.href = 'dashboard.html';
-                }
-            } else {
-                if (currentPage !== 'index.html' && currentPage !== '') {
-                    window.location.href = 'index.html';
-                }
+                window.location.href = 'dashboard.html';
             }
         });
 
-        // 3. Email Auth
+        // Email Auth
         async function signInWithEmail() {
             const button = document.querySelector('.login-btn');
             const originalHtml = button.innerHTML;
@@ -148,7 +259,7 @@
             }
         }
 
-        // 4. Social Auth (Google example)
+        // Social Auth (Google)
         async function signInWithGoogle() {
             const button = document.querySelector('.google-btn');
             const originalHtml = button.innerHTML;
@@ -164,13 +275,27 @@
             }
         }
 
-        // 5. Error Handling
-        window.addEventListener('error', (e) => {
-            console.error('Error:', e.message);
-            if (e.message.includes('dashboard.html')) {
-                alert("Dashboard page is loading... Please check if dashboard.html exists in your folder.");
+        // Social Auth (Facebook)
+        async function signInWithFacebook() {
+            const button = document.querySelector('.facebook-btn');
+            const originalHtml = button.innerHTML;
+            try {
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                button.disabled = true;
+                await auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+            } catch (error) {
+                alert(`Facebook sign-in failed: ${error.message}`);
+            } finally {
+                button.innerHTML = originalHtml;
+                button.disabled = false;
             }
-        });
+        }
+
+        // Show Sign Up Form (placeholder)
+        function showSignUp() {
+            alert('Sign up form will appear here!');
+            // In a real implementation, you would show a sign up form
+        }
     </script>
 </body>
 </html>

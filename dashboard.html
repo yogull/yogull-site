@@ -1,1 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yogull Dashboard</title>
+    <base href="/">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Welcome to Your Dashboard</h1>
+        <p>This is your member area. More features coming soon!</p>
+        <button onclick="window.location.href='/'">Sign Out</button>
+    </div>
 
+    <script>
+        // Simple authentication check
+        if (!sessionStorage.getItem('loggedIn')) {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Yogull Community Platform</title>
+    <title>Yogull Community Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Firebase v9 SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
     
     <style>
         * {
@@ -96,6 +97,48 @@
             margin-bottom: 30px;
         }
         
+        /* Login Form */
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #764ba2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            background: #5d3a8a;
+        }
+        
         /* Social Login Buttons */
         .social-buttons {
             display: flex;
@@ -136,23 +179,6 @@
         .social-btn:hover {
             opacity: 0.9;
             transform: translateY(-2px);
-        }
-        
-        .guest-section {
-            text-align: center;
-            margin: 20px 0;
-            color: #666;
-        }
-        
-        .guest-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
         }
         
         /* Features Grid */
@@ -227,19 +253,78 @@
             gap: 6px;
         }
         
-        /* Colors for different features */
-        .green { color: #28a745; }
-        .green-bg { background: #d4edda; color: #155724; }
-        .yellow { color: #ffc107; }
-        .yellow-bg { background: #fff3cd; color: #856404; }
-        .blue { color: #007bff; }
-        .blue-bg { background: #cce7ff; color: #004085; }
-        .purple { color: #6f42c1; }
-        .purple-bg { background: #e2d9f3; color: #3d1a78; }
-        .red { color: #dc3545; }
-        .red-bg { background: #f8d7da; color: #721c24; }
-        .indigo { color: #6610f2; }
-        .indigo-bg { background: #e0cffc; color: #3d0a91; }
+        /* Affiliate Section */
+        .affiliate-cta {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+        
+        .affiliate-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .add-link-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .affiliate-stats {
+            margin-top: 10px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* About Us Section */
+        .about-section {
+            padding: 40px 20px;
+            background: #f9f9f9;
+            text-align: center;
+        }
+        
+        .about-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .legal-links {
+            margin-top: 15px;
+        }
+        
+        .legal-links a {
+            color: #aaa;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        
+        .legal-links a:hover {
+            color: white;
+        }
         
         @media (max-width: 768px) {
             .social-buttons {
@@ -276,8 +361,22 @@
                 </div>
                 <div class="tagline">Go heal me</div>
                 
-                <h1 class="main-title">Join Yogull Community Platform</h1>
+                <h1 class="main-title">Yogull Community Platform</h1>
                 <p class="subtitle">Join members from around the world and discover the ultimate social platform with revolutionary features you won't find anywhere else.</p>
+                
+                <!-- Login Form -->
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password">
+                    </div>
+                    <button class="login-btn" onclick="signInWithEmail()">Sign In</button>
+                    <p style="margin-top: 15px; color: #666;">Don't have an account? <a href="#" onclick="showSignUp()" style="color: #764ba2;">Sign Up</a></p>
+                </div>
                 
                 <!-- Social Login Buttons -->
                 <div class="social-buttons">
@@ -294,10 +393,15 @@
                         Continue with Twitter
                     </button>
                 </div>
-                
-                <div class="guest-section">
-                    <p>Or enter as guest to explore</p>
-                    <button class="guest-btn" onclick="window.location.href='/'">Continue as Guest</button>
+            </div>
+            
+            <!-- About Us Section -->
+            <div class="about-section">
+                <h2 class="about-title">About Yogull</h2>
+                <div class="about-content">
+                    <p>Yogull is a revolutionary social platform designed to connect people worldwide while providing powerful tools for content sharing, affiliate marketing, and personal development.</p>
+                    <p>Our mission is to create a seamless experience where users can share content across multiple platforms, monetize their influence, and access AI-powered tools to enhance their digital life.</p>
+                    <p>Founded in 2023, Yogull brings together the best features of social networking with innovative monetization and automation tools you won't find anywhere else.</p>
                 </div>
             </div>
             
@@ -313,7 +417,7 @@
                         </div>
                     </div>
                     <div class="feature-description">
-                        Share to 20+ social platforms simultaneously: Facebook, Twitter, Instagram, LinkedIn, TikTok, Snapchat, Discord, Reddit, Pinterest, Tumblr, Twitch, Spotify, Medium, GitHub, and more.
+                        Share to multiple social platforms simultaneously: Facebook, Twitter, Instagram, LinkedIn, TikTok, Snapchat, Discord, Reddit, Pinterest, Tumblr, Twitch, Spotify, Medium, GitHub, and more.
                     </div>
                     <div class="feature-tags">
                         <span class="feature-tag">Facebook</span>
@@ -321,7 +425,7 @@
                         <span class="feature-tag">Instagram</span>
                         <span class="feature-tag">LinkedIn</span>
                         <span class="feature-tag">TikTok</span>
-                        <span class="feature-tag">+15 More</span>
+                        <span class="feature-tag">+ More</span>
                     </div>
                 </div>
 
@@ -337,9 +441,13 @@
                     <div class="feature-description">
                         Create personal affiliate shops and earn £1 per affiliate link for the first 20 links, then £2/month maintenance for additional links. Connect Amazon, eBay, and other affiliate programs.
                     </div>
-                    <div class="feature-highlight">
-                        <i class="fas fa-star"></i>
-                        £1 per link • £2/month after 20
+                    <div class="affiliate-cta">
+                        <input type="text" placeholder="Paste affiliate link" class="affiliate-input">
+                        <button class="add-link-btn" onclick="addAffiliateLink()">Add Link (£1)</button>
+                        <div class="affiliate-stats">
+                            <span>Your links: <strong id="link-count">0</strong></span>
+                            <span>Earnings: <strong id="earnings">£0</strong></span>
+                        </div>
                     </div>
                 </div>
 
@@ -370,10 +478,10 @@
                         </div>
                     </div>
                     <div class="feature-description">
-                        Automated news posting from 60+ international sources: BBC, CNN, Al Jazeera, Xinhua, NHK World, Le Monde, Der Spiegel, Times of India, and sources from every continent.
+                        Automated news posting from international sources: BBC, CNN, Al Jazeera, Xinhua, NHK World, Le Monde, Der Spiegel, Times of India, and sources from every continent.
                     </div>
                     <div class="feature-tags">
-                        <span class="feature-tag">60+ Sources</span>
+                        <span class="feature-tag">Multiple Sources</span>
                         <span class="feature-tag">Global Coverage</span>
                         <span class="feature-tag">Auto-Posted</span>
                     </div>
@@ -415,6 +523,17 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <p>&copy; 2023 Yogull.com. All rights reserved.</p>
+                <div class="legal-links">
+                    <a href="/terms">Terms of Service</a>
+                    <a href="/privacy">Privacy Policy</a>
+                    <a href="/cookies">Cookie Policy</a>
+                    <a href="/contact">Contact Us</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -432,73 +551,152 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const db = firebase.firestore();
 
-        // Real Firebase Social Authentication with OAuth popups
+        // Track authentication state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, redirect to dashboard
+                window.location.href = '/dashboard.html';
+            }
+        });
+
+        // Email/Password Authentication
+        async function signInWithEmail() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const button = document.querySelector('.login-btn');
+            
+            try {
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+                button.disabled = true;
+                
+                await auth.signInWithEmailAndPassword(email, password);
+                
+                // Will redirect via onAuthStateChanged
+            } catch (error) {
+                alert(`Sign in failed: ${error.message}`);
+                console.error('Sign in error:', error);
+                
+                button.innerHTML = 'Sign In';
+                button.disabled = false;
+            }
+        }
+
+        function showSignUp() {
+            // In a complete implementation, this would show a sign-up form
+            alert('Sign up functionality will be implemented in the next version');
+        }
+
+        // Social Authentication
         async function signInWithGoogle() {
             try {
-                console.log('🔵 Starting Google authentication...');
+                const button = document.querySelector('.google-btn');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+                button.disabled = true;
+                
                 const provider = new firebase.auth.GoogleAuthProvider();
                 provider.addScope('email');
                 provider.addScope('profile');
                 
-                const result = await firebase.auth().signInWithPopup(provider);
-                console.log('✅ Google sign-in successful:', result.user.email);
+                await auth.signInWithPopup(provider);
                 
-                // Redirect to dashboard after successful authentication
-                window.location.href = '/';
+                // Will redirect via onAuthStateChanged
             } catch (error) {
-                console.error('❌ Google sign-in error:', error);
-                // Fallback to redirect sign-in if popup fails
-                const provider = new firebase.auth.GoogleAuthProvider();
-                firebase.auth().signInWithRedirect(provider);
+                alert(`Google sign-in failed: ${error.message}`);
+                console.error('Google sign-in error:', error);
+                
+                const button = document.querySelector('.google-btn');
+                button.innerHTML = '<i class="fab fa-google"></i> Continue with Google';
+                button.disabled = false;
             }
         }
 
         async function signInWithFacebook() {
             try {
-                console.log('🔵 Starting Facebook authentication...');
+                const button = document.querySelector('.facebook-btn');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+                button.disabled = true;
+                
                 const provider = new firebase.auth.FacebookAuthProvider();
                 provider.addScope('email');
                 
-                const result = await firebase.auth().signInWithPopup(provider);
-                console.log('✅ Facebook sign-in successful:', result.user.email);
+                await auth.signInWithPopup(provider);
                 
-                // Redirect to dashboard after successful authentication
-                window.location.href = '/';
+                // Will redirect via onAuthStateChanged
             } catch (error) {
-                console.error('❌ Facebook sign-in error:', error);
-                // Fallback to redirect sign-in if popup fails
-                const provider = new firebase.auth.FacebookAuthProvider();
-                firebase.auth().signInWithRedirect(provider);
+                alert(`Facebook sign-in failed: ${error.message}`);
+                console.error('Facebook sign-in error:', error);
+                
+                const button = document.querySelector('.facebook-btn');
+                button.innerHTML = '<i class="fab fa-facebook-f"></i> Continue with Facebook';
+                button.disabled = false;
             }
         }
 
         async function signInWithTwitter() {
             try {
-                console.log('🔵 Starting Twitter authentication...');
+                const button = document.querySelector('.twitter-btn');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+                button.disabled = true;
+                
                 const provider = new firebase.auth.TwitterAuthProvider();
                 
-                const result = await firebase.auth().signInWithPopup(provider);
-                console.log('✅ Twitter sign-in successful:', result.user.displayName);
+                await auth.signInWithPopup(provider);
                 
-                // Redirect to dashboard after successful authentication
-                window.location.href = '/';
+                // Will redirect via onAuthStateChanged
             } catch (error) {
-                console.error('❌ Twitter sign-in error:', error);
-                // Fallback to redirect sign-in if popup fails
-                const provider = new firebase.auth.TwitterAuthProvider();
-                firebase.auth().signInWithRedirect(provider);
+                alert(`Twitter sign-in failed: ${error.message}`);
+                console.error('Twitter sign-in error:', error);
+                
+                const button = document.querySelector('.twitter-btn');
+                button.innerHTML = '<i class="fab fa-twitter"></i> Continue with Twitter';
+                button.disabled = false;
+            }
+        }
+
+        // Affiliate System
+        async function addAffiliateLink() {
+            const input = document.querySelector('.affiliate-input');
+            const link = input.value.trim();
+            
+            if (!link) {
+                alert('Please enter a valid affiliate link');
+                return;
+            }
+            
+            try {
+                // In a complete implementation, this would save to Firestore
+                // and process payment
+                alert('Affiliate link functionality will be fully implemented in the backend');
+                
+                // Simulate adding a link
+                const linkCount = document.getElementById('link-count');
+                const earnings = document.getElementById('earnings');
+                
+                const currentCount = parseInt(linkCount.textContent);
+                const newCount = currentCount + 1;
+                
+                linkCount.textContent = newCount;
+                
+                // Calculate earnings - £1 per link for first 20, then £2
+                const newEarnings = newCount <= 20 ? newCount : 20 + ((newCount - 20) * 2);
+                earnings.textContent = `£${newEarnings}`;
+                
+                input.value = '';
+            } catch (error) {
+                alert(`Failed to add affiliate link: ${error.message}`);
+                console.error('Affiliate error:', error);
             }
         }
 
         // Handle redirect results for fallback authentication
-        firebase.auth().getRedirectResult().then((result) => {
+        auth.getRedirectResult().then((result) => {
             if (result.user) {
-                console.log('✅ Redirect authentication successful:', result.user.email || result.user.displayName);
-                window.location.href = '/';
+                console.log('Redirect authentication successful:', result.user.email || result.user.displayName);
             }
         }).catch((error) => {
-            console.error('❌ Redirect authentication error:', error);
+            console.error('Redirect authentication error:', error);
         });
     </script>
 </body>

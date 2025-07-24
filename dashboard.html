@@ -1,16 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
+    <title>Yogull Dashboard</title>
     <style>
-        body { font-family: Arial; text-align: center; padding: 50px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        button {
+            background: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <h1>Welcome to Your Dashboard</h1>
     <p>This is your member area.</p>
     <button onclick="logout()">Sign Out</button>
+
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script>
+        // Initialize Firebase (same as in index.html)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
+            authDomain: "gohealme-9bdf0.firebaseapp.com",
+            projectId: "gohealme-9bdf0",
+            storageBucket: "gohealme-9bdf0.appspot.com",
+            messagingSenderId: "823297665017",
+            appId: "1:823297665017:web:3427ba4397e12447ccbf28"
+        };
+        firebase.initializeApp(firebaseConfig);
+
         function logout() {
             firebase.auth().signOut().then(() => {
                 window.location.href = 'index.html';

@@ -216,38 +216,55 @@
     </div>
 
     <script>
-        // Fetch Firebase configuration from server
-        let firebaseConfig = {};
-        
-        // Get Firebase config from environment
-        fetch('/api/config/firebase')
-            .then(response => response.json())
-            .then(config => {
-                firebaseConfig = config;
-                console.log('📱 Firebase config loaded:', config.projectId);
-                
-                // Initialize Firebase with fresh config
-                firebase.initializeApp(firebaseConfig);
-                const auth = firebase.auth();
-                console.log('🔥 Firebase initialized with fresh credentials');
-            })
-            .catch(error => {
-                console.error('❌ Failed to load Firebase config, using fallback:', error);
-                // Fallback configuration
-                firebaseConfig = {
-                    apiKey: "AIzaSyBTiEYhwYaH_r0ECqG2eHqsKbNXGPPP8s8",
-                    authDomain: "gohealme-9bdf0.firebaseapp.com", 
-                    projectId: "gohealme-9bdf0",
-                    storageBucket: "gohealme-9bdf0.appspot.com",
-                    messagingSenderId: "531345712733",
-                    appId: "1:531345712733:web:88c3b9a10f0b3f5e8f2a84"
-                };
-                firebase.initializeApp(firebaseConfig);
-                const auth = firebase.auth();
-            });
-
-        // Firebase will be initialized after config is loaded above
+        // Direct Firebase Configuration with Fresh Environment Variables
+        let firebaseConfig = null;
         let auth = null;
+        
+        // Initialize Firebase immediately with environment variables
+        async function initializeFirebase() {
+            try {
+                // Fetch config from server
+                const response = await fetch('/api/config/firebase');
+                if (response.ok) {
+                    firebaseConfig = await response.json();
+                    console.log('✅ Firebase config loaded from server:', firebaseConfig.projectId);
+                } else {
+                    throw new Error('Config endpoint failed');
+                }
+            } catch (error) {
+                console.warn('⚠️ Using fresh Firebase config with your new API key');
+                // Use your fresh Firebase credentials
+                firebaseConfig = {
+                    apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
+                    authDomain: "gohealme-9bdf0.firebaseapp.com",
+                    projectId: "gohealme-9bdf0",
+                    storageBucket: "gohealme-9bdf0.appspot.com", 
+                    messagingSenderId: "823297665017",
+                    appId: "1:823297665017:web:3427ba4397e12447ccbf28"
+                };
+            }
+            
+            // Initialize Firebase
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+                auth = firebase.auth();
+                console.log('🔥 Firebase initialized successfully');
+                
+                // Log config details (without exposing API key)
+                console.log('Firebase Config Check:');
+                console.log('Project ID:', firebaseConfig.projectId);
+                console.log('Auth Domain:', firebaseConfig.authDomain);
+                console.log('API Key present:', !!firebaseConfig.apiKey);
+                console.log('App ID present:', !!firebaseConfig.appId);
+                console.log('Firebase Auth initialized successfully');
+                
+                return auth;
+            }
+            return firebase.auth();
+        }
+        
+        // Initialize Firebase immediately when page loads
+        initializeFirebase();
         
         // Wait for Firebase to be ready
         const waitForFirebase = () => {

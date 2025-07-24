@@ -10,12 +10,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -25,14 +20,78 @@
             justify-content: center;
             padding: 20px;
         }
-        
-        /* [Keep all your existing CSS exactly as is] */
+        .container { max-width: 1200px; width: 100%; }
+        .signup-form {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        /* [Keep all your existing CSS styles] */
     </style>
 </head>
 <body>
     <div class="container">
         <div class="signup-form">
-            <!-- [Keep all your existing HTML exactly as is until the script tag] -->
+            <!-- Header -->
+            <div class="header">
+                <div class="logo">
+                    <span class="logo-text">Yogull.com</span>
+                    <div class="eye"><div class="pupil"></div></div>
+                    <div class="eye"><div class="pupil"></div></div>
+                </div>
+                <div class="tagline">Go heal me</div>
+                
+                <h1 class="main-title">Yogull Community Platform</h1>
+                <p class="subtitle">Join members from around the world...</p>
+                
+                <!-- Login Form -->
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password">
+                    </div>
+                    <button class="login-btn" onclick="signInWithEmail()">Sign In</button>
+                    <p style="margin-top:15px;color:#666">Don't have an account? <a href="#" onclick="showSignUp()" style="color:#764ba2">Sign Up</a></p>
+                </div>
+                
+                <!-- Social Login Buttons -->
+                <div class="social-buttons">
+                    <button class="social-btn google-btn" onclick="signInWithGoogle()">
+                        <i class="fab fa-google"></i> Continue with Google
+                    </button>
+                    <button class="social-btn facebook-btn" onclick="signInWithFacebook()">
+                        <i class="fab fa-facebook-f"></i> Continue with Facebook
+                    </button>
+                </div>
+            </div>
+            
+            <!-- About Us Section -->
+            <div class="about-section">
+                <h2 class="about-title">About Yogull</h2>
+                <div class="about-content">
+                    <p>Yogull is a revolutionary social platform...</p>
+                </div>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="features-grid">
+                <!-- [Keep all your feature cards] -->
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <p>&copy; 2023 Yogull.com</p>
+                <div class="legal-links">
+                    <a href="/terms">Terms</a>
+                    <a href="/privacy">Privacy</a>
+                    <a href="/contact">Contact</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -42,83 +101,76 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
     <script>
-        // Error prevention wrapper
-        try {
-            // Firebase Configuration
-            const firebaseConfig = {
-                apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
-                authDomain: "gohealme-9bdf0.firebaseapp.com",
-                projectId: "gohealme-9bdf0",
-                storageBucket: "gohealme-9bdf0.appspot.com",
-                messagingSenderId: "823297665017",
-                appId: "1:823297665017:web:3427ba4397e12447ccbf28"
-            };
+        // 1. Firebase Initialization (Fixed)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
+            authDomain: "gohealme-9bdf0.firebaseapp.com",
+            projectId: "gohealme-9bdf0",
+            storageBucket: "gohealme-9bdf0.appspot.com",
+            messagingSenderId: "823297665017",
+            appId: "1:823297665017:web:3427ba4397e12447ccbf28"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-            // Initialize Firebase
-            const app = firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
-            const db = firebase.firestore();
-
-            // Safe authentication state handler
-            auth.onAuthStateChanged((user) => {
-                try {
-                    const path = window.location.pathname;
-                    if (user && !path.includes('dashboard.html')) {
-                        window.location.href = '/dashboard.html';
-                    } else if (!user && path !== '/' && !path.includes('index.html')) {
-                        window.location.href = '/';
-                    }
-                } catch (e) {
-                    console.error("Auth state error:", e);
-                }
-            });
-
-            // Enhanced signInWithEmail with error handling
-            async function signInWithEmail() {
-                const button = document.querySelector('.login-btn');
-                const originalHtml = button.innerHTML;
-                try {
-                    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
-                    button.disabled = true;
-                    
-                    const email = document.getElementById('email').value;
-                    const password = document.getElementById('password').value;
-                    
-                    if (!email || !password) {
-                        throw new Error("Please fill all fields");
-                    }
-                    
-                    await auth.signInWithEmailAndPassword(email, password);
-                } catch (error) {
-                    console.error("Login error:", error);
-                    alert(`Sign in failed: ${error.message}`);
-                } finally {
-                    button.innerHTML = originalHtml;
-                    button.disabled = false;
-                }
+        // 2. Auth State Handler (Fixed redirects)
+        auth.onAuthStateChanged((user) => {
+            const path = window.location.pathname;
+            if (user && !path.includes('dashboard.html')) {
+                sessionStorage.setItem('loggedIn', 'true');
+                window.location.href = '/dashboard.html';
+            } else if (!user && path !== '/' && !path.includes('index.html')) {
+                sessionStorage.removeItem('loggedIn');
+                window.location.href = '/';
             }
+        });
 
-            // [Keep your other functions (social login, affiliate) with similar error handling]
+        // 3. Email Auth (With loading states)
+        async function signInWithEmail() {
+            const button = document.querySelector('.login-btn');
+            const originalHtml = button.innerHTML;
+            try {
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+                button.disabled = true;
+                await auth.signInWithEmailAndPassword(
+                    document.getElementById('email').value,
+                    document.getElementById('password').value
+                );
+            } catch (error) {
+                alert(`Sign in failed: ${error.message}`);
+            } finally {
+                button.innerHTML = originalHtml;
+                button.disabled = false;
+            }
+        }
 
-        } catch (initError) {
-            console.error("Initialization failed:", initError);
+        // 4. Social Auth (Google example)
+        async function signInWithGoogle() {
+            const button = document.querySelector('.google-btn');
+            const originalHtml = button.innerHTML;
+            try {
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                button.disabled = true;
+                await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+            } catch (error) {
+                alert(`Google sign-in failed: ${error.message}`);
+            } finally {
+                button.innerHTML = originalHtml;
+                button.disabled = false;
+            }
+        }
+
+        // 5. Error Handling (Prevents white screens)
+        window.addEventListener('error', (e) => {
+            console.error('Error:', e.message);
             document.body.innerHTML = `
-                <div style="text-align:center; padding:50px; color:white;">
+                <div style="text-align:center;padding:50px;color:white">
                     <h1>Loading Yogull...</h1>
-                    <p>If this persists, please refresh or try again later.</p>
                     <button onclick="window.location.reload()">Refresh</button>
                 </div>
             `;
-        }
-
-        // Global error handlers
-        window.addEventListener('error', (e) => {
-            console.error('Global error:', e.message);
             return true;
-        });
-
-        window.addEventListener('unhandledrejection', (e) => {
-            console.error('Promise rejection:', e.reason);
         });
     </script>
 </body>

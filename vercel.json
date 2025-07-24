@@ -1,6 +1,14 @@
 {
+  "version": 2,
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/index.html" }
-  ]
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "headers": {
+        "Cache-Control": "no-cache"
+      }
+    }
+  ],
+  "cleanUrls": false,
+  "trailingSlash": false
 }

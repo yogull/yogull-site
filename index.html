@@ -1,97 +1,209 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yogull Community Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="index.css">
-    <script type="importmap">
-{
-  "imports": {
-    "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
-    "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
-    "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js",
-    "firebase/": "https://esm.sh/firebase@^12.0.0/"
-  }
+// Firebase v8 compatible imports
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+
+// --- DOM Elements ---
+const loginForm = document.getElementById('login-form') as HTMLDivElement;
+const signupForm = document.getElementById('signup-form') as HTMLDivElement;
+const loginBtn = document.querySelector('#login-form .login-btn') as HTMLButtonElement;
+const signupBtn = document.querySelector('#signup-form .signup-btn') as HTMLButtonElement;
+const googleBtn = document.querySelector('.google-btn') as HTMLButtonElement;
+const facebookBtn = document.querySelector('.facebook-btn') as HTMLButtonElement;
+const twitterBtn = document.querySelector('.twitter-btn') as HTMLButtonElement;
+const showSignupLink = document.getElementById('show-signup-link') as HTMLAnchorElement;
+const showLoginLink = document.getElementById('show-login-link') as HTMLAnchorElement;
+
+const loginEmailInput = document.getElementById('login-email') as HTMLInputElement;
+const loginPasswordInput = document.getElementById('login-password') as HTMLInputElement;
+const signupEmailInput = document.getElementById('signup-email') as HTMLInputElement;
+const signupPasswordInput = document.getElementById('signup-password') as HTMLInputElement;
+const confirmPasswordInput = document.getElementById('confirm-password') as HTMLInputElement;
+
+const loginErrorMessage = document.getElementById('login-error-message') as HTMLParagraphElement;
+const signupErrorMessage = document.getElementById('signup-error-message') as HTMLParagraphElement;
+
+// --- Firebase Initialization ---
+const firebaseConfig = {
+    apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
+    authDomain: "gohealme-9bdf0.firebaseapp.com",
+    projectId: "gohealme-9bdf0",
+    storageBucket: "gohealme-9bdf0.appspot.com",
+    messagingSenderId: "823297665017",
+    appId: "1:823297665017:web:3427ba4397e12447ccbf28"
+};
+
+// Initialize Firebase
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
 }
-</script>
-</head>
-<body>
-    <div class="container">
-        <div class="platform-card">
-            <div class="header">
-                <div class="logo">Yogull.com</div>
-                <div class="tagline">Go heal me</div>
-                
-                <!-- Login Form -->
-                <div id="login-form">
-                    <h1 class="main-title">Yogull Community Platform</h1>
-                    <p class="subtitle">Join members from around the world...</p>
-                    
-                    <div class="form-group">
-                        <label for="login-email">Email</label>
-                        <input type="email" id="login-email" placeholder="Enter your email" aria-label="Email for login">
-                    </div>
-                    <div class="form-group">
-                        <label for="login-password">Password</label>
-                        <input type="password" id="login-password" placeholder="Enter your password" aria-label="Password for login">
-                    </div>
-                    <p id="login-error-message" class="error-message" aria-live="polite"></p>
-                    <button class="login-btn">Sign In</button>
-                    <p class="form-switch-link">Don't have an account? <a href="#" id="show-signup-link">Sign Up</a></p>
-                </div>
 
-                <!-- Sign Up Form (hidden by default) -->
-                <div id="signup-form" class="hidden">
-                    <h1 class="main-title">Create an Account</h1>
-                    <p class="subtitle">Start your journey with Yogull today.</p>
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-                    <div class="form-group">
-                        <label for="signup-email">Email</label>
-                        <input type="email" id="signup-email" placeholder="Enter your email" aria-label="Email for sign up">
-                    </div>
-                    <div class="form-group">
-                        <label for="signup-password">Password</label>
-                        <input type="password" id="signup-password" placeholder="Create a password" aria-label="Password for sign up">
-                    </div>
-                     <div class="form-group">
-                        <label for="confirm-password">Confirm Password</label>
-                        <input type="password" id="confirm-password" placeholder="Confirm your password" aria-label="Confirm password">
-                    </div>
-                    <p id="signup-error-message" class="error-message" aria-live="polite"></p>
-                    <button class="signup-btn">Sign Up</button>
-                    <p class="form-switch-link">Already have an account? <a href="#" id="show-login-link">Sign In</a></p>
-                </div>
-                
-                <div class="social-buttons">
-                    <button class="social-btn google-btn">
-                        <i class="fab fa-google" aria-hidden="true"></i> Continue with Google
-                    </button>
-                    <button class="social-btn facebook-btn">
-                        <i class="fab fa-facebook-f" aria-hidden="true"></i> Continue with Facebook
-                    </button>
-                </div>
-            </div>
-            
-            <div class="about-section">
-                <h2 class="about-title">About Yogull</h2>
-                <div class="about-content">
-                    <p>Yogull is a revolutionary social platform...</p>
-                </div>
-            </div>
-            
-            <div class="footer">
-                <p>&copy; 2023 Yogull.com</p>
-                <div class="legal-links">
-                    <a href="/terms">Terms</a>
-                    <a href="/privacy">Privacy</a>
-                    <a href="/contact">Contact</a>
-                </div>
-            </div>
-        </div>
-    </div>
+// --- Helper Functions ---
 
-    <script type="module" src="index.ts"></script>
-</body>
-</html>
+function setButtonLoadingState(button: HTMLButtonElement, isLoading: boolean, text: string = 'Loading...') {
+    if (isLoading) {
+        button.disabled = true;
+        button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${text}`;
+    } else {
+        button.disabled = false;
+        button.innerHTML = button.dataset.originalText || '';
+    }
+}
+
+function showLoginError(message: string) {
+    loginErrorMessage.textContent = message;
+}
+
+function showSignupError(message: string) {
+    signupErrorMessage.textContent = message;
+}
+
+function clearErrorMessages() {
+    loginErrorMessage.textContent = '';
+    signupErrorMessage.textContent = '';
+}
+
+function getFriendlyAuthErrorMessage(errorCode: string): string {
+    switch (errorCode) {
+        case 'auth/invalid-email':
+            return 'The email address is not valid. Please check and try again.';
+        case 'auth/user-not-found':
+        case 'auth/wrong-password':
+        case 'auth/invalid-credential':
+             return 'Invalid email or password. Please try again.';
+        case 'auth/email-already-in-use':
+            return 'This email address is already registered. Please sign in or use a different email.';
+        case 'auth/weak-password':
+            return 'Your password is too weak. It must be at least 6 characters long.';
+        case 'auth/operation-not-allowed':
+            return 'This sign-in method is not enabled. Please contact support.';
+        case 'auth/popup-closed-by-user':
+            return 'The sign-in popup was closed. Please try again.';
+        case 'auth/account-exists-with-different-credential':
+             return 'An account already exists with this email. Please sign in using the original method.';
+        default:
+            return 'An unexpected error occurred. Please try again later.';
+    }
+}
+
+
+// --- Auth State Handler ---
+auth.onAuthStateChanged((user: firebase.User | null) => {
+    if (user) {
+        // User is signed in, redirect to dashboard.
+        window.location.href = 'dashboard.html';
+    }
+});
+
+// --- Form Switching Logic ---
+showSignupLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    clearErrorMessages();
+    loginForm.classList.add('hidden');
+    signupForm.classList.remove('hidden');
+});
+
+showLoginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    clearErrorMessages();
+    signupForm.classList.add('hidden');
+    loginForm.classList.remove('hidden');
+});
+
+// --- Authentication Functions ---
+
+// Email Sign Up
+async function signUpWithEmail() {
+    clearErrorMessages();
+    const email = signupEmailInput.value;
+    const password = signupPasswordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+
+    if (!email || !password || !confirmPassword) {
+        showSignupError("Please fill in all fields.");
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showSignupError("Passwords do not match.");
+        return;
+    }
+    
+    setButtonLoadingState(signupBtn, true, 'Signing Up...');
+    try {
+        await auth.createUserWithEmailAndPassword(email, password);
+        // onAuthStateChanged will handle the redirect
+    } catch (error: any) {
+        const friendlyMessage = getFriendlyAuthErrorMessage(error.code);
+        showSignupError(friendlyMessage);
+    } finally {
+        setButtonLoadingState(signupBtn, false);
+    }
+}
+
+// Email Sign In
+async function signInWithEmail() {
+    clearErrorMessages();
+    const email = loginEmailInput.value;
+    const password = loginPasswordInput.value;
+
+    if (!email || !password) {
+        showLoginError("Please enter both email and password.");
+        return;
+    }
+
+    setButtonLoadingState(loginBtn, true, 'Signing In...');
+    try {
+        await auth.signInWithEmailAndPassword(email, password);
+    } catch (error: any) {
+        const friendlyMessage = getFriendlyAuthErrorMessage(error.code);
+        showLoginError(friendlyMessage);
+    } finally {
+        setButtonLoadingState(loginBtn, false);
+    }
+}
+
+// Social Media Sign In
+async function signInWithSocialMedia(provider: firebase.auth.AuthProvider) {
+    clearErrorMessages();
+    
+    let button;
+    if (provider.providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID) button = googleBtn;
+    if (provider.providerId === firebase.auth.FacebookAuthProvider.PROVIDER_ID) button = facebookBtn;
+    if (provider.providerId === firebase.auth.TwitterAuthProvider.PROVIDER_ID) button = twitterBtn;
+
+    if(button) setButtonLoadingState(button, true, 'Redirecting...');
+
+    try {
+        await auth.signInWithPopup(provider);
+    } catch (error: any) {
+        const friendlyMessage = getFriendlyAuthErrorMessage(error.code);
+        showLoginError(friendlyMessage);
+        showSignupError(friendlyMessage);
+    } finally {
+        if(button) setButtonLoadingState(button, false);
+    }
+}
+
+
+// --- Event Listeners ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Store original button text to restore after loading
+    loginBtn.dataset.originalText = loginBtn.innerHTML;
+    signupBtn.dataset.originalText = signupBtn.innerHTML;
+    googleBtn.dataset.originalText = googleBtn.innerHTML;
+    facebookBtn.dataset.originalText = facebookBtn.innerHTML;
+    twitterBtn.dataset.originalText = twitterBtn.innerHTML;
+
+    // Email/Password listeners
+    loginBtn.addEventListener('click', signInWithEmail);
+    signupBtn.addEventListener('click', signUpWithEmail);
+
+    // Social provider listeners
+    googleBtn.addEventListener('click', () => signInWithSocialMedia(new firebase.auth.GoogleAuthProvider()));
+    facebookBtn.addEventListener('click', () => signInWithSocialMedia(new firebase.auth.FacebookAuthProvider()));
+    twitterBtn.addEventListener('click', () => signInWithSocialMedia(new firebase.auth.TwitterAuthProvider()));
+});

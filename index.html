@@ -1,209 +1,342 @@
-// Firebase v8 compatible imports
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-
-// --- DOM Elements ---
-const loginForm = document.getElementById('login-form') as HTMLDivElement;
-const signupForm = document.getElementById('signup-form') as HTMLDivElement;
-const loginBtn = document.querySelector('#login-form .login-btn') as HTMLButtonElement;
-const signupBtn = document.querySelector('#signup-form .signup-btn') as HTMLButtonElement;
-const googleBtn = document.querySelector('.google-btn') as HTMLButtonElement;
-const facebookBtn = document.querySelector('.facebook-btn') as HTMLButtonElement;
-const twitterBtn = document.querySelector('.twitter-btn') as HTMLButtonElement;
-const showSignupLink = document.getElementById('show-signup-link') as HTMLAnchorElement;
-const showLoginLink = document.getElementById('show-login-link') as HTMLAnchorElement;
-
-const loginEmailInput = document.getElementById('login-email') as HTMLInputElement;
-const loginPasswordInput = document.getElementById('login-password') as HTMLInputElement;
-const signupEmailInput = document.getElementById('signup-email') as HTMLInputElement;
-const signupPasswordInput = document.getElementById('signup-password') as HTMLInputElement;
-const confirmPasswordInput = document.getElementById('confirm-password') as HTMLInputElement;
-
-const loginErrorMessage = document.getElementById('login-error-message') as HTMLParagraphElement;
-const signupErrorMessage = document.getElementById('signup-error-message') as HTMLParagraphElement;
-
-// --- Firebase Initialization ---
-const firebaseConfig = {
-    apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
-    authDomain: "gohealme-9bdf0.firebaseapp.com",
-    projectId: "gohealme-9bdf0",
-    storageBucket: "gohealme-9bdf0.appspot.com",
-    messagingSenderId: "823297665017",
-    appId: "1:823297665017:web:3427ba4397e12447ccbf28"
-};
-
-// Initialize Firebase
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// --- Helper Functions ---
-
-function setButtonLoadingState(button: HTMLButtonElement, isLoading: boolean, text: string = 'Loading...') {
-    if (isLoading) {
-        button.disabled = true;
-        button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${text}`;
-    } else {
-        button.disabled = false;
-        button.innerHTML = button.dataset.originalText || '';
-    }
-}
-
-function showLoginError(message: string) {
-    loginErrorMessage.textContent = message;
-}
-
-function showSignupError(message: string) {
-    signupErrorMessage.textContent = message;
-}
-
-function clearErrorMessages() {
-    loginErrorMessage.textContent = '';
-    signupErrorMessage.textContent = '';
-}
-
-function getFriendlyAuthErrorMessage(errorCode: string): string {
-    switch (errorCode) {
-        case 'auth/invalid-email':
-            return 'The email address is not valid. Please check and try again.';
-        case 'auth/user-not-found':
-        case 'auth/wrong-password':
-        case 'auth/invalid-credential':
-             return 'Invalid email or password. Please try again.';
-        case 'auth/email-already-in-use':
-            return 'This email address is already registered. Please sign in or use a different email.';
-        case 'auth/weak-password':
-            return 'Your password is too weak. It must be at least 6 characters long.';
-        case 'auth/operation-not-allowed':
-            return 'This sign-in method is not enabled. Please contact support.';
-        case 'auth/popup-closed-by-user':
-            return 'The sign-in popup was closed. Please try again.';
-        case 'auth/account-exists-with-different-credential':
-             return 'An account already exists with this email. Please sign in using the original method.';
-        default:
-            return 'An unexpected error occurred. Please try again later.';
-    }
-}
-
-
-// --- Auth State Handler ---
-auth.onAuthStateChanged((user: firebase.User | null) => {
-    if (user) {
-        // User is signed in, redirect to dashboard.
-        window.location.href = 'dashboard.html';
-    }
-});
-
-// --- Form Switching Logic ---
-showSignupLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    clearErrorMessages();
-    loginForm.classList.add('hidden');
-    signupForm.classList.remove('hidden');
-});
-
-showLoginLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    clearErrorMessages();
-    signupForm.classList.add('hidden');
-    loginForm.classList.remove('hidden');
-});
-
-// --- Authentication Functions ---
-
-// Email Sign Up
-async function signUpWithEmail() {
-    clearErrorMessages();
-    const email = signupEmailInput.value;
-    const password = signupPasswordInput.value;
-    const confirmPassword = confirmPasswordInput.value;
-
-    if (!email || !password || !confirmPassword) {
-        showSignupError("Please fill in all fields.");
-        return;
-    }
-
-    if (password !== confirmPassword) {
-        showSignupError("Passwords do not match.");
-        return;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Yogull Community Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    setButtonLoadingState(signupBtn, true, 'Signing Up...');
-    try {
-        await auth.createUserWithEmailAndPassword(email, password);
-        // onAuthStateChanged will handle the redirect
-    } catch (error: any) {
-        const friendlyMessage = getFriendlyAuthErrorMessage(error.code);
-        showSignupError(friendlyMessage);
-    } finally {
-        setButtonLoadingState(signupBtn, false);
-    }
-}
-
-// Email Sign In
-async function signInWithEmail() {
-    clearErrorMessages();
-    const email = loginEmailInput.value;
-    const password = loginPasswordInput.value;
-
-    if (!email || !password) {
-        showLoginError("Please enter both email and password.");
-        return;
-    }
-
-    setButtonLoadingState(loginBtn, true, 'Signing In...');
-    try {
-        await auth.signInWithEmailAndPassword(email, password);
-    } catch (error: any) {
-        const friendlyMessage = getFriendlyAuthErrorMessage(error.code);
-        showLoginError(friendlyMessage);
-    } finally {
-        setButtonLoadingState(loginBtn, false);
-    }
-}
-
-// Social Media Sign In
-async function signInWithSocialMedia(provider: firebase.auth.AuthProvider) {
-    clearErrorMessages();
+    <!-- Firebase v9 SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     
-    let button;
-    if (provider.providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID) button = googleBtn;
-    if (provider.providerId === firebase.auth.FacebookAuthProvider.PROVIDER_ID) button = facebookBtn;
-    if (provider.providerId === firebase.auth.TwitterAuthProvider.PROVIDER_ID) button = twitterBtn;
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=') center/cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .main-title {
+            font-size: 48px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+        
+        .signup-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .tab-btn {
+            background: none;
+            border: 2px solid #333;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .tab-btn.active {
+            background: #333;
+            color: white;
+        }
+        
+        .signup-form {
+            background: #fff3b8;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .social-divider {
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .social-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .google-btn {
+            background: #4285f4;
+            color: white;
+        }
+        
+        .facebook-btn {
+            background: #1877f2;
+            color: white;
+        }
+        
+        .twitter-btn {
+            background: #1da1f2;
+            color: white;
+        }
+        
+        .social-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .why-join {
+            margin: 40px 0;
+        }
+        
+        .why-join h2 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .feature-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #4285f4;
+        }
+        
+        .feature-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .feature-count {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .feature-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .main-title {
+                font-size: 36px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .signup-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title">Yogull Community Platform</h1>
+        <p class="subtitle">
+            Connect with people worldwide, discover local businesses, track your health journey,<br>
+            and build meaningful communities. Join members from around the world.
+        </p>
+        
+        <div class="signup-tabs">
+            <button class="tab-btn active">Sign Up Free</button>
+            <button class="tab-btn">Sign In</button>
+        </div>
+        
+        <div class="signup-form">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <div class="social-divider">Or continue with</div>
+            
+            <div class="social-buttons">
+                <button class="social-btn google-btn" onclick="signInWithGoogle()">
+                    <i class="fab fa-google"></i>
+                    Continue with Google
+                </button>
+                <button class="social-btn facebook-btn" onclick="signInWithFacebook()">
+                    <i class="fab fa-facebook-f"></i>
+                    Continue with Facebook
+                </button>
+                <button class="social-btn twitter-btn" onclick="signInWithTwitter()">
+                    <i class="fab fa-twitter"></i>
+                    Continue with Twitter
+                </button>
+            </div>
+        </div>
+        
+        <div class="why-join">
+            <h2>Why Join Yogull?</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="feature-title">Global Community</div>
+                    <div class="feature-count">Connect with 25+ active members worldwide</div>
+                    <div class="feature-description">
+                        Join discussions across 8 countries with multi-language support and real-time chat.
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="feature-title">Active Discussions</div>
+                    <div class="feature-count">1,225+ community discussions</div>
+                    <div class="feature-description">
+                        Participate in health, community, technology, and lifestyle discussions.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    if(button) setButtonLoadingState(button, true, 'Redirecting...');
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxHlbxOi8qJg8LjrglHZgxZ7qliqg-njI",
+            authDomain: "gohealme-9bdf0.firebaseapp.com",
+            projectId: "gohealme-9bdf0",
+            storageBucket: "gohealme-9bdf0.appspot.com", 
+            messagingSenderId: "823297665017",
+            appId: "1:823297665017:web:3427ba4397e12447ccbf28"
+        };
 
-    try {
-        await auth.signInWithPopup(provider);
-    } catch (error: any) {
-        const friendlyMessage = getFriendlyAuthErrorMessage(error.code);
-        showLoginError(friendlyMessage);
-        showSignupError(friendlyMessage);
-    } finally {
-        if(button) setButtonLoadingState(button, false);
-    }
-}
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
+        // Firebase Social Authentication
+        async function signInWithGoogle() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await firebase.auth().signInWithPopup(provider);
+                window.location.href = '/';
+            } catch (error) {
+                console.error('Google sign-in error:', error);
+            }
+        }
 
-// --- Event Listeners ---
-document.addEventListener('DOMContentLoaded', () => {
-    // Store original button text to restore after loading
-    loginBtn.dataset.originalText = loginBtn.innerHTML;
-    signupBtn.dataset.originalText = signupBtn.innerHTML;
-    googleBtn.dataset.originalText = googleBtn.innerHTML;
-    facebookBtn.dataset.originalText = facebookBtn.innerHTML;
-    twitterBtn.dataset.originalText = twitterBtn.innerHTML;
+        async function signInWithFacebook() {
+            try {
+                const provider = new firebase.auth.FacebookAuthProvider();
+                const result = await firebase.auth().signInWithPopup(provider);
+                window.location.href = '/';
+            } catch (error) {
+                console.error('Facebook sign-in error:', error);
+            }
+        }
 
-    // Email/Password listeners
-    loginBtn.addEventListener('click', signInWithEmail);
-    signupBtn.addEventListener('click', signUpWithEmail);
-
-    // Social provider listeners
-    googleBtn.addEventListener('click', () => signInWithSocialMedia(new firebase.auth.GoogleAuthProvider()));
-    facebookBtn.addEventListener('click', () => signInWithSocialMedia(new firebase.auth.FacebookAuthProvider()));
-    twitterBtn.addEventListener('click', () => signInWithSocialMedia(new firebase.auth.TwitterAuthProvider()));
-});
+        async function signInWithTwitter() {
+            try {
+                const provider = new firebase.auth.TwitterAuthProvider();
+                const result = await firebase.auth().signInWithPopup(provider);
+                window.location.href = '/';
+            } catch (error) {
+                console.error('Twitter sign-in error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

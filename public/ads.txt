@@ -1,0 +1,15 @@
+# Ads.txt file for GoHealMe.org
+# This file helps prevent ad fraud and ensures authentic ad revenue
+# Contact: gohealme.org@gmail.com
+
+# Google AdSense (placeholder - to be updated when account is created)
+google.com, pub-XXXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+
+# Amazon Associates (for supplement affiliate links)
+# To be configured when affiliate program is active
+
+# Health supplement affiliate networks
+# Commission Junction, ShareASale, ClickBank partnerships to be added
+
+# Direct partnerships with supplement brands
+# Individual brand partnerships to be configured

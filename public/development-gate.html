@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Development Access Blocked</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .gate-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .blocked-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .spending-info {
+            background: #ffebee;
+            border: 2px solid #f44336;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #c62828;
+        }
+        
+        .payment-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px 0;
+            width: 100%;
+        }
+        
+        .payment-btn:hover {
+            background: #45a049;
+        }
+        
+        .help-text {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gate-container">
+        <div class="blocked-icon">🚫</div>
+        <div class="title">Development Access Blocked</div>
+        
+        <div class="message">
+            You've reached your daily development limit of £20.
+            <br><br>
+            To continue development work with the AI assistant, please make a £20 payment to unlock access.
+        </div>
+        
+        <div class="spending-info">
+            <strong>Today's Usage:</strong> £<span id="spentAmount">20.00</span><br>
+            <strong>Daily Limit:</strong> £20.00<br>
+            <strong>Status:</strong> Access Blocked
+        </div>
+        
+        <button class="payment-btn" onclick="processPayment()">
+            Pay £20 - Unlock Development Access
+        </button>
+        
+        <div class="help-text">
+            After payment confirmation, development access will be restored immediately.
+            <br>
+            Your work session with the AI assistant will resume normally.
+        </div>
+    </div>
+
+    <script>
+        // Check spending amount from localStorage
+        function loadSpendingInfo() {
+            const blockData = localStorage.getItem('developmentBlocked');
+            if (blockData) {
+                const { amount } = JSON.parse(blockData);
+                document.getElementById('spentAmount').textContent = amount.toFixed(2);
+            }
+        }
+        
+        async function processPayment() {
+            try {
+                // Create payment intent for £20 development access
+                const response = await fetch('/api/create-payment-intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: 2000, // £20 in pence
+                        currency: 'gbp',
+                        description: 'Development access unlock - £20'
+                    })
+                });
+
+                const { clientSecret } = await response.json();
+                
+                // Redirect to payment with development unlock type
+                window.location.href = `/checkout?client_secret=${clientSecret}&type=development_unlock&amount=20`;
+                
+            } catch (error) {
+                console.error('Payment error:', error);
+                alert('Payment processing failed. Please try again.');
+            }
+        }
+        
+        // Check for successful payment and unlock
+        function checkPaymentSuccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('payment_success') === 'true' && urlParams.get('type') === 'development_unlock') {
+                // Clear blocking and redirect to admin
+                localStorage.removeItem('developmentBlocked');
+                localStorage.removeItem('simpleSpendingTracker');
+                
+                // Show success and redirect
+                alert('Payment confirmed! Development access restored.');
+                window.location.href = '/admin';
+            }
+        }
+        
+        // Initialize page
+        window.addEventListener('load', () => {
+            loadSpendingInfo();
+            checkPaymentSuccess();
+        });
+        
+        // Block navigation attempts
+        window.addEventListener('beforeunload', (e) => {
+            const blockData = localStorage.getItem('developmentBlocked');
+            if (blockData && JSON.parse(blockData).blocked) {
+                e.preventDefault();
+                e.returnValue = 'Development access is blocked. Please make payment to continue.';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Development Session Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .spending-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 20px 0;
+        }
+        
+        .limit-reached {
+            color: #f44336;
+        }
+        
+        .label {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .limit-info {
+            font-size: 14px;
+            color: #999;
+            margin-top: 20px;
+        }
+        
+        .session-info {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .start-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            width: 100%;
+        }
+        
+        .start-btn:hover {
+            background: #45a049;
+        }
+        
+        .reset-btn {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 10px;
+            width: 100%;
+        }
+        
+        .reset-btn:hover {
+            background: #f57c00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Development Session</div>
+        
+        <div class="spending-display" id="spendingAmount">£0.00</div>
+        <div class="label">Total spent at £0.10/minute</div>
+        
+        <div class="session-info" id="sessionInfo">
+            No active session
+        </div>
+        
+        <button class="start-btn" id="startBtn" onclick="startSession()">
+            Start Development Session
+        </button>
+        
+        <button class="reset-btn" id="resetBtn" onclick="resetSession()" style="display: none;">
+            Reset for New Day
+        </button>
+        
+        <div class="limit-info">Daily limit: £20.00</div>
+    </div>
+
+    <script>
+        class DevelopmentSessionTracker {
+            constructor() {
+                this.dailyLimit = 20.00;
+                this.ratePerMinute = 0.10;
+                this.sessionStartTime = null;
+                this.totalSpent = 0;
+                
+                this.loadSession();
+                this.updateDisplay();
+                
+                // Update every 30 seconds if session is active
+                setInterval(() => {
+                    if (this.sessionStartTime) {
+                        this.calculateSpending();
+                        this.updateDisplay();
+                    }
+                }, 30000);
+            }
+            
+            loadSession() {
+                const saved = localStorage.getItem('developmentSession');
+                const today = new Date().toDateString();
+                
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    
+                    if (data.date === today && data.startTime) {
+                        this.sessionStartTime = data.startTime;
+                        this.calculateSpending();
+                    } else if (data.date !== today) {
+                        // New day - but check if user has been working all day
+                        this.promptForDayStart();
+                    }
+                } else {
+                    // First time - ask when they started working today
+                    this.promptForDayStart();
+                }
+            }
+            
+            promptForDayStart() {
+                const startTime = prompt('What time did you start development work today?\n\nEnter in 24-hour format:\n• Morning example: 09:00\n• Afternoon example: 14:30\n\nThis will calculate your total daily spending:');
+                if (startTime && startTime.includes(':')) {
+                    try {
+                        const today = new Date();
+                        const [hours, minutes] = startTime.split(':');
+                        today.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                        this.sessionStartTime = today.getTime();
+                        this.saveSession();
+                        this.calculateSpending();
+                        this.updateDisplay();
+                        alert(`Tracking started from ${startTime} today.\nYour total daily spending will now be calculated.`);
+                    } catch (error) {
+                        alert('Invalid time format. Using current time instead.');
+                        this.sessionStartTime = Date.now();
+                        this.saveSession();
+                        this.updateDisplay();
+                    }
+                } else {
+                    // Default to current time if no input or invalid format
+                    this.sessionStartTime = Date.now();
+                    this.saveSession();
+                    this.updateDisplay();
+                }
+            }
+            
+            saveSession() {
+                const data = {
+                    date: new Date().toDateString(),
+                    startTime: this.sessionStartTime
+                };
+                localStorage.setItem('developmentSession', JSON.stringify(data));
+            }
+            
+            startSession() {
+                if (!this.sessionStartTime) {
+                    this.sessionStartTime = Date.now();
+                    this.saveSession();
+                }
+                this.calculateSpending();
+                this.updateDisplay();
+            }
+            
+            calculateSpending() {
+                if (!this.sessionStartTime) {
+                    this.totalSpent = 0;
+                    return;
+                }
+                
+                const elapsed = Date.now() - this.sessionStartTime;
+                const minutes = elapsed / (1000 * 60);
+                this.totalSpent = Math.max(0, minutes * this.ratePerMinute);
+            }
+            
+            updateDisplay() {
+                const spendingEl = document.getElementById('spendingAmount');
+                const sessionInfoEl = document.getElementById('sessionInfo');
+                const startBtn = document.getElementById('startBtn');
+                const resetBtn = document.getElementById('resetBtn');
+                
+                spendingEl.textContent = `£${this.totalSpent.toFixed(2)}`;
+                
+                if (this.sessionStartTime) {
+                    const startTime = new Date(this.sessionStartTime);
+                    sessionInfoEl.textContent = `Session started at ${startTime.toLocaleTimeString()}`;
+                    startBtn.style.display = 'none';
+                    resetBtn.style.display = 'block';
+                } else {
+                    sessionInfoEl.textContent = 'No active session';
+                    startBtn.style.display = 'block';
+                    resetBtn.style.display = 'none';
+                }
+                
+                const percentage = (this.totalSpent / this.dailyLimit) * 100;
+                
+                if (percentage >= 100) {
+                    spendingEl.classList.add('limit-reached');
+                    this.blockAccess();
+                } else if (percentage >= 80) {
+                    spendingEl.style.color = '#ff9800';
+                }
+            }
+            
+            blockAccess() {
+                localStorage.setItem('developmentBlocked', JSON.stringify({
+                    blocked: true,
+                    amount: this.totalSpent,
+                    timestamp: Date.now()
+                }));
+                
+                setTimeout(() => {
+                    window.location.href = '/development-gate.html';
+                }, 2000);
+            }
+            
+            resetSession() {
+                if (confirm('Reset development session? This will start a new day.')) {
+                    localStorage.removeItem('developmentSession');
+                    localStorage.removeItem('developmentBlocked');
+                    this.sessionStartTime = null;
+                    this.totalSpent = 0;
+                    this.updateDisplay();
+                }
+            }
+        }
+        
+        function startSession() {
+            tracker.startSession();
+        }
+        
+        function resetSession() {
+            tracker.resetSession();
+        }
+        
+        // Initialize tracker
+        const tracker = new DevelopmentSessionTracker();
+        
+        // Auto-start if first visit today
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('autostart') === 'true' && !tracker.sessionStartTime) {
+                tracker.startSession();
+            }
+        });
+    </script>
+</body>
+</html>

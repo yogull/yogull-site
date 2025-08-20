@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>GoHealMe - The People's Health Community</title>
+    <description>Latest health guides, wellness tips, and community updates from GoHealMe - the revolutionary health platform built by the people, for the people.</description>
+    <link>https://gohealme.org</link>
+    <atom:link href="https://gohealme.org/feed.xml" rel="self" type="application/rss+xml"/>
+    <language>en-GB</language>
+    <managingEditor>gohealme.org@gmail.com (GoHealMe Team)</managingEditor>
+    <webMaster>gohealme.org@gmail.com (GoHealMe Team)</webMaster>
+    <copyright>2025 GoHealMe - The People's Health Community</copyright>
+    <category>Health</category>
+    <category>Wellness</category>
+    <category>Supplements</category>
+    <category>Alternative Medicine</category>
+    
+    <item>
+      <title>Comprehensive Guide to Traumatic Brain Injury (TBI) Recovery</title>
+      <description>Understanding TBI symptoms, treatment options, and recovery strategies often overlooked by mainstream medicine.</description>
+      <link>https://gohealme.org/illness-guides/tbi</link>
+      <guid>https://gohealme.org/illness-guides/tbi</guid>
+      <pubDate>Mon, 18 Jun 2025 14:00:00 GMT</pubDate>
+      <category>Brain Health</category>
+    </item>
+    
+    <item>
+      <title>EMF Sensitivity: Symptoms, Protection, and Management</title>
+      <description>Complete guide to electromagnetic field sensitivity, a condition often dismissed by conventional healthcare.</description>
+      <link>https://gohealme.org/illness-guides/emf-sensitivity</link>
+      <guid>https://gohealme.org/illness-guides/emf-sensitivity</guid>
+      <pubDate>Mon, 18 Jun 2025 13:00:00 GMT</pubDate>
+      <category>Environmental Health</category>
+    </item>
+    
+    <item>
+      <title>Sleep Disorders: Comprehensive Treatment Guide</title>
+      <description>Understanding insomnia, sleep apnea, and restless leg syndrome with natural and medical treatment options.</description>
+      <link>https://gohealme.org/illness-guides/sleep-disorders</link>
+      <guid>https://gohealme.org/illness-guides/sleep-disorders</guid>
+      <pubDate>Mon, 18 Jun 2025 12:00:00 GMT</pubDate>
+      <category>Sleep Health</category>
+    </item>
+    
+    <item>
+      <title>Mental Health Support: Depression, Anxiety, ADHD, and More</title>
+      <description>Comprehensive mental health resources including alternative approaches and community support systems.</description>
+      <link>https://gohealme.org/illness-guides/mental-health</link>
+      <guid>https://gohealme.org/illness-guides/mental-health</guid>
+      <pubDate>Mon, 18 Jun 2025 11:00:00 GMT</pubDate>
+      <category>Mental Health</category>
+    </item>
+  </channel>
+</rss>

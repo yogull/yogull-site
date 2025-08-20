@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Platform Files</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .download-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        .download-btn {
+            display: inline-block;
+            background: #0066cc;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            margin: 10px 5px;
+        }
+        .download-btn:hover {
+            background: #0052a3;
+        }
+        .big-file {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+        }
+        .small-file {
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+        }
+        .warning {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border: 1px solid #ffeaa7;
+        }
+    </style>
+</head>
+<body>
+    <h1>Download Platform Files for GitHub</h1>
+    
+    <div class="warning">
+        <strong>IMPORTANT:</strong> You need the BIG file (7.7MB) with all your data, not the small config-only file.
+    </div>
+
+    <div class="download-container big-file">
+        <h2>✅ CORRECT FILE - Download This One</h2>
+        <p><strong>github-upload.zip (26MB)</strong></p>
+        <p>Contains: Complete platform ready for GitHub upload + all your data</p>
+        <a href="/github-upload.zip" download="github-upload.zip" class="download-btn">
+            📥 Download GitHub Ready Package (26MB)
+        </a>
+        <p><small>✅ This zip file should upload directly to GitHub without extraction</small></p>
+    </div>
+
+    <div class="download-container small-file">
+        <h2>❌ WRONG FILE - Don't Use This</h2>
+        <p><strong>yogull-platform-deploy.zip (2.5MB)</strong></p>
+        <p>Contains: Only config files, no user data</p>
+        <a href="/yogull-platform-deploy.zip" download="yogull-platform-deploy.zip" class="download-btn">
+            📥 Download Configs Only (2.5MB)
+        </a>
+    </div>
+
+    <div class="download-container">
+        <h3>Next Steps After Download:</h3>
+        <ol>
+            <li><strong>Extract the 7.7MB file</strong> on your computer</li>
+            <li><strong>Go to GitHub repository</strong> and delete all existing files</li>
+            <li><strong>Upload all extracted files</strong> to GitHub</li>
+            <li><strong>Commit changes</strong> in GitHub</li>
+            <li><strong>Go to Vercel and redeploy</strong></li>
+        </ol>
+    </div>
+</body>
+</html>
